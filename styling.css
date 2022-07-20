@@ -1,0 +1,42 @@
+/* LOGIN SCREEN */
+QLabel#login_titles {
+    color: #FFFFFF;
+    font: 18px
+}
+
+QLabel#login_screen_labels {
+    color: #FFFFFF;
+}
+
+QPushButton#login_screen_forgot_password{
+    border: none;
+    color: #FFFFFF;
+    background: transparent;
+}
+QPushButton#login_screen_forgot_password:hover {
+    color: cyan;
+}
+QPushButton#login_screen_forgot_password:pressed {
+    color: blue;
+}
+
+QPushButton#login_button {
+    border: red;
+    color: #FFFFFF;
+    background: red;
+}
+QPushButton#login_button:hover {
+    background: #FF2E2E;
+}
+QPushButton#login_button:pressed {
+    color: red;
+    background: #FFFFFF;
+}
+
+QFrame#login_screen_elements {
+    color: #FFFFFF;
+}
+
+
+
+/* HOME PAGE */

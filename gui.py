@@ -1,0 +1,137 @@
+# Import PyQt5's widgets to be used throughout the program
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtGui import QIcon
+
+# A class is created that holds all functions of the program
+class ui_main_window(object):
+    # This function setups up a basic window where widgets can be added
+    def setup_window(self, main_window):
+        main_window.setWindowTitle("Time Track")
+        main_window.setObjectName("main_window")
+        # The size of the window is specified using "resize()"
+        # main_window.setFixedSize(800, 700)
+        main_window.setFixedSize(800, 500)
+
+        # The bottom bar of a window is added using the QStatusBar widget
+        self.status_bar = QtWidgets.QStatusBar(main_window)
+        self.status_bar.setObjectName("status_bar")
+        main_window.setStatusBar(self.status_bar)
+
+        self.setup_login_screen(main_window)
+
+    def setup_login_screen(self, main_window):
+        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget.resize(800, 500)
+        self.login_screen_background = QtWidgets.QLabel(self.central_widget)
+        self.login_screen_background.setFixedSize(800, 500)
+        self.login_screen_background.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
+        self.login_screen_background.setScaledContents(True)
+        self.login_screen_background.show()
+        self.login_widget_container = QtWidgets.QGroupBox(self.central_widget)
+        self.login_widget_container.resize(800, 500)
+
+        # Application Logo
+        self.login_screen_logo = QtWidgets.QLabel(self.login_widget_container)
+        self.login_screen_logo.setFixedSize(200, 200)
+        self.login_screen_logo.move(-20, -75)
+        self.login_screen_logo.setPixmap(
+            QtGui.QPixmap("Application Pictures and Icons/Time Track Logo.png"))
+        self.login_screen_logo.setScaledContents(True)
+        self.login_screen_logo.show()
+
+        # Student Login
+        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145,
+                                                      80, 200, 50)
+        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID",
+                                                         80, 122, 200, 50)
+        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", 80, 160,
+                                                      240, 30)
+        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",
+                                                         80, 187, 200, 50)
+        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", 80, 225,
+                                                      240, 30)
+        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
+                                                               "Forgot password?", "None", 65, 255, 140, 30)
+        self.student_login_button = self.create_QPushButton("login_widget_container", "login_button", "Login", "None",
+                                                            80, 290, 240, 30)
+
+        # Line divider between logins
+        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399,
+                                                     40, 1, 410)
+
+        # Administrator Login
+        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles",
+                                                            "Administrator Login",
+                                                            525, 80, 200, 50)
+        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID",
+                                                         480, 122, 200, 50)
+        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", 480, 160,
+                                                      240, 30)
+        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",
+                                                         480, 187, 200, 50)
+        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", 480, 225,
+                                                      240, 30)
+        self.administrator_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
+                                                               "Forgot password?", "None", 465, 255, 140, 30)
+        self.administrator_login_button = self.create_QPushButton("login_widget_container", "login_button", "Login", "None",
+                                                            480, 290, 240, 30)
+
+    def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length):
+        # Creates and associates QLabel to specified container
+        if container == "login_widget_container":
+            self.QLabel = QtWidgets.QLabel(self.login_widget_container)
+        self.QLabel.setObjectName(object_name)
+        self.QLabel.setText(text)
+        # Geometry of QLabel is specified by the passed function parameters
+        self.QLabel.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
+        return self.QLabel
+
+    def create_QLineEdit(self, container, object_name, x_coordinate, y_coordinate, width, length):
+        # Creates and associates QLabel to specified container
+        if container == "login_widget_container":
+            self.QLineEdit = QtWidgets.QLineEdit(self.login_widget_container)
+        self.QLineEdit.setObjectName(object_name)
+        # Geometry of QLineEdit is specified by the passed function parameters
+        self.QLineEdit.setFixedSize(width, length)
+        self.QLineEdit.move(x_coordinate, y_coordinate)
+        return self.QLineEdit
+
+    def create_QFrame(self, container, object_name, orientation, x_coordinate, y_coordinate, width, length):
+        if container == "login_widget_container":
+            self.QFrame = QtWidgets.QFrame(self.login_widget_container)
+        self.QFrame.setObjectName(object_name)
+        self.QFrame.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
+        if orientation == "VLine":
+            self.QFrame.setFrameShape(QtWidgets.QFrame.VLine)
+        else:
+            self.QFrame.setFrameShape(QtWidgets.QFrame.HLine)
+
+    def create_QPushButton(self, container, object_name, text, icon, x_coordinate, y_coordinate, width, length):
+        # Creates and associates QLabel to specified container
+        if container == "login_widget_container":
+            self.QPushButton = QtWidgets.QPushButton(self.login_widget_container)
+        self.QPushButton.setObjectName(object_name)
+        self.QPushButton.setText(text)
+        if icon != "None":
+            self.QPushButton.setIcon(QIcon(icon))
+        # Geometry of QLineEdit is specified by the passed function parameters
+        self.QPushButton.setFixedSize(width, length)
+        self.QPushButton.move(x_coordinate, y_coordinate)
+        return self.QPushButton
+
+
+if __name__ == "__main__":
+    import sys
+    # An application is created
+    app = QtWidgets.QApplication(sys.argv)
+    # Read the css file and apply the stylesheet
+    with open("styling.css", "r") as f:
+        _style = f.read()
+        app.setStyleSheet(_style)
+    # A main window is created for the application
+    main_window = QtWidgets.QMainWindow()
+    # The user interface sets up the main window class
+    ui = ui_main_window()
+    ui.setup_window(main_window)
+    main_window.show()
+    sys.exit(app.exec_())
