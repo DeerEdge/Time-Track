@@ -20,15 +20,28 @@ QPushButton#login_screen_forgot_password:pressed {
     color: blue;
 }
 
-QPushButton#login_button {
+QPushButton#student_login_button {
     border: red;
     color: #FFFFFF;
     background: red;
 }
-QPushButton#login_button:hover {
+QPushButton#student_login_button:hover {
     background: #FF2E2E;
 }
-QPushButton#login_button:pressed {
+QPushButton#student_login_button:pressed {
+    color: red;
+    background: #FFFFFF;
+}
+
+QPushButton#administrator_login_button {
+    border: red;
+    color: #FFFFFF;
+    background: red;
+}
+QPushButton#administrator_login_button:hover {
+    background: #FF2E2E;
+}
+QPushButton#administrator_login_button:pressed {
     color: red;
     background: #FFFFFF;
 }

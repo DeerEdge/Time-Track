@@ -1,6 +1,9 @@
 # Import PyQt5's widgets to be used throughout the program
-from PyQt5 import QtGui, QtCore, QtWidgets
+import sys
+
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import *
+from PyQt5 import QtGui, QtCore, QtWidgets
 
 # A class is created that holds all functions of the program
 class ui_main_window(object):
@@ -20,14 +23,14 @@ class ui_main_window(object):
         self.setup_login_screen(main_window)
 
     def setup_login_screen(self, main_window):
-        self.central_widget = QtWidgets.QWidget(main_window)
-        self.central_widget.resize(800, 500)
-        self.login_screen_background = QtWidgets.QLabel(self.central_widget)
+        self.login_central_widget = QtWidgets.QWidget(main_window)
+        self.login_central_widget.resize(800, 500)
+        self.login_screen_background = QtWidgets.QLabel(self.login_central_widget)
         self.login_screen_background.setFixedSize(800, 500)
         self.login_screen_background.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
         self.login_screen_background.setScaledContents(True)
         self.login_screen_background.show()
-        self.login_widget_container = QtWidgets.QGroupBox(self.central_widget)
+        self.login_widget_container = QtWidgets.QGroupBox(self.login_central_widget)
         self.login_widget_container.resize(800, 500)
 
         # Application Logo
@@ -52,8 +55,9 @@ class ui_main_window(object):
                                                       240, 30)
         self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
                                                                "Forgot password?", "None", 65, 255, 140, 30)
-        self.student_login_button = self.create_QPushButton("login_widget_container", "login_button", "Login", "None",
+        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login", "None",
                                                             80, 290, 240, 30)
+        self.student_login_button.clicked.connect(self.setup_home_page)
 
         # Line divider between logins
         self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399,
@@ -73,8 +77,26 @@ class ui_main_window(object):
                                                       240, 30)
         self.administrator_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
                                                                "Forgot password?", "None", 465, 255, 140, 30)
-        self.administrator_login_button = self.create_QPushButton("login_widget_container", "login_button", "Login", "None",
+        self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None",
                                                             480, 290, 240, 30)
+    def setup_home_page(self):
+        sending_button = self.login_widget_container.sender().objectName()
+        self.login_widget_container.hide()
+        self.login_screen_background.clear()
+
+        main_window.setFixedSize(800, 700)
+        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget.resize(800, 500)
+        self.tab_widget = VerticalTabWidget(self.central_widget)
+        self.tab_widget.resize(800, 700)
+
+        if sending_button == "student_login_button":
+            self.tab_widget.addTab(QWidget(), "First Tab")
+            self.tab_widget.addTab(QWidget(), "Second Tab")
+            self.tab_widget.addTab(QWidget(), "Third Tab")
+
+        main_window.setCentralWidget(self.tab_widget)
+        self.tab_widget.show()
 
     def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length):
         # Creates and associates QLabel to specified container
@@ -119,11 +141,45 @@ class ui_main_window(object):
         self.QPushButton.move(x_coordinate, y_coordinate)
         return self.QPushButton
 
+class TabBar(QTabBar):
+    def tabSizeHint(self, index):
+        s = QTabBar.tabSizeHint(self, index)
+        s.transpose()
+        return s
+
+    def paintEvent(self, event):
+        painter = QStylePainter(self)
+        opt = QStyleOptionTab()
+
+        for i in range(self.count()):
+            self.initStyleOption(opt, i)
+            painter.drawControl(QStyle.CE_TabBarTabShape, opt)
+            painter.save()
+
+            s = opt.rect.size()
+            s.transpose()
+            r = QtCore.QRect(QtCore.QPoint(), s)
+            r.moveCenter(opt.rect.center())
+            opt.rect = r
+
+            c = self.tabRect(i).center()
+            painter.translate(c)
+            painter.rotate(90)
+            painter.translate(-c)
+            painter.drawControl(QStyle.CE_TabBarTabLabel, opt)
+            painter.restore()
+
+class VerticalTabWidget(QTabWidget):
+    def __init__(self, *args, **kwargs):
+        QTabWidget.__init__(self, *args, **kwargs)
+        self.setTabBar(TabBar())
+        self.setTabPosition(QtWidgets.QTabWidget.West)
 
 if __name__ == "__main__":
     import sys
     # An application is created
     app = QtWidgets.QApplication(sys.argv)
+    app.setStyle('Fusion')
     # Read the css file and apply the stylesheet
     with open("styling.css", "r") as f:
         _style = f.read()
