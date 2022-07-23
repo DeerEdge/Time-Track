@@ -1,6 +1,4 @@
 # Import PyQt5's widgets to be used throughout the program
-import sys
-
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -12,13 +10,7 @@ class ui_main_window(object):
         main_window.setWindowTitle("Time Track")
         main_window.setObjectName("main_window")
         # The size of the window is specified using "resize()"
-        # main_window.setFixedSize(800, 700)
         main_window.setFixedSize(800, 500)
-
-        # The bottom bar of a window is added using the QStatusBar widget
-        self.status_bar = QtWidgets.QStatusBar(main_window)
-        self.status_bar.setObjectName("status_bar")
-        main_window.setStatusBar(self.status_bar)
 
         self.setup_login_screen(main_window)
 
@@ -79,29 +71,55 @@ class ui_main_window(object):
                                                                "Forgot password?", "None", 465, 255, 140, 30)
         self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None",
                                                             480, 290, 240, 30)
+
     def setup_home_page(self):
         sending_button = self.login_widget_container.sender().objectName()
         self.login_widget_container.hide()
         self.login_screen_background.clear()
 
-        main_window.setFixedSize(800, 700)
+        main_window.setFixedSize(1000, 700)
         self.central_widget = QtWidgets.QWidget(main_window)
-        self.central_widget.resize(800, 500)
+        self.central_widget.setObjectName("central_widget")
+        self.central_widget.resize(1000, 700)
+
+        self.app_logo = QtWidgets.QLabel(self.central_widget)
+        self.app_logo.setFixedSize(140, 140)
+        self.app_logo.move(20, 10)
+        self.app_logo.setPixmap(
+            QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+        self.app_logo.setScaledContents(True)
+        self.app_logo.show()
+
+        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as FIRSTNAME LASTNAME",
+                                              200, 10, 600, 50)
+
         self.tab_widget = VerticalTabWidget(self.central_widget)
-        self.tab_widget.resize(800, 700)
+        self.tab_widget.setObjectName("tab_widget")
+        self.tab_widget.resize(1000, 650)
+        self.tab_widget.move(0, 55)
 
         if sending_button == "student_login_button":
-            self.tab_widget.addTab(QWidget(), "First Tab")
-            self.tab_widget.addTab(QWidget(), "Second Tab")
-            self.tab_widget.addTab(QWidget(), "Third Tab")
+            self.dashboard_tab = QtWidgets.QWidget()
+            self.upcoming_events_tab = QtWidgets.QWidget()
+            self.points_tab = QtWidgets.QWidget()
+            self.profile_tab = QtWidgets.QWidget()
 
-        main_window.setCentralWidget(self.tab_widget)
+            self.tab_widget.addTab(self.dashboard_tab, "Dashboard")
+            self.tab_widget.addTab(self.upcoming_events_tab, "Upcoming Events")
+            self.tab_widget.addTab(self.points_tab, "Points")
+            self.tab_widget.addTab(self.profile_tab, "My Student Profile")
+
         self.tab_widget.show()
+        main_window.setCentralWidget(self.central_widget)
+
+
 
     def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QLabel = QtWidgets.QLabel(self.login_widget_container)
+        elif container == "central_widget":
+            self.QLabel = QtWidgets.QLabel(self.central_widget)
         self.QLabel.setObjectName(object_name)
         self.QLabel.setText(text)
         # Geometry of QLabel is specified by the passed function parameters
@@ -143,6 +161,7 @@ class ui_main_window(object):
 
 class TabBar(QTabBar):
     def tabSizeHint(self, index):
+        self.setGeometry(0, 120, 180, 300)
         s = QTabBar.tabSizeHint(self, index)
         s.transpose()
         return s
@@ -174,6 +193,8 @@ class VerticalTabWidget(QTabWidget):
         QTabWidget.__init__(self, *args, **kwargs)
         self.setTabBar(TabBar())
         self.setTabPosition(QtWidgets.QTabWidget.West)
+        self.setStyleSheet("QTabBar::tab { height: 180px; width: 50px;}")
+
 
 if __name__ == "__main__":
     import sys

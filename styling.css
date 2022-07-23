@@ -1,3 +1,8 @@
+/* STATUS BAR */
+QStatusBar#status_bar {
+    color: #F6F6F6;
+}
+
 /* LOGIN SCREEN */
 QLabel#login_titles {
     color: #FFFFFF;
@@ -50,6 +55,16 @@ QFrame#login_screen_elements {
     color: #FFFFFF;
 }
 
-
-
 /* HOME PAGE */
+QLabel#intro_label {
+    color: #FFFFFF;
+    font: bold 32px;
+}
+
+QWidget#central_widget {
+    background-color: #CD0000;
+}
+
+QWidget#tab_widget {
+    background-color: #e8e8eb;
+}
