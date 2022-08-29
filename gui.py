@@ -112,8 +112,15 @@ class ui_main_window(object):
             self.dashboard_widget = QtWidgets.QWidget(self.dashboard_tab)
             self.dashboard_label = self.create_QLabel("dashboard_widget", "dashboard_label", "Dashboard",
                                               20, 20, 600, 50)
+            self.dashboard_greeting = self.create_QLabel("dashboard_widget", "greeting", "Welcome!",
+                                                         40,100,300,50)
             self.dashboard_title_line = self.create_QFrame("dashboard_widget", "dashboard_title_line", "HLine",
                                                          10, 65, 600, 6)
+
+            self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
+            self.calender.setGeometry (20, 50, 350, 350)
+            self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 50, 400, 350)
+            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 425, 700, 250)
 
         self.tab_widget.show()
         main_window.setCentralWidget(self.central_widget)
@@ -138,6 +145,8 @@ class ui_main_window(object):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QLineEdit = QtWidgets.QLineEdit(self.login_widget_container)
+        elif container == "upcoming_events_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
         self.QLineEdit.setObjectName(object_name)
         # Geometry of QLineEdit is specified by the passed function parameters
         self.QLineEdit.setFixedSize(width, length)
