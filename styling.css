@@ -68,3 +68,12 @@ QWidget#central_widget {
 QWidget#tab_widget {
     background-color: #e8e8eb;
 }
+
+/* STUDENT DASHBOARD */
+QLabel#dashboard_label {
+    font: bold 30px;
+}
+
+QFrame#dashboard_title_line {
+    background-color: black;
+}

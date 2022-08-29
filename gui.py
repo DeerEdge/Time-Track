@@ -90,7 +90,7 @@ class ui_main_window(object):
         self.app_logo.setScaledContents(True)
         self.app_logo.show()
 
-        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as FIRSTNAME LASTNAME",
+        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy",
                                               200, 10, 600, 50)
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
@@ -109,6 +109,12 @@ class ui_main_window(object):
             self.tab_widget.addTab(self.points_tab, "Points")
             self.tab_widget.addTab(self.profile_tab, "My Student Profile")
 
+            self.dashboard_widget = QtWidgets.QWidget(self.dashboard_tab)
+            self.dashboard_label = self.create_QLabel("dashboard_widget", "dashboard_label", "Dashboard",
+                                              20, 20, 600, 50)
+            self.dashboard_title_line = self.create_QFrame("dashboard_widget", "dashboard_title_line", "HLine",
+                                                         10, 65, 600, 6)
+
         self.tab_widget.show()
         main_window.setCentralWidget(self.central_widget)
 
@@ -120,6 +126,8 @@ class ui_main_window(object):
             self.QLabel = QtWidgets.QLabel(self.login_widget_container)
         elif container == "central_widget":
             self.QLabel = QtWidgets.QLabel(self.central_widget)
+        elif container == "dashboard_widget":
+            self.QLabel = QtWidgets.QLabel(self.dashboard_widget)
         self.QLabel.setObjectName(object_name)
         self.QLabel.setText(text)
         # Geometry of QLabel is specified by the passed function parameters
@@ -139,6 +147,8 @@ class ui_main_window(object):
     def create_QFrame(self, container, object_name, orientation, x_coordinate, y_coordinate, width, length):
         if container == "login_widget_container":
             self.QFrame = QtWidgets.QFrame(self.login_widget_container)
+        elif container == "dashboard_widget":
+            self.QFrame = QtWidgets.QFrame(self.dashboard_widget)
         self.QFrame.setObjectName(object_name)
         self.QFrame.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
         if orientation == "VLine":
