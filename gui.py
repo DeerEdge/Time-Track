@@ -120,7 +120,7 @@ class ui_main_window(object):
             self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
             self.calender.setGeometry (20, 50, 350, 350)
             self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 50, 400, 350)
-            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 425, 700, 250)
+            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 425, 780, 200)
 
         self.tab_widget.show()
         main_window.setCentralWidget(self.central_widget)
