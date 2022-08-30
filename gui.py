@@ -116,11 +116,26 @@ class ui_main_window(object):
                                                          40,100,300,50)
             self.dashboard_title_line = self.create_QFrame("dashboard_widget", "dashboard_title_line", "HLine",
                                                          10, 65, 600, 6)
-
+            # upcomming events page
             self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
             self.calender.setGeometry (20, 50, 350, 350)
             self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 50, 400, 350)
             self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 425, 780, 200)
+
+            # points page
+            self.personal_points = self.create_QLineEdit("points_tab", "personal_points", 20, 50, 300, 300)
+            self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 50, 450, 300)
+
+            #self.tab_point_widget = QTabWidget()
+            #self.tab_point_widget.setObjectName("tab_widget")
+            #self.tab_point_widget.resize(500, 650)
+            #self.tab_point_widget.move(100, 200)
+
+            #self.incompleted_events_tab = QtWidgets.QWidget()
+            #self.prevous_events_tab = QtWidgets.QWidget()
+            #self.tab_point_widget.addTab(self.incompleted_events_tab, "Incompleted Events")
+            #self.tab_point_widget.addTab(self.prevous_events_tab, "Prevous Events")
+
 
         self.tab_widget.show()
         main_window.setCentralWidget(self.central_widget)
@@ -147,7 +162,12 @@ class ui_main_window(object):
             self.QLineEdit = QtWidgets.QLineEdit(self.login_widget_container)
         elif container == "upcoming_events_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
+        elif container == "points_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.points_tab)
+        elif container == "upcoming_events_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
         self.QLineEdit.setObjectName(object_name)
+
         # Geometry of QLineEdit is specified by the passed function parameters
         self.QLineEdit.setFixedSize(width, length)
         self.QLineEdit.move(x_coordinate, y_coordinate)
