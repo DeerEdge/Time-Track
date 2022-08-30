@@ -77,3 +77,27 @@ QLabel#dashboard_label {
 QFrame#dashboard_title_line {
     background-color: black;
 }
+
+QLabel#upcoming_events_label {
+    font: bold 30px;
+}
+
+QFrame#upcoming_events_title_line {
+    background-color: black;
+}
+
+QLabel#points_label {
+    font: bold 30px;
+}
+
+QFrame#points_title_line {
+    background-color: black;
+}
+
+QLabel#student_profile_label {
+    font: bold 30px;
+}
+
+QFrame#student_profile_title_line {
+    background-color: black;
+}
