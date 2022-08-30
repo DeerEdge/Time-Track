@@ -132,7 +132,7 @@ class ui_main_window(object):
                                                    "Profile",
                                                    20, 20, 600, 50)
             #where tf did it go
-            self.student_profile_title_line = self.create_QFrame("student_profile", "student_profile_title_line",
+            self.student_profile_title_line = self.create_QFrame("student_profile_widget", "student_profile_title_line",
                                                         "HLine",
                                                         10, 65, 600, 6)
 
@@ -153,7 +153,7 @@ class ui_main_window(object):
             self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 80, 450, 300)
 
             # profile page
-            self.profile_data = self.create_QLineEdit("profile_tab", "profile_data", 20, 80, 300, 300)
+            self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data", 20, 80, 300, 300)
 
             # self.incompeted_tasks_tab = QtWidgets.QTabWidget(self.points_tab)
             # self.incompeted_tasks_tab.addTab(self.points_tab, self.incompleted_tasks_tab, "hello")
