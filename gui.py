@@ -120,12 +120,12 @@ class ui_main_window(object):
                                                          10, 65, 600, 6)
             # upcomming events page
             #Title
-            self.upcoming_events_label = self.create_QLabel("upcoming_events_widget", "upcoming_events_label",
-                                                            "Upcoming",
-                                                            20, 20, 600, 50)
-            self.upcoming_events_title_line = self.create_QFrame("upcoming_events_widget", "upcoming_events_title_line",
-                                                                 "HLine",
-                                                                 10, 65, 600, 6)
+            # self.upcoming_events_label = self.create_QLabel("upcoming_events_widget", "upcoming_events_label",
+            #                                                 "Upcoming",
+            #                                                 20, 20, 600, 50)
+            # self.upcoming_events_title_line = self.create_QFrame("upcoming_events_widget", "upcoming_events_title_line",
+            #                                                      "HLine",
+            #                                                      10, 65, 600, 6)
 
             #body
             self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
@@ -136,7 +136,10 @@ class ui_main_window(object):
             # points page
             self.personal_points = self.create_QLineEdit("points_tab", "personal_points", 20, 50, 300, 300)
             self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 50, 450, 300)
+            self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 50, 450, 300)
 
+            #profile page
+            self.profile_data = self.create_QLineEdit("profile_tab", "profile_data", 20, 50, 300, 300)
 
 
 
