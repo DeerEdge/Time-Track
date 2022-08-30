@@ -126,6 +126,9 @@ class ui_main_window(object):
             self.personal_points = self.create_QLineEdit("points_tab", "personal_points", 20, 50, 300, 300)
             self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 50, 450, 300)
 
+            self.incompeted_tasks_tab = QtWidgets.QTabWidget(self.points_tab)
+            self.incompeted_tasks_tab.addTab(self.points_tab, self.incompleted_tasks_tab, "hello")
+
             #self.tab_point_widget = QTabWidget()
             #self.tab_point_widget.setObjectName("tab_widget")
             #self.tab_point_widget.resize(500, 650)
