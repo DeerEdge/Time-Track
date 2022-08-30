@@ -115,14 +115,18 @@ class ui_main_window(object):
             self.dashboard_title_line = self.create_QFrame("dashboard_widget", "dashboard_title_line", "HLine",
                                                          10, 65, 600, 6)
 
+            # body
             self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
-            self.calender.setGeometry (20, 50, 350, 350)
+            self.calender.setGeometry(20, 50, 350, 350)
             self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 50, 400, 350)
-            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 425, 780, 250)
+            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 425, 780, 200)
 
+            # points page
+            # self.personal_points = self.create_QLineEdit("points_tab", "personal_points", 20, 50, 300, 300)
+            # self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 50, 450, 300)
 
-            #points_tab
-
+            # profile page
+            # self.profile_data = self.create_QLineEdit("profile_tab", "profile_data", 20, 50, 300, 300)
 
 
 
