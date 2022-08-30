@@ -153,7 +153,12 @@ class ui_main_window(object):
             self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 80, 450, 300)
 
             # profile page
-            self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data", 20, 80, 300, 300)
+            self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data",
+                                                                 20, 80, 300, 300)
+
+            #why is push button not callable noni tf
+            #self.student_profile_settings_button = self.QPushButton("student_profile_tab",
+            #                                        "student_profile_settings_button", 100, 100, 30, 30)
 
             # self.incompeted_tasks_tab = QtWidgets.QTabWidget(self.points_tab)
             # self.incompeted_tasks_tab.addTab(self.points_tab, self.incompleted_tasks_tab, "hello")
@@ -231,6 +236,8 @@ class ui_main_window(object):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QPushButton = QtWidgets.QPushButton(self.login_widget_container)
+        elif container == "student_profile_tab":
+            self.QPushButton = QtWidgets.QPushButton(self.student_profile_tab)
         self.QPushButton.setObjectName(object_name)
         self.QPushButton.setText(text)
         if icon != "None":
