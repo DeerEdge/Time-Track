@@ -120,14 +120,19 @@ class ui_main_window(object):
 
             # Body
             self.dashboard_announcement = self.create_QLineEdit("dashboard_tab", "dashboard_announcement",
-                                                               20, 110, 560, 370)
+                                                               20, 110, 560, 340)
             self.dashboard_announcement_label = self.create_QLabel("dashboard_widget", "dashboard_announcement_label",
                                                                    "  Announcements", 20, 80, 560, 30)
+
+            self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events",
+                                                                   600, 110, 200, 340)
             self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_widget",
                                                                       "dashboard_upcoming_events_label",
                                                                       "  Upcoming Events", 600, 80, 200, 30)
-            self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab" ,"dashboard_upcoming_events",
-                                                                   600, 110, 200, 370)
+            #bro tf
+            self.dashboard_important_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
+                                                                       "  Important Events", 20, 470, 780, 30)
+
             self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_important_events",
                                                                    20, 500, 780, 130)
 
@@ -145,8 +150,14 @@ class ui_main_window(object):
 
             self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
             self.calender.setGeometry(20, 80, 350, 350)
-            self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 80, 400, 350)
-            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 455, 780, 180)
+
+            #self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Events testin",
+            #                                           400, 80, 400, 30)
+            self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 110, 400, 320)
+
+            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 485, 780, 150)
+            #self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming-events_page_label",
+            #                                                     "hello", 20, 455, 780, 180)
 
             # Points Page
 

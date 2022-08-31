@@ -90,6 +90,12 @@ QLabel#dashboard_upcoming_events_label {
     background-color: pink;
 }
 
+QLabel#dashboard_important_events_label {
+    font: 20px;
+    color: purple;
+    background-color: pink;
+}
+
 
 /* Upcoming Events */
 
@@ -99,6 +105,12 @@ QLabel#upcoming_events_label {
 
 QFrame#upcoming_events_title_line {
     background-color: black;
+}
+
+QLabel#day_events_label {
+    font: 20px;
+    color: brown;
+    background-color: cyan;
 }
 
 /* Points */
