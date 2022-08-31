@@ -113,6 +113,12 @@ QLabel#day_events_label {
     background-color: cyan;
 }
 
+QLabel#upcoming_events_page_label {
+    font: 20px;
+    color: cyan;
+    background-color: black;
+}
+
 /* Points */
 
 QLabel#points_label {
@@ -123,6 +129,18 @@ QFrame#points_title_line {
     background-color: black;
 }
 
+QLabel#personal_points_label {
+    font: 20px;
+    color: cyan;
+    background-color: black;
+}
+
+QLabel#points_leaderboard_label {
+    font: 20px;
+    color: darkcyan;
+    background-color: brown;
+}
+
 /* Student Profile */
 
 QLabel#student_profile_label {
@@ -131,4 +149,10 @@ QLabel#student_profile_label {
 
 QFrame#student_profile_title_line {
     background-color: black;
+}
+
+QLabel#student_profile_data_label {
+    font: 20px;
+    color: darkblue;
+    background-color: yellow;
 }
