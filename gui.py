@@ -98,6 +98,7 @@ class ui_main_window(object):
         self.tab_widget.resize(1000, 650)
         self.tab_widget.move(0, 55)
 
+
         if sending_button == "student_login_button":
             self.dashboard_tab = QtWidgets.QWidget()
             self.upcoming_events_tab = QtWidgets.QWidget()
@@ -130,7 +131,7 @@ class ui_main_window(object):
                                                                       "dashboard_upcoming_events_label",
                                                                       "  Upcoming Events", 600, 80, 200, 30)
             #bro tf
-            self.dashboard_important_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
+            self.dashboard_important_events_label = self.create_QLabel("dashboard_widget", "dashboard_important_events_label",
                                                                        "  Important Events", 20, 470, 780, 30)
 
             self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_important_events",
