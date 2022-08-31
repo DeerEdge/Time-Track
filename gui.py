@@ -196,8 +196,8 @@ class ui_main_window(object):
                                                                  "data", 20, 80, 300, 30)
 
             #why is push button not callable noni tf
-            #self.student_profile_settings_button = self.QPushButton("student_profile_tab",
-            #                                        "student_profile_settings_button", "homsexual", "Star", 100, 100, 30, 30)
+            self.student_profile_settings_button = self.create_QPushButton("student_profile_tab",
+                                                   "student_profile_settings_button", "Press me", "None", 100, 100, 100, 100)
 
 
 
