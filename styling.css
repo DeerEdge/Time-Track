@@ -69,7 +69,7 @@ QWidget#tab_widget {
     background-color: #e8e8eb;
 }
 
-/* STUDENT DASHBOARD */
+/* Dashboard */
 QLabel#dashboard_label {
     font: bold 30px;
 }
@@ -77,6 +77,15 @@ QLabel#dashboard_label {
 QFrame#dashboard_title_line {
     background-color: black;
 }
+
+QLabel#dashboard_announcement_label {
+    font: 20px;
+    color: darkcyan;
+    background-color: dimgrey;
+}
+
+
+/* Upcoming Events */
 
 QLabel#upcoming_events_label {
     font: bold 30px;
@@ -86,6 +95,8 @@ QFrame#upcoming_events_title_line {
     background-color: black;
 }
 
+/* Points */
+
 QLabel#points_label {
     font: bold 30px;
 }
@@ -93,6 +104,8 @@ QLabel#points_label {
 QFrame#points_title_line {
     background-color: black;
 }
+
+/* Student Profile */
 
 QLabel#student_profile_label {
     font: bold 30px;

@@ -109,18 +109,48 @@ class ui_main_window(object):
             self.tab_widget.addTab(self.points_tab, "Points")
             self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
 
+            # Dashboard
+
+            # Title
             self.dashboard_widget = QtWidgets.QWidget(self.dashboard_tab)
             self.dashboard_label = self.create_QLabel("dashboard_widget", "dashboard_label", "Dashboard",
                                               20, 20, 600, 50)
             self.dashboard_title_line = self.create_QFrame("dashboard_widget", "dashboard_title_line", "HLine",
                                                          10, 65, 600, 6)
 
+            # Body
+            self.dashboard_announcement = self.create_QLineEdit("dashboard_tab", "dashboard_announcement",
+                                                               20, 110, 560, 370)
+            self.dashboard_announcement_label = self.create_QLabel("dashboard_widget", "dashboard_announcement_label",
+                                                                   "  Announcements", 20, 80, 560, 30)
+            self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_widget",
+                                                                      "dashboard_upcoming_events_announcement_label",
+                                                                      "  Upcoming Events", 600, 80, 200, 30)
+            self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab" ,"dashboard_upcoming_events",
+                                                                   600, 110, 200, 370)
+            self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_important_events",
+                                                                   20, 500, 780, 130)
+
+            # Upcoming Events
+
+            # Title
             self.upcoming_events_label = self.create_QLabel("upcoming_events_widget", "upcoming_events_label",
                                                          "Upcoming Events",
                                                             20, 20, 600, 50)
             self.upcoming_events_title_line = self.create_QFrame("upcoming_events_widget", "upcoming_events_title_line",
                                                                  "HLine",
                                                                  10, 65, 600, 6)
+
+            # Body
+
+            self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
+            self.calender.setGeometry(20, 80, 350, 350)
+            self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 80, 400, 350)
+            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 455, 780, 180)
+
+            # Points Page
+
+            # Title
             self.points_label = self.create_QLabel("points_widget", "points_label",
                                                    "Points",
                                                    20, 20, 600, 50)
@@ -128,6 +158,16 @@ class ui_main_window(object):
                                                         "HLine",
                                                         10, 65, 600, 6)
 
+            #Body
+
+            self.personal_points = self.create_QLineEdit("points_tab", "personal_points", 20, 80, 300, 300)
+            # idk why i have to do pointts leaderboard twice but ok
+            self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 80, 450, 300)
+            self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 80, 450, 300)
+
+            #Student Profile
+
+            # Title
             self.student_profile_label = self.create_QLabel("student_profile_widget", "student_profile_label",
                                                    "Profile",
                                                    20, 20, 600, 50)
@@ -136,23 +176,7 @@ class ui_main_window(object):
                                                         "HLine",
                                                         10, 65, 600, 6)
 
-
-
-            # upcomming events page
-            # Title
-            #body
-            self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
-            self.calender.setGeometry(20, 80, 350, 350)
-            self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", 400, 80, 400, 350)
-            self.upcoming_events = self.create_QLineEdit("upcoming_events_tab", "upcoming_events", 20, 455, 780, 180)
-
-            # points page
-            self.personal_points = self.create_QLineEdit("points_tab", "personal_points", 20, 80, 300, 300)
-            #idk why i have to do pointts leaderboard twice but ok
-            self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 80, 450, 300)
-            self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", 350, 80, 450, 300)
-
-            # profile page
+            # Body
             self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data",
                                                                  20, 80, 300, 300)
 
@@ -160,18 +184,7 @@ class ui_main_window(object):
             #self.student_profile_settings_button = self.QPushButton("student_profile_tab",
             #                                        "student_profile_settings_button", 100, 100, 30, 30)
 
-            # self.incompeted_tasks_tab = QtWidgets.QTabWidget(self.points_tab)
-            # self.incompeted_tasks_tab.addTab(self.points_tab, self.incompleted_tasks_tab, "hello")
-            #
-            # self.tab_point_widget = QTabWidget()
-            # self.tab_point_widget.setObjectName("tab_widget")
-            # self.tab_point_widget.resize(500, 650)
-            # self.tab_point_widget.move(100, 200)
 
-            # self.incompleted_events_tab = QtWidgets.QWidget()
-            # self.prevous_events_tab = QtWidgets.QWidget()
-            # self.tab_point_widget.addTab(self.incompleted_events_tab, "Incompleted Events")
-            # self.tab_point_widget.addTab(self.prevous_events_tab, "Prevous Events")
 
         self.tab_widget.show()
         main_window.setCentralWidget(self.central_widget)
@@ -202,6 +215,8 @@ class ui_main_window(object):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QLineEdit = QtWidgets.QLineEdit(self.login_widget_container)
+        elif container == "dashboard_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.dashboard_tab)
         elif container == "upcoming_events_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
         elif container == "points_tab":
