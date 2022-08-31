@@ -84,6 +84,12 @@ QLabel#dashboard_announcement_label {
     background-color: dimgrey;
 }
 
+QLabel#dashboard_upcoming_events_label {
+    font: 20px;
+    color: darkblue;
+    background-color: pink;
+}
+
 
 /* Upcoming Events */
 

@@ -124,7 +124,7 @@ class ui_main_window(object):
             self.dashboard_announcement_label = self.create_QLabel("dashboard_widget", "dashboard_announcement_label",
                                                                    "  Announcements", 20, 80, 560, 30)
             self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_widget",
-                                                                      "dashboard_upcoming_events_announcement_label",
+                                                                      "dashboard_upcoming_events_label",
                                                                       "  Upcoming Events", 600, 80, 200, 30)
             self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab" ,"dashboard_upcoming_events",
                                                                    600, 110, 200, 370)
