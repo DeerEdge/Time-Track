@@ -73,6 +73,7 @@ class ui_main_window(object):
                                                                "Forgot password?", "None", 465, 255, 140, 30)
         self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None",
                                                             480, 290, 240, 30)
+        self.administrator_login_button.clicked.connect(self.setup_home_page)
 
     def setup_home_page(self):
         sending_button = self.login_widget_container.sender().objectName()
@@ -198,7 +199,19 @@ class ui_main_window(object):
             #Button
             self.student_profile_settings_button = self.create_QPushButton("student_profile_tab",
                                                    "student_profile_settings_button", "Press me", "None", 100, 100, 100, 100)
+        if sending_button == "administrator_login_button":
+            #Administrator Login
+            self.admin_dashboard_tab = QtWidgets.QWidget()
+            self.admin_upcoming_events_tab = QtWidgets.QWidget()
+            self.admin_statistics_tab = QtWidgets.QWidget()
+            self.admin_student_view_tab = QtWidgets.QWidget()
 
+            self.tab_widget.addTab(self.admin_dashboard_tab, "Dashboard")
+            self.tab_widget.addTab(self.admin_upcoming_events_tab, "Events")
+            self.tab_widget.addTab(self.admin_statistics_tab, "Statistics")
+            self.tab_widget.addTab(self.admin_student_view_tab, "Student View")
+
+            # self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20, 20, 600, 30)
 
 
         self.tab_widget.show()
