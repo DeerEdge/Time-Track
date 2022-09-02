@@ -93,16 +93,16 @@ class ui_main_window(object):
         self.app_logo.setScaledContents(True)
         self.app_logo.show()
 
-        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy",
-                                              200, 10, 600, 50)
-
-        self.tab_widget = VerticalTabWidget(self.central_widget)
-        self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1000, 650)
-        self.tab_widget.move(0, 55)
-
 
         if sending_button == "student_login_button":
+            self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy",
+                                                  200, 10, 600, 50)
+
+            self.tab_widget = VerticalTabWidget(self.central_widget)
+            self.tab_widget.setObjectName("tab_widget")
+            self.tab_widget.resize(1000, 650)
+            self.tab_widget.move(0, 55)
+
             self.dashboard_tab = QtWidgets.QWidget()
             self.upcoming_events_tab = QtWidgets.QWidget()
             self.points_tab = QtWidgets.QWidget()
@@ -200,18 +200,45 @@ class ui_main_window(object):
             self.student_profile_settings_button = self.create_QPushButton("student_profile_tab",
                                                    "student_profile_settings_button", "Press me", "None", 100, 100, 100, 100)
         if sending_button == "administrator_login_button":
+            self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath",
+                                                  200, 10, 600, 50)
+
+            self.tab_widget = VerticalTabWidget(self.central_widget)
+            self.tab_widget.setObjectName("tab_widget")
+            self.tab_widget.resize(1000, 650)
+            self.tab_widget.move(0, 55)
+
             #Administrator Login
             self.admin_dashboard_tab = QtWidgets.QWidget()
-            self.admin_upcoming_events_tab = QtWidgets.QWidget()
+            self.admin_events_tab = QtWidgets.QWidget()
             self.admin_statistics_tab = QtWidgets.QWidget()
             self.admin_student_view_tab = QtWidgets.QWidget()
 
             self.tab_widget.addTab(self.admin_dashboard_tab, "Dashboard")
-            self.tab_widget.addTab(self.admin_upcoming_events_tab, "Events")
+            self.tab_widget.addTab(self.admin_events_tab, "Events")
             self.tab_widget.addTab(self.admin_statistics_tab, "Statistics")
             self.tab_widget.addTab(self.admin_student_view_tab, "Student View")
 
-            # self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20, 20, 600, 30)
+            #too lasy to type them in
+            adt = "admin_dashboard_tab"
+            aet = "admin_events_tab"
+            ast = "admin_statistics_tab"
+            asvt = "admin_student_view_tab"
+
+            self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20, 20, 600, 50)
+            self.admin_dashboard_line = self.create_QFrame(adt, "admin_dashboard_line", "HLine", 10, 65, 600, 6)
+
+            self.admin_events_label = self.create_QLabel(aet, "admin_events_label", "Events", 20, 20, 600, 50)
+            self.admin_events_line = self.create_QFrame(aet, "admin_events_line", "HLine", 10, 65, 600, 6)
+            self.admin_calendar = self.create_Calendar(aet, 20, 80, 350, 350)
+            self.admin_current_events_text = self.create_QLabel(aet, "admin_events_text", "Current Events", 400, 80, 400, 30)
+            self.admin_current_events = self.create_QLineEdit(aet, "admin_current_events", 400, 110, 400, 320,)
+
+            self.admin_statistics_label = self.create_QLabel(ast, "admin_statistics_label", "Statistics", 20, 20, 600, 50)
+            self.admin_statistics_line = self.create_QFrame(ast, "admin_statistics_line", "HLine", 10, 65, 600, 6)
+
+            self.admin_student_view_label = self.create_QLabel(asvt, "admin_student_view_label", "Student View", 20, 20, 600, 50)
+            self.admin_student_view_line = self.create_QFrame(asvt, "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
 
         self.tab_widget.show()
@@ -220,10 +247,12 @@ class ui_main_window(object):
     def create_Calendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
             self.calender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
+        elif container == "admin_events_tab":
+            self.calender = QtWidgets.QCalendarWidget(self.admin_events_tab)
         self.calender.setGeometry(x_coordinate, y_coordinate, width, length)
 
 
-    def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length):
+    def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length,):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QLabel = QtWidgets.QLabel(self.login_widget_container)
@@ -237,25 +266,49 @@ class ui_main_window(object):
             self.QLabel = QtWidgets.QLabel(self.points_tab)
         elif container == "student_profile_tab":
             self.QLabel = QtWidgets.QLabel(self.student_profile_tab)
+        #Administrator
+        elif container == "admin_dashboard_tab":
+            self.QLabel = QtWidgets.QLabel(self.admin_dashboard_tab)
+        elif container == "admin_events_tab":
+            self.QLabel = QtWidgets.QLabel(self.admin_events_tab)
+        elif container == "admin_statistics_tab":
+            self.QLabel = QtWidgets.QLabel(self.admin_statistics_tab)
+        elif container == "admin_student_view_tab":
+            self.QLabel = QtWidgets.QLabel(self.admin_student_view_tab)
+
         self.QLabel.setObjectName(object_name)
         self.QLabel.setText(text)
         # Geometry of QLabel is specified by the passed function parameters
         self.QLabel.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
         return self.QLabel
 
-    def create_QLineEdit(self, container, object_name, x_coordinate, y_coordinate, width, length):
+    def create_QLineEdit(self, container, object_name, x_coordinate, y_coordinate, width, length,):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QLineEdit = QtWidgets.QLineEdit(self.login_widget_container)
         elif container == "dashboard_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.dashboard_tab)
+        elif container == "admin_dashboard_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.admin_dashboard_tab)
         elif container == "upcoming_events_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
         elif container == "points_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.points_tab)
         elif container == "student_profile_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.student_profile_tab)
+
+            # Administrator
+        elif container == "admin_dashboard_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.admin_dashboard_tab)
+        elif container == "admin_events_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.admin_events_tab)
+        elif container == "admin_statistics_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.admin_statistics_tab)
+        elif container == "admin_student_view_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.admin_student_view_tab)
         self.QLineEdit.setObjectName(object_name)
+        #user cannot type in the boxes
+        self.QLineEdit.setReadOnly(True)
         # Geometry of QLineEdit is specified by the passed function parameters
         self.QLineEdit.setFixedSize(width, length)
         self.QLineEdit.move(x_coordinate, y_coordinate)
@@ -266,12 +319,23 @@ class ui_main_window(object):
             self.QFrame = QtWidgets.QFrame(self.login_widget_container)
         elif container == "dashboard_tab":
             self.QFrame = QtWidgets.QFrame(self.dashboard_tab)
+        elif container == "admin_dashboard_tab":
+            self.QFrame = QtWidgets.QFrame(self.admin_dashboard_tab)
         elif container == "upcoming_events_tab":
             self.QFrame = QtWidgets.QFrame(self.upcoming_events_tab)
         elif container == "points_tab":
             self.QFrame = QtWidgets.QFrame(self.points_tab)
         elif container == "student_profile_tab":
             self.QFrame = QtWidgets.QFrame(self.student_profile_tab)
+            # Administrator
+        elif container == "admin_dashboard_tab":
+            self.QFrame = QtWidgets.QFrame(self.admin_dashboard_tab)
+        elif container == "admin_events_tab":
+            self.QFrame = QtWidgets.QFrame(self.admin_events_tab)
+        elif container == "admin_statistics_tab":
+            self.QFrame = QtWidgets.QFrame(self.admin_statistics_tab)
+        elif container == "admin_student_view_tab":
+            self.QFrame = QtWidgets.QFrame(self.admin_student_view_tab)
         self.QFrame.setObjectName(object_name)
         self.QFrame.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
         if orientation == "VLine":
