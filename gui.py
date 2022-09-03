@@ -152,9 +152,6 @@ class ui_main_window(object):
             # Body
 
             self.calender = self.create_Calendar("upcoming_events_tab", 20, 80, 350, 350)
-            self.newcal = QtWidgets.QCalendarWidget(self.student_profile_tab)
-            self.newcal.selectionChanged.connect(self.clickMe)
-            self.newcal.move(210,200)
 
             self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Events testing",
                                                        400, 80, 400, 30)
@@ -246,6 +243,7 @@ class ui_main_window(object):
             # self.admin_calendar.clicked.connect(lambda: self.admin_current_events.setText(text + str(self.count)))
             self.admin_current_events_text = self.create_QLabel(aet, "admin_events_text", "Current Events", 400, 80, 400, 30)
             self.admin_current_events = self.create_QLineEdit(aet, "admin_current_events", True, 400, 110, 400, 320,)
+            self.admin_current_events.setText("Testing")
 
 
             self.admin_statistics_label = self.create_QLabel(ast, "admin_statistics_label", "Statistics", 20, 20, 600, 50)
