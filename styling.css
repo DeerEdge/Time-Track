@@ -62,7 +62,7 @@ QLabel#intro_label {
 }
 
 QWidget#central_widget {
-    background-color: #CD0000;
+    background-color: rgb(214, 19, 19);
 }
 
 QWidget#tab_widget {
@@ -80,20 +80,23 @@ QFrame#dashboard_title_line {
 
 QLabel#dashboard_announcement_label {
     font: 20px;
-    color: darkcyan;
-    background-color: dimgrey;
+    color: black;
+    background-color: rgb(161, 225, 237);
+    border: 1px solid darkgrey;
 }
 
 QLabel#dashboard_upcoming_events_label {
     font: 20px;
-    color: darkblue;
-    background-color: pink;
+    color: black;
+    background-color: skyblue;
+    border: 1px solid darkgrey;
 }
 
 QLabel#dashboard_important_events_label {
     font: 20px;
-    color: purple;
-    background-color: pink;
+    color: black;
+    background-color: skyblue;
+    border: 1px solid darkgrey;
 }
 
 
@@ -109,14 +112,16 @@ QFrame#upcoming_events_title_line {
 
 QLabel#day_events_label {
     font: 20px;
-    color: brown;
-    background-color: cyan;
+    color: black;
+    background-color: lightgrey;
+    border: 1px solid darkgrey;
 }
 
 QLabel#upcoming_events_page_label {
     font: 20px;
-    color: cyan;
-    background-color: black;
+    color: black;
+    background-color: snow;
+    border: 1px solid darkgrey;
 }
 
 /* Points */
@@ -131,14 +136,25 @@ QFrame#points_title_line {
 
 QLabel#personal_points_label {
     font: 20px;
-    color: cyan;
-    background-color: black;
+    color: black;
+    background-color: thistle;
+    border: 1px solid darkgrey;
 }
 
 QLabel#points_leaderboard_label {
     font: 20px;
-    color: darkcyan;
-    background-color: brown;
+    color: black;
+    background-color: whitesmoke;
+    border: 1px solid darkgrey;
+}
+
+/* Rewards */
+
+QLabel#rewards_label {
+    font: bold 30px;
+}
+QFrame#rewards_title_line {
+    background-color:black;
 }
 
 /* Student Profile */
@@ -153,8 +169,9 @@ QFrame#student_profile_title_line {
 
 QLabel#student_profile_data_label {
     font: 20px;
-    color: darkblue;
-    background-color: yellow;
+    color: black;
+    background-color: lightseagreen;
+    border: 1px solid darkgrey;
 }
 
  /* Administrator login */

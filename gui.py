@@ -115,11 +115,13 @@ class ui_main_window(object):
         self.dashboard_tab = QtWidgets.QWidget()
         self.upcoming_events_tab = QtWidgets.QWidget()
         self.points_tab = QtWidgets.QWidget()
+        self.rewards_tab = QtWidgets.QWidget()
         self.student_profile_tab = QtWidgets.QWidget()
 
         self.tab_widget.addTab(self.dashboard_tab, "Dashboard")
         self.tab_widget.addTab(self.upcoming_events_tab, "Upcoming Events")
         self.tab_widget.addTab(self.points_tab, "Points")
+        self.tab_widget.addTab(self.rewards_tab, "Rewards")
         self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
 
         # Dashboard
@@ -136,16 +138,19 @@ class ui_main_window(object):
         self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
                                                                "  Announcements", 20, 80, 560, 30)
 
-        self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events", True,
+        self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events", True,
                                                                600, 110, 200, 340)
-        self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_tab",
+        self.dashboard_important_events_label = self.create_QLabel("dashboard_tab",
                                                                   "dashboard_upcoming_events_label",
-                                                                  "  Upcoming Events", 600, 80, 200, 30)
-        self.dashboard_important_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
-                                                                   "  Important Events", 20, 470, 780, 30)
+                                                                  "  Important Events", 600, 80, 200, 30)
+        self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
+                                                                   "  Upcoming Events", 20, 470, 780, 30)
 
-        self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_important_events", True,
+        self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab", "dashboard_important_events", True,
                                                                 20, 500, 780, 130)
+
+        self.dashboard_upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20,
+                                                               485, 780, 150)
 
         # Upcoming Events
 
@@ -158,18 +163,24 @@ class ui_main_window(object):
 
         # Body
 
-        self.calender = self.create_QCalendar("upcoming_events_tab", 20, 80, 350, 350)
+        self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 350, 350)
 
-        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Events testing",
+
+        self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
+
+        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event",
                                                    400, 80, 400, 30)
         self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
+        current_day = self.student_calendar.selectedDate().toString()
+        self.day_events.setText("Events on: " + current_day[4:] + ":")
+        self.day_events.setAlignment(Qt.AlignTop)
 
         self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20, 485, 780, 150)
         self.upcoming_events = self.upcoming_events_objects[0]
         self.upcoming_events_layout = self.upcoming_events_objects[1]
         self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
         self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_page_label",
-                                                             "  Upcoming Events thing", 20, 455, 160, 30)
+                                                             "  Upcoming Events", 20, 455, 780, 30)
 
         # Example of upcoming events
         for i in range(6):
@@ -199,10 +210,24 @@ class ui_main_window(object):
                                                            350, 80, 450, 30)
         self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", True, 350, 110, 450, 300)
 
+        # Rewards Tab
+        # Title
+
+        self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards",
+                                                20, 20, 600, 50)
+        self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine",
+                                                     10, 65, 600, 6)
+
+        # Body
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label",
+                                                             "  Test", 20, 80, 300, 30)
+        self.rewards_my_points = self.create_QLineEdit("rewards_tab", "rewards_my_points", True,
+                                                          20, 110, 300, 300)
+
         # Student Profile
         # Title
         self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label",
-                                                        "  Profile",
+                                                        "My Profile",
                                                         20, 20, 600, 50)
         self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line",
                                                              "HLine",
@@ -240,36 +265,32 @@ class ui_main_window(object):
         self.tab_widget.addTab(self.admin_statistics_tab, "Statistics")
         self.tab_widget.addTab(self.admin_student_view_tab, "Student View")
 
-        # too lasy to type them in
-        adt = "admin_dashboard_tab"
-        aet = "admin_events_tab"
-        ast = "admin_statistics_tab"
-        asvt = "admin_student_view_tab"
-        text = "Calendar clicked received"
         self.count = 0
 
         self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20,
                                                         20, 600, 50)
-        self.admin_dashboard_line = self.create_QFrame(adt, "admin_dashboard_line", "HLine", 10, 65, 600, 6)
+        self.admin_dashboard_line = self.create_QFrame("admin_dashboard_tab", "admin_dashboard_line", "HLine", 10, 65, 600, 6)
 
-        self.admin_events_label = self.create_QLabel(aet, "admin_events_label", "Events", 20, 20, 600, 50)
-        self.admin_events_line = self.create_QFrame(aet, "admin_events_line", "HLine", 10, 65, 600, 6)
-        self.admin_calendar = self.create_QCalendar(aet, 20, 80, 350, 350)
+        self.admin_events_label = self.create_QLabel("admin_events_tab", "admin_events_label", "Events", 20, 20, 600, 50)
+        self.admin_events_line = self.create_QFrame("admin_events_tab", "admin_events_line", "HLine", 10, 65, 600, 6)
+        self.admin_calendar = self.create_QCalendar("admin_events_tab", 20, 80, 350, 350)
         self.admin_calendar.selectionChanged.connect(self.admin_events_calendar)
 
         # setting selected date
         # self.admin_calendar.clicked.connect(lambda: self.admin_current_events.setText(text + str(self.count)))
-        self.admin_events_title = self.create_QLabel(aet, "admin_events_text", "Current Events", 400, 80, 400,
+        self.admin_events_title = self.create_QLabel("admin_events_tab", "admin_events_text", "Current Events", 400, 80, 400,
                                                             30)
-        self.admin_current_events = self.create_QLineEdit(aet, "admin_current_events", True, 400, 110, 400, 320, )
-        self.admin_current_events.setText("Testing")
+        self.admin_current_events = self.create_QLineEdit("admin_events_tab", "admin_current_events", True, 400, 110, 400, 320, )
+        current_day = self.admin_calendar.selectedDate().toString()
+        self.admin_current_events.setText("Events on " + current_day[4:] + ":")
+        self.admin_current_events.setAlignment(Qt.AlignTop)
 
-        self.admin_statistics_label = self.create_QLabel(ast, "admin_statistics_label", "Statistics", 20, 20, 600, 50)
-        self.admin_statistics_line = self.create_QFrame(ast, "admin_statistics_line", "HLine", 10, 65, 600, 6)
+        self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics", 20, 20, 600, 50)
+        self.admin_statistics_line = self.create_QFrame("admin_statistics_tab", "admin_statistics_line", "HLine", 10, 65, 600, 6)
 
-        self.admin_student_view_label = self.create_QLabel(asvt, "admin_student_view_label", "Student View", 20, 20,
+        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label", "Student View", 20, 20,
                                                            600, 50)
-        self.admin_student_view_line = self.create_QFrame(asvt, "admin_student_view_line", "HLine", 10, 65, 600, 6)
+        self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
         self.tab_widget.show()
 
@@ -279,7 +300,13 @@ class ui_main_window(object):
 
     def admin_events_calendar(self):
         selected_date = self.admin_events_tab.sender().selectedDate().toString()
-        self.admin_events_title.setText("Events on " + selected_date[4:] + ":")
+        self.admin_current_events.setText("Events on " + selected_date[4:] + ":")
+        self.admin_current_events.setAlignment(Qt.AlignTop)
+
+    def student_upcoming_events_calendar(self):
+        selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
+        self.day_events.setText("Events on " + selected_date[4:] + ":")
+        self.day_events.setAlignment(Qt.AlignTop)
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
@@ -301,6 +328,8 @@ class ui_main_window(object):
             self.QLabel = QtWidgets.QLabel(self.upcoming_events_tab)
         elif container == "points_tab":
             self.QLabel = QtWidgets.QLabel(self.points_tab)
+        elif container == "rewards_tab":
+            self.QLabel = QtWidgets.QLabel(self.rewards_tab)
         elif container == "student_profile_tab":
             self.QLabel = QtWidgets.QLabel(self.student_profile_tab)
         elif container == "event":
@@ -333,6 +362,8 @@ class ui_main_window(object):
             self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
         elif container == "points_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.points_tab)
+        elif container == "rewards_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.rewards_tab)
         elif container == "student_profile_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.student_profile_tab)
 
@@ -377,6 +408,8 @@ class ui_main_window(object):
             self.QFrame = QtWidgets.QFrame(self.upcoming_events_tab)
         elif container == "points_tab":
             self.QFrame = QtWidgets.QFrame(self.points_tab)
+        elif container == "rewards_tab":
+            self.QFrame = QtWidgets.QFrame(self.rewards_tab)
         elif container == "student_profile_tab":
             self.QFrame = QtWidgets.QFrame(self.student_profile_tab)
             # Administrator
