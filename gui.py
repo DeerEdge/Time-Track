@@ -82,7 +82,7 @@ class ui_main_window(object):
         self.login_widget_container.hide()
         self.login_screen_background.clear()
 
-        main_window.setFixedSize(1000, 700)
+        main_window.setFixedSize(1000, 800)
         self.central_widget = QtWidgets.QWidget(main_window)
         self.central_widget.setObjectName("central_widget")
         self.central_widget.resize(1000, 700)
@@ -109,7 +109,7 @@ class ui_main_window(object):
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1000, 650)
+        self.tab_widget.resize(1000, 710)
         self.tab_widget.move(0, 55)
 
         self.dashboard_tab = QtWidgets.QWidget()
@@ -175,7 +175,7 @@ class ui_main_window(object):
         self.day_events.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
 
-        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20, 485, 780, 150)
+        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20, 485, 780, 200)
         self.upcoming_events = self.upcoming_events_objects[0]
         self.upcoming_events_layout = self.upcoming_events_objects[1]
         self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
