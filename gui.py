@@ -3,11 +3,13 @@ from PyQt5.QtCore import Qt, QDateTime, pyqtSignal, QDate
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+# folium v0.12.1 - Used to display geographical data
+import folium
+import io
 
 
 # A class is created that holds all functions of the program
-
-
 class ui_main_window(object):
     # This function setups up a basic window where widgets can be added
     def setup_window(self, main_window):
@@ -114,12 +116,14 @@ class ui_main_window(object):
 
         self.dashboard_tab = QtWidgets.QWidget()
         self.upcoming_events_tab = QtWidgets.QWidget()
+        self.maps_tab = QtWidgets.QWidget()
         self.points_tab = QtWidgets.QWidget()
         self.rewards_tab = QtWidgets.QWidget()
         self.student_profile_tab = QtWidgets.QWidget()
 
         self.tab_widget.addTab(self.dashboard_tab, "Dashboard")
         self.tab_widget.addTab(self.upcoming_events_tab, "Upcoming Events")
+        self.tab_widget.addTab(self.maps_tab, "Maps")
         self.tab_widget.addTab(self.points_tab, "Points")
         self.tab_widget.addTab(self.rewards_tab, "Rewards")
         self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
@@ -215,7 +219,33 @@ class ui_main_window(object):
         self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
         self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
-        # Points Page
+        self.map_container = QtWidgets.QGroupBox(self.maps_tab)
+        self.map_container.setGeometry(QtCore.QRect(20, 60, 600, 600))
+        self.map_container.setEnabled(True)
+        self.map_container.setFlat(True)
+
+        # The created QGroupBox container"s layout is set to hold the web widget
+        self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
+        # Maps Page
+        coordinate = (40.617847198627, -111.86923371648)
+        map = folium.Map(zoom_start=15, location=coordinate)
+        folium.Marker(
+            location=coordinate,
+            icon=folium.Icon(color="red", icon='circle', prefix='fa'),
+        ).add_to(map)
+
+        folium.Marker(
+            location=coordinate,
+            icon=folium.Icon(color="darkgreen", icon='user'),
+        ).add_to(map)
+        # Save map data to data object
+        data = io.BytesIO()
+        map.save(data, close_file=False)
+        webView = QWebEngineView()
+        # Sets the web widget to the map data
+        webView.setHtml(data.getvalue().decode())
+        # Adds the map data to the QGroupBox layout
+        self.map_frame.addWidget(webView)
 
         # Title
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
@@ -471,7 +501,7 @@ class ui_main_window(object):
 
 class TabBar(QTabBar):
     def tabSizeHint(self, index):
-        self.setGeometry(0, 120, 180, 300)
+        self.setGeometry(0, 120, 180, 380)
         s = QTabBar.tabSizeHint(self, index)
         s.transpose()
         return s
