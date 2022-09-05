@@ -85,7 +85,7 @@ class ui_main_window(object):
         main_window.setFixedSize(1000, 800)
         self.central_widget = QtWidgets.QWidget(main_window)
         self.central_widget.setObjectName("central_widget")
-        self.central_widget.resize(1000, 700)
+        self.central_widget.resize(1000, 800)
 
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
@@ -131,26 +131,48 @@ class ui_main_window(object):
                                                   20, 20, 600, 50)
         self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine",
                                                        10, 65, 600, 6)
-
-        # Body
-        self.dashboard_announcement = self.create_QLineEdit("dashboard_tab", "dashboard_announcement", True,
-                                                            20, 110, 560, 340)
         self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
                                                                "  Announcements", 20, 80, 560, 30)
+        self.dashboard_announcement_objects = self.create_QScrollArea("dashboard_tab",
+                                                                         "dashboard_announcements_QScrollArea", 20,
+                                                                         110, 560, 340)
+        self.dashboard_announcement_events = self.dashboard_announcement_objects[0]
+        self.dashboard_announcement_events_layout = self.dashboard_announcement_objects[1]
+        self.dashboard_announcement_events_scrollArea = self.dashboard_announcement_objects[2]
+
+        for i in range(6):
+            self.event_object = QtWidgets.QGroupBox(self.dashboard_announcement_events)
+            self.event_object.setFixedSize(750, 50)
+            self.event_object.setLayout(QtWidgets.QVBoxLayout())
+            self.label = self.create_QLabel("event", "test", "   Event Name",
+                                            0, 0, 100, 30)
+            self.dashboard_announcement_events_layout.addWidget(self.event_object)
+        self.dashboard_announcement_events_scrollArea.setWidget(self.dashboard_announcement_events)
+        self.dashboard_announcement_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events", True,
                                                                600, 110, 200, 340)
         self.dashboard_important_events_label = self.create_QLabel("dashboard_tab",
                                                                   "dashboard_upcoming_events_label",
                                                                   "  Important Events", 600, 80, 200, 30)
+
+        self.dashboard_upcoming_events_objects = self.create_QScrollArea("dashboard_tab", "dashboard_upcoming_events_QScrollArea", 20,
+                                                               485, 780, 200)
+        self.dashboard_upcoming_events = self.dashboard_upcoming_events_objects[0]
+        self.dashboard_upcoming_events_layout = self.dashboard_upcoming_events_objects[1]
+        self.dashboard_upcoming_events_scrollArea = self.dashboard_upcoming_events_objects[2]
         self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
-                                                                   "  Upcoming Events", 20, 470, 780, 30)
+                                                                  "  Upcoming Events", 20, 470, 780, 30)
 
-        self.dashboard_upcoming_events = self.create_QLineEdit("dashboard_tab", "dashboard_important_events", True,
-                                                                20, 500, 780, 130)
-
-        self.dashboard_upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20,
-                                                               485, 780, 150)
+        for i in range(6):
+            self.event_object = QtWidgets.QGroupBox(self.dashboard_upcoming_events)
+            self.event_object.setFixedSize(750, 50)
+            self.event_object.setLayout(QtWidgets.QVBoxLayout())
+            self.label = self.create_QLabel("event", "test", "   Event Name",
+                                                   0, 0, 100, 30)
+            self.dashboard_upcoming_events_layout.addWidget(self.event_object)
+        self.dashboard_upcoming_events_scrollArea.setWidget(self.dashboard_upcoming_events)
+        self.dashboard_upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         # Upcoming Events
 
@@ -238,9 +260,9 @@ class ui_main_window(object):
         self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label",
                                                              "  data", 20, 80, 300, 30)
         # Button
-        self.student_profile_settings_button = self.create_QPushButton("student_profile_tab",
+        self.student_profile_settings_button = self.create_QPushButton("main_window",
                                                                        "student_profile_settings_button", "Press me",
-                                                                       "None", 100, 100, 100, 100)
+                                                                       "None", 700, 10, 100, 40)
         self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
 
         self.tab_widget.show()
@@ -388,6 +410,8 @@ class ui_main_window(object):
         self.scrollArea_object_container = QtWidgets.QWidget()
         if container == "upcoming_events_tab":
             self.QScrollArea = QtWidgets.QScrollArea(self.upcoming_events_tab)
+        elif container == "dashboard_tab":
+            self.QScrollArea = QtWidgets.QScrollArea(self.dashboard_tab)
         self.QScrollArea.setFixedWidth(fixed_width)
         self.QScrollArea.setFixedHeight(min_length)
         self.QScrollArea.move(x_coordinate, y_coordinate)
@@ -432,6 +456,8 @@ class ui_main_window(object):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QPushButton = QtWidgets.QPushButton(self.login_widget_container)
+        elif container == "main_window":
+            self.QPushButton = QtWidgets.QPushButton(main_window)
         elif container == "student_profile_tab":
             self.QPushButton = QtWidgets.QPushButton(self.student_profile_tab)
         self.QPushButton.setObjectName(object_name)
