@@ -8,6 +8,29 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 import folium
 import io
 
+# SQL
+import mysql.connector
+
+mydb = mysql.connector.connect(
+    host='localhost',
+    user='root',
+    password='Wallacemccarthy1230!',
+    port='3306',
+    database='time_track',
+)
+mycursor = mydb.cursor()
+
+mycursor.execute("SELECT * FROM events")
+#"SELECT * FROM events",
+
+events = mycursor.fetchall()
+
+for event in events:
+    print(event)
+    print(event[1])
+
+
+
 
 # A class is created that holds all functions of the program
 class ui_main_window(object):
@@ -357,8 +380,15 @@ class ui_main_window(object):
 
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
+        new_date = selected_date.split()
         self.day_events.setText("Events on " + selected_date[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
+        event_month = new_date[1]
+        event_day = new_date[2]
+        for event in events:
+            events_day = event[5]
+            if (event_day == events_day):
+                print(event[1])
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
