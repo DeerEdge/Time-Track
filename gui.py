@@ -21,16 +21,8 @@ mydb = mysql.connector.connect(
 mycursor = mydb.cursor()
 
 mycursor.execute("SELECT * FROM events")
-#"SELECT * FROM events",
-
+# fetches everything from the execute statement
 events = mycursor.fetchall()
-
-for event in events:
-    print(event)
-    print(event[1])
-
-
-
 
 # A class is created that holds all functions of the program
 class ui_main_window(object):
@@ -247,7 +239,7 @@ class ui_main_window(object):
         self.map_container.setEnabled(True)
         self.map_container.setFlat(True)
 
-        # The created QGroupBox container"s layout is set to hold the web widget
+        # The created QGroupBox container's layout is set to hold the web widget
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
         # Maps Page
         coordinate = (40.617847198627, -111.86923371648)
@@ -383,12 +375,17 @@ class ui_main_window(object):
         new_date = selected_date.split()
         self.day_events.setText("Events on " + selected_date[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
+        event_year = new_date[3]
         event_month = new_date[1]
         event_day = new_date[2]
         for event in events:
             events_day = event[5]
-            if (event_day == events_day):
-                print(event[1])
+            events_month = event[4]
+            events_year = event[3]
+            if (event_year == events_year):
+                if (event_month == events_month):
+                    if (event_day == events_day):
+                        self.day_events.setText("Events on " + selected_date[4:] + ": " + event[1])
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
