@@ -192,6 +192,14 @@ QLabel#student_profile_data_label {
     background-color: black;
  }
 
+ QLabel#maps_label {
+    font: bold 30px;
+ }
+
+ QFrame#maps_line{
+    background-color: black;
+ }
+
  QLabel#admin_statistics_label {
     font: bold 30px;
  }

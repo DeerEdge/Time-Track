@@ -24,6 +24,7 @@ mycursor.execute("SELECT * FROM events")
 # fetches everything from the execute statement
 events = mycursor.fetchall()
 
+
 # A class is created that holds all functions of the program
 class ui_main_window(object):
     # This function setups up a basic window where widgets can be added
@@ -216,6 +217,7 @@ class ui_main_window(object):
         self.day_events.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
 
+
         self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20, 485, 780, 200)
         self.upcoming_events = self.upcoming_events_objects[0]
         self.upcoming_events_layout = self.upcoming_events_objects[1]
@@ -234,14 +236,25 @@ class ui_main_window(object):
         self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
         self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
+        # maps tab
+        # Title
+        self.maps_label = self.create_QLabel("maps_tab", "maps_label", "Maps",
+                                             20, 20, 600, 50)
+        self.maps_line = self.create_QFrame("maps_tab", "maps_line", "HLine",
+                                            10, 65, 600, 6)
+
+        # Body
+
         self.map_container = QtWidgets.QGroupBox(self.maps_tab)
-        self.map_container.setGeometry(QtCore.QRect(20, 60, 600, 600))
+        self.map_container.setGeometry(QtCore.QRect(20, 80, 500, 600))
         self.map_container.setEnabled(True)
         self.map_container.setFlat(True)
 
         # The created QGroupBox container's layout is set to hold the web widget
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
         # Maps Page
+        for event in events:
+            print(event[6])
         coordinate = (40.617847198627, -111.86923371648)
         map = folium.Map(zoom_start=15, location=coordinate)
         folium.Marker(
@@ -261,6 +274,28 @@ class ui_main_window(object):
         webView.setHtml(data.getvalue().decode())
         # Adds the map data to the QGroupBox layout
         self.map_frame.addWidget(webView)
+
+        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", 520,
+                                                               85, 280, 595)
+        self.maps = self.maps_objects[0]
+        self.maps_layout = self.maps_objects[1]
+        self.maps_scrollArea = self.maps_objects[2]
+
+
+        # Example of upcoming events
+        for i in range(10):
+            self.event_object = QtWidgets.QGroupBox(self.maps)
+            self.event_object.setFixedSize(250, 50)
+            self.event_object.setLayout(QtWidgets.QVBoxLayout())
+            self.label = self.create_QLabel("event", "test", "   Event Name",
+                                            0, 0, 50, 30)
+            self.maps_layout.addWidget(self.event_object)
+        self.maps_scrollArea.setWidget(self.maps)
+        self.maps_scrollArea.verticalScrollBar().setSliderPosition(0)
+        self.maps_page_label = self.create_QLabel("maps_tab", "maps_page_label",
+                                                  "  Events", 520, 55, 50, 30)
+
+
 
         # Title
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
@@ -367,8 +402,20 @@ class ui_main_window(object):
 
     def admin_events_calendar(self):
         selected_date = self.admin_events_tab.sender().selectedDate().toString()
+        new_date = selected_date.split()
         self.admin_current_events.setText("Events on " + selected_date[4:] + ":")
         self.admin_current_events.setAlignment(Qt.AlignTop)
+        event_year = new_date[3]
+        event_month = new_date[1]
+        event_day = new_date[2]
+        for event in events:
+            events_day = event[5]
+            events_month = event[4]
+            events_year = event[3]
+            if event_year == events_year:
+                if event_month == events_month:
+                    if event_day == events_day:
+                        self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1])
 
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
@@ -382,10 +429,12 @@ class ui_main_window(object):
             events_day = event[5]
             events_month = event[4]
             events_year = event[3]
-            if (event_year == events_year):
-                if (event_month == events_month):
-                    if (event_day == events_day):
+            if event_year == events_year:
+                if event_month == events_month:
+                    if event_day == events_day:
                         self.day_events.setText("Events on " + selected_date[4:] + ": " + event[1])
+
+
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
@@ -419,6 +468,8 @@ class ui_main_window(object):
             self.QLabel = QtWidgets.QLabel(self.admin_dashboard_tab)
         elif container == "admin_events_tab":
             self.QLabel = QtWidgets.QLabel(self.admin_events_tab)
+        elif container == "maps_tab":
+            self.QLabel = QtWidgets.QLabel(self.maps_tab)
         elif container == "admin_statistics_tab":
             self.QLabel = QtWidgets.QLabel(self.admin_statistics_tab)
         elif container == "admin_student_view_tab":
@@ -451,6 +502,8 @@ class ui_main_window(object):
             self.QLineEdit = QtWidgets.QLineEdit(self.admin_dashboard_tab)
         elif container == "admin_events_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.admin_events_tab)
+        elif container == "maps_tab":
+            self.QLineEdit = QtWidgets.QLineEdit(self.maps_tab)
         elif container == "admin_statistics_tab":
             self.QLineEdit = QtWidgets.QLineEdit(self.admin_statistics_tab)
         elif container == "admin_student_view_tab":
@@ -469,6 +522,8 @@ class ui_main_window(object):
             self.QScrollArea = QtWidgets.QScrollArea(self.upcoming_events_tab)
         elif container == "dashboard_tab":
             self.QScrollArea = QtWidgets.QScrollArea(self.dashboard_tab)
+        elif container == "maps_tab":
+            self.QScrollArea = QtWidgets.QScrollArea(self.maps_tab)
         self.QScrollArea.setFixedWidth(fixed_width)
         self.QScrollArea.setFixedHeight(min_length)
         self.QScrollArea.move(x_coordinate, y_coordinate)
@@ -498,6 +553,8 @@ class ui_main_window(object):
             self.QFrame = QtWidgets.QFrame(self.admin_dashboard_tab)
         elif container == "admin_events_tab":
             self.QFrame = QtWidgets.QFrame(self.admin_events_tab)
+        elif container == "maps_tab":
+            self.QFrame = QtWidgets.QFrame(self.maps_tab)
         elif container == "admin_statistics_tab":
             self.QFrame = QtWidgets.QFrame(self.admin_statistics_tab)
         elif container == "admin_student_view_tab":
