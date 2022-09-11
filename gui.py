@@ -9,20 +9,20 @@ import folium
 import io
 
 # SQL
-import mysql.connector
-
-mydb = mysql.connector.connect(
-    host='localhost',
-    user='root',
-    password='Wallacemccarthy1230!',
-    port='3306',
-    database='time_track',
-)
-mycursor = mydb.cursor()
-
-mycursor.execute("SELECT * FROM events")
-# fetches everything from the execute statement
-events = mycursor.fetchall()
+# import mysql.connector
+#
+# mydb = mysql.connector.connect(
+#     host='localhost',
+#     user='root',
+#     password='Wallacemccarthy1230!',
+#     port='3306',
+#     database='time_track',
+# )
+# mycursor = mydb.cursor()
+#
+# mycursor.execute("SELECT * FROM events")
+# # fetches everything from the execute statement
+# events = mycursor.fetchall()
 
 
 # A class is created that holds all functions of the program
@@ -253,8 +253,8 @@ class ui_main_window(object):
         # The created QGroupBox container's layout is set to hold the web widget
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
         # Maps Page
-        for event in events:
-            print(event[6])
+        # for event in events:
+        #     print(event[6])
         coordinate = (40.617847198627, -111.86923371648)
         map = folium.Map(zoom_start=15, location=coordinate)
         folium.Marker(
@@ -408,14 +408,14 @@ class ui_main_window(object):
         event_year = new_date[3]
         event_month = new_date[1]
         event_day = new_date[2]
-        for event in events:
-            events_day = event[5]
-            events_month = event[4]
-            events_year = event[3]
-            if event_year == events_year:
-                if event_month == events_month:
-                    if event_day == events_day:
-                        self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1])
+        # for event in events:
+        #     events_day = event[5]
+        #     events_month = event[4]
+        #     events_year = event[3]
+        #     if event_year == events_year:
+        #         if event_month == events_month:
+        #             if event_day == events_day:
+        #                 self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1])
 
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
@@ -425,14 +425,14 @@ class ui_main_window(object):
         event_year = new_date[3]
         event_month = new_date[1]
         event_day = new_date[2]
-        for event in events:
-            events_day = event[5]
-            events_month = event[4]
-            events_year = event[3]
-            if event_year == events_year:
-                if event_month == events_month:
-                    if event_day == events_day:
-                        self.day_events.setText("Events on " + selected_date[4:] + ": " + event[1])
+        # for event in events:
+        #     events_day = event[5]
+        #     events_month = event[4]
+        #     events_year = event[3]
+        #     if event_year == events_year:
+        #         if event_month == events_month:
+        #             if event_day == events_day:
+        #                 self.day_events.setText("Events on " + selected_date[4:] + ": " + event[1])
 
 
 
