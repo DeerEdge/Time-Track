@@ -22,6 +22,8 @@ def readSqliteTable():
         print("Printing each row")
         for row in records:
             print("Id: ", row[0])
+            print(row)
+            print(row[2])
 
 
         cursor.close()
