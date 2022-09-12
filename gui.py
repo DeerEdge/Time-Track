@@ -21,7 +21,7 @@ print("Printing each row")
 for event in events:
     print("Id: ", event[0])
     print(event)
-    print(event[2])
+    print(event[1])
 
 
 cursor.close()
@@ -458,7 +458,7 @@ class ui_main_window(object):
             if str(event_year) == str(events_year):
                 if str(new_month) == str(events_month):
                     if str(event_day) == str(events_day):
-                        self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1])
+                        self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1] + "\n" + event[3])
 
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
@@ -501,7 +501,7 @@ class ui_main_window(object):
             if str(event_year) == str(events_year):
                 if str(new_month) == str(events_month):
                     if str(event_day) == str(events_day):
-                        self.day_events.setText("Events on " + selected_date[4:] + ": " + event[2])
+                        self.day_events.setText("Events on " + selected_date[4:] + ": " + event[1])
 
 
 
