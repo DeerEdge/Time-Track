@@ -9,7 +9,7 @@ import folium
 import io
 import sqlite3
 
-sqliteConnection = sqlite3.connect('database/identifier.sqlite')
+sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
 print("Connected to SQLite")
 
