@@ -9,33 +9,23 @@ import folium
 import io
 import sqlite3
 
-def readSqliteTable():
-    try:
-        sqliteConnection = sqlite3.connect('identifier.sqlite')
-        cursor = sqliteConnection.cursor()
-        print("Connected to SQLite")
+sqliteConnection = sqlite3.connect('database/identifier.sqlite')
+cursor = sqliteConnection.cursor()
+print("Connected to SQLite")
 
-        sqlite_select_query = """SELECT * from events"""
-        cursor.execute(sqlite_select_query)
-        records = cursor.fetchall()
-        print("Total rows are:  ", len(records))
-        print("Printing each row")
-        for row in records:
-            print("Id: ", row[0])
-            print(row)
-            print(row[2])
+sqlite_select_query = """SELECT * from events"""
+cursor.execute(sqlite_select_query)
+events = cursor.fetchall()
+print("Total rows are:  ", len(events))
+print("Printing each row")
+for event in events:
+    print("Id: ", event[0])
+    print(event)
+    print(event[2])
 
 
-        cursor.close()
+cursor.close()
 
-    except sqlite3.Error as error:
-        print("Failed to read data from sqlite table", error)
-    finally:
-        if sqliteConnection:
-            sqliteConnection.close()
-            print("The SQLite connection is closed")
-
-readSqliteTable()
 # SQL
 # import mysql.connector
 #
@@ -436,14 +426,39 @@ class ui_main_window(object):
         event_year = new_date[3]
         event_month = new_date[1]
         event_day = new_date[2]
-        # for event in events:
-        #     events_day = event[5]
-        #     events_month = event[4]
-        #     events_year = event[3]
-        #     if event_year == events_year:
-        #         if event_month == events_month:
-        #             if event_day == events_day:
-        #                 self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1])
+        new_month = 1
+        if event_month == "Jan":
+            new_month = 1
+        elif event_month == "Feb":
+            new_month = 2
+        elif event_month == "Mar":
+            new_month = 3
+        elif event_month == "Apr":
+            new_month = 4
+        elif event_month == "May":
+            new_month = 5
+        elif event_month == "Jun":
+            new_month = 6
+        elif event_month == "Jul":
+            new_month = 7
+        elif event_month == "Aug":
+            new_month = 8
+        elif event_month == "Sep":
+            new_month = 9
+        elif event_month == "Oct":
+            new_month = 10
+        elif event_month == "Nov":
+            new_month = 11
+        elif event_month == "Dec":
+            new_month = 12
+        for event in events:
+            events_day = event[8]
+            events_month = event[7]
+            events_year = event[6]
+            if str(event_year) == str(events_year):
+                if str(new_month) == str(events_month):
+                    if str(event_day) == str(events_day):
+                        self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[1])
 
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
@@ -453,14 +468,40 @@ class ui_main_window(object):
         event_year = new_date[3]
         event_month = new_date[1]
         event_day = new_date[2]
-        # for event in events:
-        #     events_day = event[5]
-        #     events_month = event[4]
-        #     events_year = event[3]
-        #     if event_year == events_year:
-        #         if event_month == events_month:
-        #             if event_day == events_day:
-        #                 self.day_events.setText("Events on " + selected_date[4:] + ": " + event[1])
+        new_month = 1
+        if event_month == "Jan":
+            new_month = 1
+        elif event_month == "Feb":
+            new_month = 2
+        elif event_month == "Mar":
+            new_month = 3
+        elif event_month == "Apr":
+            new_month = 4
+        elif event_month == "May":
+            new_month = 5
+        elif event_month == "Jun":
+            new_month = 6
+        elif event_month == "Jul":
+            new_month = 7
+        elif event_month == "Aug":
+            new_month = 8
+        elif event_month == "Sep":
+            new_month = 9
+        elif event_month == "Oct":
+            new_month = 10
+        elif event_month == "Nov":
+            new_month = 11
+        elif event_month == "Dec":
+            new_month = 12
+        for event in events:
+
+            events_day = event[8]
+            events_month = event[7]
+            events_year = event[6]
+            if str(event_year) == str(events_year):
+                if str(new_month) == str(events_month):
+                    if str(event_day) == str(events_day):
+                        self.day_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
 
 
