@@ -16,12 +16,9 @@ cursor = sqliteConnection.cursor()
 sqlite_select_query = """SELECT * from events"""
 cursor.execute(sqlite_select_query)
 events = cursor.fetchall()
-# print("Total rows are:  ", len(events))
-# print("Printing each row")
-# for event in events:
-#     print("Id: ", event[0])
-#     print(event)
-#     print(event[1])
+for event in events:
+
+    print(event)
 cursor.close()
 
 # A class is created that holds all functions of the program
@@ -214,7 +211,7 @@ class ui_main_window(object):
                                                    400, 80, 400, 30)
         self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
         current_day = self.student_calendar.selectedDate().toString()
-        self.day_events.setText("Events on: " + current_day[4:] + ":")
+        self.day_events_label.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
 
 
@@ -480,7 +477,7 @@ class ui_main_window(object):
         for event in events:
             if ((event[7] == numerical_data_list[1]) and (event[8] == numerical_data_list[2]) and (event[6] == numerical_data_list[3])):
                 print(current_text)
-                self.day_events.setText(current_text + "\n" + event[3])
+                self.day_events.setText(current_text + "\n" + event[2] + "\n" + "Address: " + event[3])
 
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
