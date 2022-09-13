@@ -474,9 +474,9 @@ class ui_main_window(object):
             numerical_data_list[1] = 12
 
         current_text = self.day_events.toPlainText()
+        self.day_events.clear()
         for event in events:
             if ((event[7] == numerical_data_list[1]) and (event[8] == numerical_data_list[2]) and (event[6] == numerical_data_list[3])):
-                print(current_text)
                 self.day_events.setText(current_text + "\n" + event[2] + "\n" + "Address: " + event[3])
 
 
