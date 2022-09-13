@@ -11,37 +11,18 @@ import sqlite3
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
-print("Connected to SQLite")
+# print("Connected to SQLite")
 
 sqlite_select_query = """SELECT * from events"""
 cursor.execute(sqlite_select_query)
 events = cursor.fetchall()
-print("Total rows are:  ", len(events))
-print("Printing each row")
-for event in events:
-    print("Id: ", event[0])
-    print(event)
-    print(event[1])
-
-
+# print("Total rows are:  ", len(events))
+# print("Printing each row")
+# for event in events:
+#     print("Id: ", event[0])
+#     print(event)
+#     print(event[1])
 cursor.close()
-
-# SQL
-# import mysql.connector
-#
-# mydb = mysql.connector.connect(
-#     host='localhost',
-#     user='root',
-#     password='Wallacemccarthy1230!',
-#     port='3306',
-#     database='time_track',
-# )
-# mycursor = mydb.cursor()
-#
-# mycursor.execute("SELECT * FROM events")
-# # fetches everything from the execute statement
-# events = mycursor.fetchall()
-
 
 # A class is created that holds all functions of the program
 class ui_main_window(object):
@@ -231,7 +212,7 @@ class ui_main_window(object):
 
         self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event",
                                                    400, 80, 400, 30)
-        self.day_events = self.create_QLineEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
+        self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
         current_day = self.student_calendar.selectedDate().toString()
         self.day_events.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
@@ -415,10 +396,6 @@ class ui_main_window(object):
 
         self.tab_widget.show()
 
-    def get_count(self):
-        self.count += 1
-        return self.count
-
     def admin_events_calendar(self):
         selected_date = self.admin_events_tab.sender().selectedDate().toString()
         new_date = selected_date.split()
@@ -464,46 +441,46 @@ class ui_main_window(object):
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
         new_date = selected_date.split()
-        self.day_events.setText("Events on " + selected_date[4:] + ":")
-        self.day_events.setAlignment(Qt.AlignTop)
-        event_year = new_date[3]
-        event_month = new_date[1]
-        event_day = new_date[2]
-        new_month = 1
-        if event_month == "Jan":
-            new_month = 1
-        elif event_month == "Feb":
-            new_month = 2
-        elif event_month == "Mar":
-            new_month = 3
-        elif event_month == "Apr":
-            new_month = 4
-        elif event_month == "May":
-            new_month = 5
-        elif event_month == "Jun":
-            new_month = 6
-        elif event_month == "Jul":
-            new_month = 7
-        elif event_month == "Aug":
-            new_month = 8
-        elif event_month == "Sep":
-            new_month = 9
-        elif event_month == "Oct":
-            new_month = 10
-        elif event_month == "Nov":
-            new_month = 11
-        elif event_month == "Dec":
-            new_month = 12
+        self.check_events_on_day()
+        # self.day_events.setText("Events on " + selected_date[4:] + ":")
+        # self.day_events.setAlignment(Qt.AlignTop)
+
+    def check_events_on_day(self):
+        selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
+        numerical_data_list = selected_date.split()
+        numerical_data_list[2] = int(numerical_data_list[2])
+        numerical_data_list[3] = int(numerical_data_list[3])
+
+        if numerical_data_list[1] == "Jan":
+            numerical_data_list[1] = 1
+        elif numerical_data_list[1] == "Feb":
+            numerical_data_list[1] = 2
+        elif numerical_data_list[1] == "Mar":
+            numerical_data_list[1] = 3
+        elif numerical_data_list[1] == "Apr":
+            numerical_data_list[1] = 4
+        elif numerical_data_list[1] == "May":
+            numerical_data_list[1] = 5
+        elif numerical_data_list[1] == "Jun":
+            numerical_data_list[1] = 6
+        elif numerical_data_list[1] == "Jul":
+            numerical_data_list[1] = 7
+        elif numerical_data_list[1] == "Aug":
+            numerical_data_list[1] = 8
+        elif numerical_data_list[1] == "Sep":
+            numerical_data_list[1] = 9
+        elif numerical_data_list[1] == "Oct":
+            numerical_data_list[1] = 10
+        elif numerical_data_list[1] == "Nov":
+            numerical_data_list[1] = 11
+        elif numerical_data_list[1] == "Dec":
+            numerical_data_list[1] = 12
+
+        current_text = self.day_events.toPlainText()
         for event in events:
-
-            events_day = event[8]
-            events_month = event[7]
-            events_year = event[6]
-            if str(event_year) == str(events_year):
-                if str(new_month) == str(events_month):
-                    if str(event_day) == str(events_day):
-                        self.day_events.setText("Events on " + selected_date[4:] + ": " + event[2])
-
+            if ((event[7] == numerical_data_list[1]) and (event[8] == numerical_data_list[2]) and (event[6] == numerical_data_list[3])):
+                print(current_text)
+                self.day_events.setText(current_text + "\n" + event[3])
 
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
@@ -585,6 +562,44 @@ class ui_main_window(object):
         self.QLineEdit.setFixedSize(width, length)
         self.QLineEdit.move(x_coordinate, y_coordinate)
         return self.QLineEdit
+
+    def create_QTextEdit(self, container, object_name, read_only, x_coordinate, y_coordinate, width, length):
+        # Creates and associates QLabel to specified container
+        if container == "login_widget_container":
+            self.QTextEdit = QtWidgets.QTextEdit(self.login_widget_container)
+        elif container == "dashboard_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.dashboard_tab)
+        elif container == "admin_dashboard_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.admin_dashboard_tab)
+        elif container == "upcoming_events_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.upcoming_events_tab)
+        elif container == "points_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.points_tab)
+        elif container == "rewards_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.rewards_tab)
+        elif container == "student_profile_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.student_profile_tab)
+
+            # Administrator
+        elif container == "admin_dashboard_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.admin_dashboard_tab)
+        elif container == "admin_events_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.admin_events_tab)
+        elif container == "maps_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.maps_tab)
+        elif container == "admin_statistics_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.admin_statistics_tab)
+        elif container == "admin_student_view_tab":
+            self.QTextEdit = QtWidgets.QTextEdit(self.admin_student_view_tab)
+        self.QTextEdit.setObjectName(object_name)
+        # user cannot type in the boxes
+        self.QTextEdit.setReadOnly(read_only)
+        # Geometry of QLineEdit is specified by the passed function parameters
+        self.QTextEdit.setFixedSize(width, length)
+        self.QTextEdit.move(x_coordinate, y_coordinate)
+        self.QTextEdit.setWordWrapMode(True)
+
+        return self.QTextEdit
 
     def create_QScrollArea(self, container, object_name, x_coordinate, y_coordinate, fixed_width, min_length):
         self.scrollArea_object_container = QtWidgets.QWidget()
