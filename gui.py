@@ -182,8 +182,10 @@ class ui_main_window(object):
             self.event_object = QtWidgets.QGroupBox(self.dashboard_announcement_events)
             self.event_object.setFixedSize(750, 50)
             self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   Event Name",
-                                            0, 0, 100, 30)
+            for event in events:
+                event1 = event[2]
+                self.label = self.create_QLabel("event", "test", event1,
+                                                0, 0, 400, 30)
             self.dashboard_announcement_events_layout.addWidget(self.event_object)
         self.dashboard_announcement_events_scrollArea.setWidget(self.dashboard_announcement_events)
         self.dashboard_announcement_events_scrollArea.verticalScrollBar().setSliderPosition(0)
