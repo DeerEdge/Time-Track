@@ -96,10 +96,10 @@ class ui_main_window(object):
         self.login_widget_container.hide()
         self.login_screen_background.clear()
 
-        main_window.setFixedSize(1000, 800)
+        main_window.setFixedSize(1400, 800)
         self.central_widget = QtWidgets.QWidget(main_window)
         self.central_widget.setObjectName("central_widget")
-        self.central_widget.resize(1000, 800)
+        self.central_widget.resize(1400, 800)
 
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
@@ -123,7 +123,7 @@ class ui_main_window(object):
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1000, 710)
+        self.tab_widget.resize(1400, 710)
         self.tab_widget.move(0, 55)
 
         self.dashboard_tab = QtWidgets.QWidget()
