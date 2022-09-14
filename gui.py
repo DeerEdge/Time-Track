@@ -1,6 +1,6 @@
 # Import PyQt5's widgets to be used throughout the program
 from PyQt5.QtCore import Qt, QDateTime, pyqtSignal, QDate
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
@@ -235,6 +235,7 @@ class ui_main_window(object):
             self.event_object.setLayout(QtWidgets.QVBoxLayout())
             self.label = self.create_QLabel("event", "test", "   Event Name",
                                                    0, 0, 100, 30)
+            self.check_box = self.create_QCheckBox("event", 725, 12, 30, 30)
             self.upcoming_events_layout.addWidget(self.event_object)
         self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
         self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
@@ -495,12 +496,32 @@ class ui_main_window(object):
             numerical_data_list[1] = 11
         elif numerical_data_list[1] == "Dec":
             numerical_data_list[1] = 12
-
-        current_text = self.day_events.toPlainText()
         self.day_events.clear()
+        current_text = self.day_events.toPlainText()
         for event in events:
             if ((event[7] == numerical_data_list[1]) and (event[8] == numerical_data_list[2]) and (event[6] == numerical_data_list[3])):
-                self.day_events.setText(current_text + "\n" + event[2] + "\n" + "Address: " + event[3])
+                self.day_events.clear()
+                self.day_events.setText(current_text + "\n" + "Event: " + event[2] + "\n" + "Address: " + event[3] + "\n"
+                                        +  "Type: " + event[4] + "\n" + "Points: " + str(event[5]) + "\n" + "Coordinates: " + str(event[9]) + ", " + str(event[10]))
+
+                # self.day_events_picture = self.create_QLabel("upcoming_events_tab", "day_events_picture", "",
+                #                                              400, 210, 300, 320)
+                # self.day_events_picture.setPixmap(QPixmap(picture))
+                picture = event[11]
+                document = self.day_events.document()
+                cursor = QTextCursor(document)
+                cursor.insertImage(picture)
+
+    def create_QCheckBox(self, container, x_coordinate, y_coordinate, width, length):
+        if container == "dashboard_tab":
+            self.QCheckBox = QtWidgets.QCheckBox(self.dashboard_tab)
+        elif container == "upcoming_events_tab":
+            self.QCheckBox = QtWidgets.QCheckBox(self.upcoming_events_tab)
+        elif container == "event":
+            self.QCheckBox = QtWidgets.QCheckBox(self.event_object)
+        self.QCheckBox.resize(width, length)
+        self.QCheckBox.move(x_coordinate, y_coordinate)
+        return QCheckBox
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
