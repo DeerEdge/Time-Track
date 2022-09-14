@@ -1,6 +1,6 @@
 # Import PyQt5's widgets to be used throughout the program
 from PyQt5.QtCore import Qt, QDateTime, pyqtSignal, QDate
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
@@ -147,49 +147,57 @@ class ui_main_window(object):
                                                   20, 20, 600, 50)
         self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine",
                                                        10, 65, 600, 6)
-        self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
-                                                               "  Announcements", 20, 80, 560, 30)
-        self.dashboard_announcement_objects = self.create_QScrollArea("dashboard_tab",
-                                                                         "dashboard_announcements_QScrollArea", 20,
-                                                                         110, 560, 340)
-        self.dashboard_announcement_events = self.dashboard_announcement_objects[0]
-        self.dashboard_announcement_events_layout = self.dashboard_announcement_objects[1]
-        self.dashboard_announcement_events_scrollArea = self.dashboard_announcement_objects[2]
 
-        for i in range(6):
-            self.event_object = QtWidgets.QGroupBox(self.dashboard_announcement_events)
-            self.event_object.setFixedSize(750, 50)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
+        self.dashboard_slider = self.create_Horizontal_QSlider("dashboard_tab", 60, 200, 100, 20)
 
-            self.label = self.create_QLabel("event", "test", "event",
-                                                0, 0, 400, 30)
-            self.dashboard_announcement_events_layout.addWidget(self.event_object)
-        self.dashboard_announcement_events_scrollArea.setWidget(self.dashboard_announcement_events)
-        self.dashboard_announcement_events_scrollArea.verticalScrollBar().setSliderPosition(0)
+        self.dashboard_slider_label = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler",
+                                                         50, 400, 300, 300)
+        self.dashboard_slider.valueChanged[int].connect(self.changed_Value)
+        self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
 
-        self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events", True,
-                                                               600, 110, 200, 340)
-        self.dashboard_important_events_label = self.create_QLabel("dashboard_tab",
-                                                                  "dashboard_upcoming_events_label",
-                                                                  "  Important Events", 600, 80, 200, 30)
-
-        self.dashboard_upcoming_events_objects = self.create_QScrollArea("dashboard_tab", "dashboard_upcoming_events_QScrollArea", 20,
-                                                               485, 780, 200)
-        self.dashboard_upcoming_events = self.dashboard_upcoming_events_objects[0]
-        self.dashboard_upcoming_events_layout = self.dashboard_upcoming_events_objects[1]
-        self.dashboard_upcoming_events_scrollArea = self.dashboard_upcoming_events_objects[2]
-        self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
-                                                                  "  Upcoming Events", 20, 470, 780, 30)
-
-        for i in range(6):
-            self.event_object = QtWidgets.QGroupBox(self.dashboard_upcoming_events)
-            self.event_object.setFixedSize(750, 50)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   Event Name",
-                                                   0, 0, 100, 30)
-            self.dashboard_upcoming_events_layout.addWidget(self.event_object)
-        self.dashboard_upcoming_events_scrollArea.setWidget(self.dashboard_upcoming_events)
-        self.dashboard_upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
+        # self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
+        #                                                        "  Announcements", 20, 80, 560, 30)
+        # self.dashboard_announcement_objects = self.create_QScrollArea("dashboard_tab",
+        #                                                                  "dashboard_announcements_QScrollArea", 20,
+        #                                                                  110, 560, 340)
+        # self.dashboard_announcement_events = self.dashboard_announcement_objects[0]
+        # self.dashboard_announcement_events_layout = self.dashboard_announcement_objects[1]
+        # self.dashboard_announcement_events_scrollArea = self.dashboard_announcement_objects[2]
+        #
+        # for i in range(6):
+        #     self.event_object = QtWidgets.QGroupBox(self.dashboard_announcement_events)
+        #     self.event_object.setFixedSize(750, 50)
+        #     self.event_object.setLayout(QtWidgets.QVBoxLayout())
+        #
+        #     self.label = self.create_QLabel("event", "test", "event",
+        #                                         0, 0, 400, 30)
+        #     self.dashboard_announcement_events_layout.addWidget(self.event_object)
+        # self.dashboard_announcement_events_scrollArea.setWidget(self.dashboard_announcement_events)
+        # self.dashboard_announcement_events_scrollArea.verticalScrollBar().setSliderPosition(0)
+        #
+        # self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events", True,
+        #                                                        600, 110, 200, 340)
+        # self.dashboard_important_events_label = self.create_QLabel("dashboard_tab",
+        #                                                           "dashboard_upcoming_events_label",
+        #                                                           "  Important Events", 600, 80, 200, 30)
+        #
+        # self.dashboard_upcoming_events_objects = self.create_QScrollArea("dashboard_tab", "dashboard_upcoming_events_QScrollArea", 20,
+        #                                                        485, 780, 200)
+        # self.dashboard_upcoming_events = self.dashboard_upcoming_events_objects[0]
+        # self.dashboard_upcoming_events_layout = self.dashboard_upcoming_events_objects[1]
+        # self.dashboard_upcoming_events_scrollArea = self.dashboard_upcoming_events_objects[2]
+        # self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
+        #                                                           "  Upcoming Events", 20, 470, 780, 30)
+        #
+        # for i in range(6):
+        #     self.event_object = QtWidgets.QGroupBox(self.dashboard_upcoming_events)
+        #     self.event_object.setFixedSize(750, 50)
+        #     self.event_object.setLayout(QtWidgets.QVBoxLayout())
+        #     self.label = self.create_QLabel("event", "test", "   Event Name",
+        #                                            0, 0, 100, 30)
+        #     self.dashboard_upcoming_events_layout.addWidget(self.event_object)
+        # self.dashboard_upcoming_events_scrollArea.setWidget(self.dashboard_upcoming_events)
+        # self.dashboard_upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         # Upcoming Events
 
@@ -425,6 +433,21 @@ class ui_main_window(object):
         self.check_events_on_day()
         # self.day_events.setText("Events on " + selected_date[4:] + ":")
         # self.day_events.setAlignment(Qt.AlignTop)
+  # creates a scroll bar
+    def create_Horizontal_QSlider(self, container, x_coordinate, y_coordinate, width, length):
+        if container == "dashboard_tab":
+            self.QSlider = QtWidgets.QSlider(Qt.Horizontal, self.dashboard_tab)
+        self.QSlider.setGeometry(x_coordinate, y_coordinate, width, length)
+        return self.QSlider
+
+  # changes the picture presented
+    def changed_Value(self, value):
+        if value == 0:
+            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcrestLogo.png'))
+        elif value < 50:
+            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest Huskies.png'))
+        else:
+            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest silly.png'))
 
     def show_event_locations(self, user):
         if user == "student":
