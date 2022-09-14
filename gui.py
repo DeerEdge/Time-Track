@@ -201,10 +201,7 @@ class ui_main_window(object):
                                                              "HLine", 10, 65, 600, 6)
 
         # Body
-
         self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 350, 350)
-
-
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
 
         self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event",
@@ -244,8 +241,13 @@ class ui_main_window(object):
 
         self.map_container = QtWidgets.QGroupBox(self.maps_tab)
         self.map_container.setGeometry(QtCore.QRect(20, 80, 500, 600))
-        self.map_container.setEnabled(True)
-        self.map_container.setFlat(True)
+        # self.map_container.setEnabled(True)
+        # self.map_container.setFlat(True)
+
+        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", 520, 85, 280, 595)
+        self.maps = self.maps_objects[0]
+        self.maps_layout = self.maps_objects[1]
+        self.maps_scrollArea = self.maps_objects[2]
 
         # The created QGroupBox container's layout is set to hold the web widget
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
@@ -253,16 +255,15 @@ class ui_main_window(object):
         # for event in events:
         #     print(event[6])
         coordinate = (40.617847198627, -111.86923371648)
+        global map
         map = folium.Map(zoom_start=15, location=coordinate)
-        folium.Marker(
-            location=coordinate,
-            icon=folium.Icon(color="red", icon='circle', prefix='fa'),
-        ).add_to(map)
 
         folium.Marker(
             location=coordinate,
             icon=folium.Icon(color="darkgreen", icon='user'),
         ).add_to(map)
+
+        self.show_event_locations("student")
         # Save map data to data object
         data = io.BytesIO()
         map.save(data, close_file=False)
@@ -271,28 +272,11 @@ class ui_main_window(object):
         webView.setHtml(data.getvalue().decode())
         # Adds the map data to the QGroupBox layout
         self.map_frame.addWidget(webView)
-
-        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", 520,
-                                                               85, 280, 595)
-        self.maps = self.maps_objects[0]
-        self.maps_layout = self.maps_objects[1]
-        self.maps_scrollArea = self.maps_objects[2]
-
-
-        # Example of upcoming events
-        for i in range(10):
-            self.event_object = QtWidgets.QGroupBox(self.maps)
-            self.event_object.setFixedSize(250, 50)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   Event Name",
-                                            0, 0, 50, 30)
-            self.maps_layout.addWidget(self.event_object)
         self.maps_scrollArea.setWidget(self.maps)
         self.maps_scrollArea.verticalScrollBar().setSliderPosition(0)
-        self.maps_page_label = self.create_QLabel("maps_tab", "maps_page_label",
-                                                  "  Events", 520, 55, 50, 30)
 
-
+        # self.maps_page_label = self.create_QLabel("maps_tab", "maps_page_label",
+        #                                           "  Events", 520, 55, 50, 30)
 
         # Title
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
@@ -442,6 +426,20 @@ class ui_main_window(object):
         # self.day_events.setText("Events on " + selected_date[4:] + ":")
         # self.day_events.setAlignment(Qt.AlignTop)
 
+    def show_event_locations(self, user):
+        if user == "student":
+            for event in events:
+                event_coordinate = (event[9], event[10])
+                folium.Marker(location=event_coordinate,
+                              icon=folium.Icon(color="red", icon='circle', prefix='fa'),
+                              popup=(folium.Popup(f'<h6><b>{event[1]}</b></h6>' + "\n" + f'<h6><b>{event[2]}</b></h6>', show=True, min_width=20)),).add_to(map)
+                self.event_object = QtWidgets.QGroupBox(self.maps)
+                self.event_object.setFixedSize(250, 100)
+                self.event_object.setLayout(QtWidgets.QVBoxLayout())
+                self.label = self.create_QLabel("event", str(event[0]), ("   " + event[1] + ", " + event[2]), 0, 0, 250, 70)
+                self.label.setWordWrap(True)
+                self.maps_layout.addWidget(self.event_object)
+
     def check_events_on_day(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
         numerical_data_list = selected_date.split()
@@ -478,7 +476,6 @@ class ui_main_window(object):
         for event in events:
             if ((event[7] == numerical_data_list[1]) and (event[8] == numerical_data_list[2]) and (event[6] == numerical_data_list[3])):
                 self.day_events.setText(current_text + "\n" + event[2] + "\n" + "Address: " + event[3])
-
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
         if container == "upcoming_events_tab":
