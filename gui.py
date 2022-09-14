@@ -8,6 +8,7 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 import folium
 import io
 import sqlite3
+import pyautogui
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
@@ -434,6 +435,7 @@ class ui_main_window(object):
         # self.day_events.setText("Events on " + selected_date[4:] + ":")
         # self.day_events.setAlignment(Qt.AlignTop)
   # creates a scroll bar
+
     def create_Horizontal_QSlider(self, container, x_coordinate, y_coordinate, width, length):
         if container == "dashboard_tab":
             self.QSlider = QtWidgets.QSlider(Qt.Horizontal, self.dashboard_tab)
@@ -442,9 +444,9 @@ class ui_main_window(object):
 
   # changes the picture presented
     def changed_Value(self, value):
-        if value == 0:
-            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcrestLogo.png'))
-        elif value < 50:
+        if value < 25:
+            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
+        elif value < 50 and value > 25:
             self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest Huskies.png'))
         else:
             self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest silly.png'))
