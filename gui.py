@@ -313,9 +313,75 @@ class ui_main_window(object):
 
         # Body
         self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label",
-                                                             "  Test", 20, 80, 300, 30)
+                                                             "  Your Points", 20, 80, 300, 30)
         self.rewards_my_points = self.create_QLineEdit("rewards_tab", "rewards_my_points", True,
-                                                          20, 110, 300, 300)
+                                                          50, 110, 100, 25)
+        self.reward_first_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
+                                                     50, 140, 200, 20)
+        self.reward_second_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
+                                                     280, 140, 200, 20)
+        self.reward_third_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
+                                                     510, 140, 200, 20)
+        self.reward_fourth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
+                                                     740, 140, 200, 20)
+        self.reward_fifth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
+                                                     970, 140, 200, 20)
+        self.reward_sixth_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
+                                                     50, 430, 200, 20)
+        self.reward_seventh_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
+                                                      280, 430, 200, 20)
+        self.reward_eighth_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
+                                                     510, 430, 200, 20)
+        self.reward_nineth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
+                                                      740, 430, 200, 20)
+        self.reward_tenth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
+                                                     970, 430, 200, 20)
+
+        self.reward_first = self.create_QLabel("rewards_tab", "reward_first", "", 50, 150, 200, 200)
+        self.reward_first.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_second = self.create_QLabel("rewards_tab", "reward_second", "", 280, 150, 200, 200)
+        self.reward_second.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_third = self.create_QLabel("rewards_tab", "reward_third", "", 510, 150, 200, 200)
+        self.reward_third.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_fourth = self.create_QLabel("rewards_tab", "reward_fourth", "", 740, 150, 200, 200)
+        self.reward_fourth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_fifth = self.create_QLabel("rewards_tab", "reward_fifth", "", 970, 150, 200, 200)
+        self.reward_fifth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_sixth = self.create_QLabel("rewards_tab", "reward_sixth", "", 50, 440, 200, 200)
+        self.reward_sixth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_seventh = self.create_QLabel("rewards_tab", "reward_seventh", "", 280, 440, 200, 200)
+        self.reward_seventh.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_eighth = self.create_QLabel("rewards_tab", "reward_eighth", "", 510, 440, 200, 200)
+        self.reward_eighth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_nineth = self.create_QLabel("rewards_tab", "reward_nineth", "", 740, 440, 200, 200)
+        self.reward_nineth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        self.reward_tenth = self.create_QLabel("rewards_tab", "reward_tenth", "", 970, 440, 200, 200)
+        self.reward_tenth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+
+
+        self.reward_One_Button = self.create_QPushButton("rewards_tab", "reward_One_Button", "Click to Redeem", "None",
+                                                         50, 340, 200, 50)
+        self.reward_Two_Button = self.create_QPushButton("rewards_tab", "reward_Two_Button", "Click to Redeem", "None",
+                                                         280, 340, 200, 50)
+        self.reward_Three_Button = self.create_QPushButton("rewards_tab", "reward_Three_Button", "Click to Redeem", "None",
+                                                         510, 340, 200, 50)
+        self.reward_Four_Button = self.create_QPushButton("rewards_tab", "reward_Four_Button", "Click to Redeem", "None",
+                                                         740, 340, 200, 50)
+        self.reward_Five_Button = self.create_QPushButton("rewards_tab", "reward_Five_Button", "Click to Redeem", "None",
+                                                         970, 340, 200, 50)
+        self.reward_Six_Button = self.create_QPushButton("rewards_tab", "reward_Six_Button", "Click to Redeem", "None",
+                                                         50, 630, 200, 50)
+        self.reward_Seven_Button = self.create_QPushButton("rewards_tab", "reward_Seven_Button", "Click to Redeem", "None",
+                                                         280, 630, 200, 50)
+        self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "Click to Redeem",
+                                                           "None",
+                                                           510, 630, 200, 50)
+        self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "Click to Redeem",
+                                                          "None",
+                                                          740, 630, 200, 50)
+        self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "Click to Redeem",
+                                                          "None",
+                                                          970, 630, 200, 50)
 
         # Student Profile
         # Title
@@ -699,6 +765,9 @@ class ui_main_window(object):
             self.QPushButton = QtWidgets.QPushButton(main_window)
         elif container == "student_profile_tab":
             self.QPushButton = QtWidgets.QPushButton(self.student_profile_tab)
+
+        elif container == "rewards_tab":
+            self.QPushButton = QtWidgets.QPushButton(self.rewards_tab)
         self.QPushButton.setObjectName(object_name)
         self.QPushButton.setText(text)
         if icon != "None":
