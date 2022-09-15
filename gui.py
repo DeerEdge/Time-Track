@@ -359,27 +359,27 @@ class ui_main_window(object):
         self.reward_tenth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
 
 
-        self.reward_One_Button = self.create_QPushButton("rewards_tab", "reward_One_Button", "Click to Redeem", "None",
+        self.reward_One_Button = self.create_QPushButton("rewards_tab", "reward_One_Button", "300pts - Click to Redeem", "None",
                                                          50, 340, 200, 50)
-        self.reward_Two_Button = self.create_QPushButton("rewards_tab", "reward_Two_Button", "Click to Redeem", "None",
+        self.reward_Two_Button = self.create_QPushButton("rewards_tab", "reward_Two_Button", "300pts - Click to Redeem", "None",
                                                          280, 340, 200, 50)
-        self.reward_Three_Button = self.create_QPushButton("rewards_tab", "reward_Three_Button", "Click to Redeem", "None",
+        self.reward_Three_Button = self.create_QPushButton("rewards_tab", "reward_Three_Button", "300pts - Click to Redeem", "None",
                                                          510, 340, 200, 50)
-        self.reward_Four_Button = self.create_QPushButton("rewards_tab", "reward_Four_Button", "Click to Redeem", "None",
+        self.reward_Four_Button = self.create_QPushButton("rewards_tab", "reward_Four_Button", "500pts - Click to Redeem", "None",
                                                          740, 340, 200, 50)
-        self.reward_Five_Button = self.create_QPushButton("rewards_tab", "reward_Five_Button", "Click to Redeem", "None",
+        self.reward_Five_Button = self.create_QPushButton("rewards_tab", "reward_Five_Button", "500pts - Click to Redeem", "None",
                                                          970, 340, 200, 50)
-        self.reward_Six_Button = self.create_QPushButton("rewards_tab", "reward_Six_Button", "Click to Redeem", "None",
+        self.reward_Six_Button = self.create_QPushButton("rewards_tab", "reward_Six_Button", "750pts - Click to Redeem", "None",
                                                          50, 630, 200, 50)
-        self.reward_Seven_Button = self.create_QPushButton("rewards_tab", "reward_Seven_Button", "Click to Redeem", "None",
+        self.reward_Seven_Button = self.create_QPushButton("rewards_tab", "reward_Seven_Button", "1000pts - Click to Redeem", "None",
                                                          280, 630, 200, 50)
-        self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "Click to Redeem",
+        self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "1500pts - Click to Redeem",
                                                            "None",
                                                            510, 630, 200, 50)
-        self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "Click to Redeem",
+        self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "3000pts - Click to Redeem",
                                                           "None",
                                                           740, 630, 200, 50)
-        self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "Click to Redeem",
+        self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "5000pts - Click to Redeem",
                                                           "None",
                                                           970, 630, 200, 50)
 
