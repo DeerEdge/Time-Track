@@ -1,6 +1,6 @@
 # Import PyQt5's widgets to be used throughout the program
 from datetime import time
-
+import time
 
 from PyQt5.QtCore import Qt,pyqtSignal, QDate
 from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
@@ -156,15 +156,8 @@ class ui_main_window(object):
 
         self.dashboard_slider_label = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler",
                                                          50, 400, 300, 300)
-        self.dashboard_slider.valueChanged[int].connect(self.changed_Value)
         self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
-        # value = self.dashboard_slider.valueChanged[int]
-        # if value < 25:
-        #     self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
-        # elif value < 50 and value > 25:
-        #     self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest Huskies.png'))
-        # else:
-        #     self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest silly.png'))
+        self.dashboard_slider.valueChanged[int].connect(self.changed_Value)
 
         # self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
         #                                                        "  Announcements", 20, 80, 560, 30)
@@ -521,6 +514,16 @@ class ui_main_window(object):
 
   # changes the picture presented
     def changed_Value(self, value):
+        counter = 0
+        value = self.dashboard_slider.value()
+        self.dashboard_slider.setValue(counter)
+        print(value)
+        while (counter <= 100):
+            print(counter)
+            self.dashboard_slider.setValue(counter)
+            time.sleep(1)
+            counter += 10
+
         if value < 25:
             self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
         elif value < 50 and value > 25:
