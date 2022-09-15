@@ -1,5 +1,8 @@
 # Import PyQt5's widgets to be used throughout the program
-from PyQt5.QtCore import Qt, QDateTime, pyqtSignal, QDate
+from datetime import time
+
+
+from PyQt5.QtCore import Qt,pyqtSignal, QDate
 from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
@@ -155,6 +158,13 @@ class ui_main_window(object):
                                                          50, 400, 300, 300)
         self.dashboard_slider.valueChanged[int].connect(self.changed_Value)
         self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
+        # value = self.dashboard_slider.valueChanged[int]
+        # if value < 25:
+        #     self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
+        # elif value < 50 and value > 25:
+        #     self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest Huskies.png'))
+        # else:
+        #     self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest silly.png'))
 
         # self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
         #                                                        "  Announcements", 20, 80, 560, 30)
@@ -250,11 +260,11 @@ class ui_main_window(object):
         # Body
 
         self.map_container = QtWidgets.QGroupBox(self.maps_tab)
-        self.map_container.setGeometry(QtCore.QRect(20, 80, 500, 600))
+        self.map_container.setGeometry(QtCore.QRect(20, 80, 800, 600))
         # self.map_container.setEnabled(True)
         # self.map_container.setFlat(True)
 
-        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", 520, 85, 280, 595)
+        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", 850, 85, 350, 600)
         self.maps = self.maps_objects[0]
         self.maps_layout = self.maps_objects[1]
         self.maps_scrollArea = self.maps_objects[2]
@@ -517,6 +527,8 @@ class ui_main_window(object):
             self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest Huskies.png'))
         else:
             self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest silly.png'))
+
+
 
     def show_event_locations(self, user):
         if user == "student":
