@@ -1,4 +1,6 @@
 # Import PyQt5's widgets to be used throughout the program
+import threading
+
 from PyQt5.QtCore import Qt, pyqtSignal, QDate, QRunnable, pyqtSlot, QThreadPool
 from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
 from PyQt5.QtWidgets import *
@@ -24,18 +26,18 @@ cursor.close()
 
 # A class is created that holds all functions of the program
 class ui_main_window(object):
-    # This function setups up a basic window where widgets can be added
+    # Window Setup Functions
     def setup_window(self, main_window):
         main_window.setWindowTitle("Time Track")
         main_window.setObjectName("main_window")
         # The size of the window is specified using "resize()"
         main_window.setFixedSize(800, 500)
-
         self.setup_login_screen(main_window)
 
     def setup_login_screen(self, main_window):
         self.login_central_widget = QtWidgets.QWidget(main_window)
         self.login_central_widget.resize(800, 500)
+
         self.login_screen_background = QtWidgets.QLabel(self.login_central_widget)
         self.login_screen_background.setFixedSize(800, 500)
         self.login_screen_background.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
@@ -94,8 +96,7 @@ class ui_main_window(object):
 
     def setup_portal(self):
         sending_button = self.login_widget_container.sender().objectName()
-        self.login_widget_container.hide()
-        self.login_screen_background.clear()
+        self.login_central_widget.deleteLater()
 
         main_window.setFixedSize(1400, 800)
         self.central_widget = QtWidgets.QWidget(main_window)
@@ -109,8 +110,10 @@ class ui_main_window(object):
         self.app_logo.setScaledContents(True)
         self.app_logo.show()
 
-        self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1000, -140, 300, 300)
+        self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+        self.log_out_button.setIconSize(QtCore.QSize(150, 150))
         self.log_out_button.setFlat(True)
+        self.log_out_button.clicked.connect(self.return_to_login_screen)
 
         if sending_button == "student_login_button":
             self.setup_student_page()
@@ -123,6 +126,8 @@ class ui_main_window(object):
         global dashboard_slideshow
         global slideshow_title
         global slideshow_description
+        global kill_thread_boolean
+        global threadpool
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
@@ -145,7 +150,6 @@ class ui_main_window(object):
 
         # Dashboard Tab
         self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy", 200, 10, 600, 50)
-
         self.dashboard_label = self.create_QLabel("dashboard_tab", "dashboard_label", "Dashboard", 20, 20, 600, 50)
         self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 600, 6)
         dashboard_slideshow = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler", 20, 90, 840, 480)
@@ -155,18 +159,17 @@ class ui_main_window(object):
         slideshow_description = self.create_QLabel("dashboard_tab", "slideshow_description", "", 20, 600, 840, 100)
         slideshow_description.setWordWrap(True)
         slideshow_description.setAlignment(QtCore.Qt.AlignTop)
-        self.threadpool = QThreadPool()
+        kill_thread_boolean = False
+        threadpool = QThreadPool()
         slideshow = Slideshow()
-        self.threadpool.start(slideshow)
+        threadpool.start(slideshow)
         self.dashboard_separator_line = self.create_QFrame("dashboard_tab", "dashboard_separator_line", "VLine", 875, 40, 6, 630)
 
         # Upcoming Events Tab
         self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label", "Upcoming Events", 20, 20, 600, 50)
         self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line", "HLine", 10, 65, 600, 6)
-
         self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 350, 350)
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
-
         self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 400, 80, 400, 30)
         self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
         current_day = self.student_calendar.selectedDate().toString()
@@ -193,18 +196,12 @@ class ui_main_window(object):
         self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         # Maps Tab
-        self.maps_label = self.create_QLabel("maps_tab", "maps_label", "Maps",
-                                             20, 20, 600, 50)
-        self.maps_line = self.create_QFrame("maps_tab", "maps_line", "HLine",
-                                            10, 65, 600, 6)
-
-        # Body
-
+        self.maps_label = self.create_QLabel("maps_tab", "maps_label", "Maps", 20, 20, 600, 50)
+        self.maps_line = self.create_QFrame("maps_tab", "maps_line", "HLine", 10, 65, 600, 6)
         self.map_container = QtWidgets.QGroupBox(self.maps_tab)
         self.map_container.setGeometry(QtCore.QRect(20, 80, 800, 600))
         # self.map_container.setEnabled(True)
         # self.map_container.setFlat(True)
-
         self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", "vertical_layout", 850, 85, 350, 600)
         self.maps = self.maps_objects[0]
         self.maps_layout = self.maps_objects[1]
@@ -212,9 +209,6 @@ class ui_main_window(object):
 
         # The created QGroupBox container's layout is set to hold the web widget
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
-        # Maps Page
-        # for event in events:
-        #     print(event[6])
         coordinate = (40.617847198627, -111.86923371648)
         global map
         map = folium.Map(zoom_start=15, location=coordinate)
@@ -431,7 +425,15 @@ class ui_main_window(object):
                     if str(event_day) == str(events_day):
                         self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
+    def return_to_login_screen(self):
+        global kill_thread_boolean
+        kill_thread_boolean = True
+        self.central_widget.deleteLater()
+        main_window.setFixedSize(800, 500)
+        self.setup_login_screen(main_window)
+        main_window.setCentralWidget(self.login_central_widget)
 
+    # Logic Functions
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
         new_date = selected_date.split()
@@ -500,8 +502,6 @@ class ui_main_window(object):
                 cursor.insertImage(picture)
 
     # Widget Creation Functions
-    # def create_folium_map(self):
-
     def create_QCheckBox(self, container, x_coordinate, y_coordinate, width, length):
         if container == "dashboard_tab":
             self.QCheckBox = QtWidgets.QCheckBox(self.dashboard_tab)
@@ -718,6 +718,7 @@ class ui_main_window(object):
         self.QSlider.setGeometry(x_coordinate, y_coordinate, width, length)
         return self.QSlider
 
+# A custom-built widget that creates a slideshow
 class Slideshow(QRunnable):
     @pyqtSlot()
     def run(self) -> None:
@@ -744,7 +745,8 @@ class Slideshow(QRunnable):
             index += 1
             if index == len(picture_list):
                 index = 0
-
+            if kill_thread_boolean == True:
+                break
         cursor.close()
 
 class TabBar(QTabBar):
