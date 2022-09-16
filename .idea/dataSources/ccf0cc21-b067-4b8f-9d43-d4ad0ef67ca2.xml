@@ -316,6 +316,7 @@
     <routine id="124" parent="1" name="atan2"/>
     <routine id="125" parent="1" name="upper_quartile">
       <FunctionType>aggregate</FunctionType>
+<<<<<<< Updated upstream
     </routine>
     <routine id="126" parent="1" name="radians"/>
     <routine id="127" parent="1" name="sinh"/>
@@ -359,6 +360,51 @@
     <routine id="161" parent="1" name="lag">
       <FunctionType>window</FunctionType>
     </routine>
+=======
+    </routine>
+    <routine id="126" parent="1" name="radians"/>
+    <routine id="127" parent="1" name="sinh"/>
+    <routine id="128" parent="1" name="padc"/>
+    <routine id="129" parent="1" name="proper"/>
+    <routine id="130" parent="1" name="rtreenode"/>
+    <routine id="131" parent="1" name="ceil"/>
+    <routine id="132" parent="1" name="variance">
+      <FunctionType>aggregate</FunctionType>
+    </routine>
+    <routine id="133" parent="1" name="matchinfo"/>
+    <routine id="134" parent="1" name="offsets"/>
+    <routine id="135" parent="1" name="coth"/>
+    <routine id="136" parent="1" name="asin"/>
+    <routine id="137" parent="1" name="tanh"/>
+    <routine id="138" parent="1" name="atn2"/>
+    <routine id="139" parent="1" name="cosh"/>
+    <routine id="140" parent="1" name="rtreedepth"/>
+    <routine id="141" parent="1" name="degrees"/>
+    <routine id="142" parent="1" name="acos"/>
+    <routine id="143" parent="1" name="median">
+      <FunctionType>aggregate</FunctionType>
+    </routine>
+    <routine id="144" parent="1" name="fts5_source_id"/>
+    <routine id="145" parent="1" name="acosh"/>
+    <routine id="146" parent="1" name="log"/>
+    <routine id="147" parent="1" name="floor"/>
+    <routine id="148" parent="1" name="atan"/>
+    <routine id="149" parent="1" name="reverse"/>
+    <routine id="150" parent="1" name="atanh"/>
+    <routine id="151" parent="1" name="asinh"/>
+    <routine id="152" parent="1" name="difference"/>
+    <routine id="153" parent="1" name="cos"/>
+    <routine id="154" parent="1" name="exp"/>
+    <routine id="155" parent="1" name="match"/>
+    <routine id="156" parent="1" name="power"/>
+    <routine id="157" parent="1" name="optimize"/>
+    <routine id="158" parent="1" name="square"/>
+    <routine id="159" parent="1" name="tan"/>
+    <routine id="160" parent="1" name="log10"/>
+    <routine id="161" parent="1" name="lag">
+      <FunctionType>window</FunctionType>
+    </routine>
+>>>>>>> Stashed changes
     <routine id="162" parent="1" name="lead">
       <FunctionType>window</FunctionType>
     </routine>
@@ -430,6 +476,7 @@
     </argument>
     <argument id="187" parent="25">
       <ArgumentDirection>R</ArgumentDirection>
+<<<<<<< Updated upstream
     </argument>
     <argument id="188" parent="26">
       <ArgumentDirection>R</ArgumentDirection>
@@ -437,6 +484,15 @@
     <argument id="189" parent="27">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
+=======
+    </argument>
+    <argument id="188" parent="26">
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+    <argument id="189" parent="27">
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+>>>>>>> Stashed changes
     <argument id="190" parent="27">
       <Position>1</Position>
     </argument>
@@ -456,11 +512,19 @@
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
     <argument id="196" parent="30">
+<<<<<<< Updated upstream
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
     <argument id="197" parent="31">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
+=======
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+    <argument id="197" parent="31">
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+>>>>>>> Stashed changes
     <argument id="198" parent="31">
       <Position>1</Position>
     </argument>
@@ -825,11 +889,19 @@
       <Position>2</Position>
     </argument>
     <argument id="319" parent="96">
+<<<<<<< Updated upstream
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
     <argument id="320" parent="97">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
+=======
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+    <argument id="320" parent="97">
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+>>>>>>> Stashed changes
     <argument id="321" parent="98">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
@@ -981,11 +1053,19 @@
       <Position>2</Position>
     </argument>
     <argument id="371" parent="117">
+<<<<<<< Updated upstream
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
     <argument id="372" parent="118">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
+=======
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+    <argument id="372" parent="118">
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+>>>>>>> Stashed changes
     <argument id="373" parent="118">
       <Position>1</Position>
     </argument>
@@ -1129,10 +1209,17 @@
     </argument>
     <argument id="420" parent="140">
       <ArgumentDirection>R</ArgumentDirection>
+<<<<<<< Updated upstream
     </argument>
     <argument id="421" parent="140">
       <Position>1</Position>
     </argument>
+=======
+    </argument>
+    <argument id="421" parent="140">
+      <Position>1</Position>
+    </argument>
+>>>>>>> Stashed changes
     <argument id="422" parent="141">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
@@ -1279,10 +1366,17 @@
     </argument>
     <argument id="470" parent="162">
       <Position>2</Position>
+<<<<<<< Updated upstream
     </argument>
     <argument id="471" parent="162">
       <Position>3</Position>
     </argument>
+=======
+    </argument>
+    <argument id="471" parent="162">
+      <Position>3</Position>
+    </argument>
+>>>>>>> Stashed changes
     <argument id="472" parent="163">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
@@ -1303,12 +1397,27 @@
     </argument>
     <argument id="478" parent="164">
       <Position>2</Position>
+<<<<<<< Updated upstream
     </argument>
     <argument id="479" parent="165">
       <ArgumentDirection>R</ArgumentDirection>
     </argument>
     <argument id="480" parent="165">
       <Position>1</Position>
+=======
+    </argument>
+    <argument id="479" parent="165">
+      <ArgumentDirection>R</ArgumentDirection>
+    </argument>
+    <argument id="480" parent="165">
+      <Position>1</Position>
+<<<<<<< HEAD
+    </argument>
+    <argument id="481" parent="165">
+      <Position>2</Position>
+=======
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
     </argument>
     <argument id="481" parent="165">
       <Position>2</Position>
@@ -1317,30 +1426,72 @@
     <table id="483" parent="166" name="sqlite_master">
       <System>1</System>
     </table>
+<<<<<<< Updated upstream
     <column id="484" parent="482" name="ID">
       <DataType>SERIAL|0s</DataType>
       <Position>1</Position>
     </column>
     <column id="485" parent="482" name="NAME">
+=======
+<<<<<<< HEAD
+    <table id="485" parent="166" name="students"/>
+    <column id="486" parent="482" name="ID">
+      <DataType>SERIAL|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="487" parent="482" name="NAME">
+=======
+    <column id="484" parent="482" name="ID">
+      <DataType>SERIAL|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="485" parent="482" name="NAME">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
       <DataType>VARCHAR(200)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
+<<<<<<< Updated upstream
     <column id="486" parent="482" name="DESCRIPTION">
+=======
+<<<<<<< HEAD
+    <column id="488" parent="482" name="DESCRIPTION">
+=======
+    <column id="486" parent="482" name="DESCRIPTION">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
       <DataType>VARCHAR(2000)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
+<<<<<<< Updated upstream
     <column id="487" parent="482" name="ADDRESS">
+=======
+<<<<<<< HEAD
+    <column id="489" parent="482" name="ADDRESS">
+=======
+    <column id="487" parent="482" name="ADDRESS">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
       <DataType>VARCHAR(300)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
+<<<<<<< Updated upstream
     <column id="488" parent="482" name="TYPE">
+=======
+<<<<<<< HEAD
+    <column id="490" parent="482" name="TYPE">
+=======
+    <column id="488" parent="482" name="TYPE">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
       <DataType>VARCHAR(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
     </column>
+<<<<<<< Updated upstream
     <column id="489" parent="482" name="POINTS">
       <DataType>INTEGER|0s</DataType>
       <Position>6</Position>
@@ -1370,15 +1521,87 @@
       <Position>12</Position>
     </column>
     <index id="496" parent="482" name="sqlite_autoindex_events_1">
+=======
+<<<<<<< HEAD
+    <column id="491" parent="482" name="POINTS">
+      <DataType>INTEGER|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <column id="492" parent="482" name="YEAR">
+      <DataType>INTEGER|0s</DataType>
+      <Position>7</Position>
+    </column>
+    <column id="493" parent="482" name="MONTH">
+      <DataType>INTEGER|0s</DataType>
+      <Position>8</Position>
+    </column>
+    <column id="494" parent="482" name="DAY">
+      <DataType>INTEGER|0s</DataType>
+      <Position>9</Position>
+    </column>
+    <column id="495" parent="482" name="LATITUDE">
+      <DataType>NUMERIC(11,8 digit)|0s</DataType>
+      <Position>10</Position>
+    </column>
+    <column id="496" parent="482" name="LONGITUDE">
+      <DataType>NUMERIC(11,8 digit)|0s</DataType>
+      <Position>11</Position>
+    </column>
+    <column id="497" parent="482" name="IMAGE_LINK_SRC">
+      <DataType>VARCHAR(50000)|0s</DataType>
+      <Position>12</Position>
+    </column>
+    <index id="498" parent="482" name="sqlite_autoindex_events_1">
+=======
+    <column id="489" parent="482" name="POINTS">
+      <DataType>INTEGER|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <column id="490" parent="482" name="YEAR">
+      <DataType>INTEGER|0s</DataType>
+      <Position>7</Position>
+    </column>
+    <column id="491" parent="482" name="MONTH">
+      <DataType>INTEGER|0s</DataType>
+      <Position>8</Position>
+    </column>
+    <column id="492" parent="482" name="DAY">
+      <DataType>INTEGER|0s</DataType>
+      <Position>9</Position>
+    </column>
+    <column id="493" parent="482" name="LATITUDE">
+      <DataType>NUMERIC(11,8 digit)|0s</DataType>
+      <Position>10</Position>
+    </column>
+    <column id="494" parent="482" name="LONGITUDE">
+      <DataType>NUMERIC(11,8 digit)|0s</DataType>
+      <Position>11</Position>
+    </column>
+    <column id="495" parent="482" name="IMAGE_LINK_SRC">
+      <DataType>VARCHAR(50000)|0s</DataType>
+      <Position>12</Position>
+    </column>
+    <index id="496" parent="482" name="sqlite_autoindex_events_1">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
+<<<<<<< Updated upstream
     <key id="497" parent="482">
+=======
+<<<<<<< HEAD
+    <key id="499" parent="482">
+=======
+    <key id="497" parent="482">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
+>>>>>>> Stashed changes
       <ColNames>ID</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_events_1</UnderlyingIndexName>
     </key>
+<<<<<<< Updated upstream
     <column id="498" parent="483" name="type">
       <DataType>TEXT|0s</DataType>
       <Position>1</Position>
@@ -1396,8 +1619,117 @@
       <Position>4</Position>
     </column>
     <column id="502" parent="483" name="sql">
+=======
+<<<<<<< HEAD
+    <column id="500" parent="483" name="ID">
+      <DataType>SERIAL|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="501" parent="483" name="TITLE">
+      <DataType>VARCHAR(2000)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="502" parent="483" name="DESCRIPTION">
+      <DataType>VARCHAR(8000)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <index id="503" parent="483" name="sqlite_autoindex_slideshow_1">
+      <ColNames>ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="504" parent="483">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_slideshow_1</UnderlyingIndexName>
+    </key>
+    <column id="505" parent="484" name="type">
+      <DataType>TEXT|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="506" parent="484" name="name">
+      <DataType>TEXT|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="507" parent="484" name="tbl_name">
+      <DataType>TEXT|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="508" parent="484" name="rootpage">
+      <DataType>INT|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="509" parent="484" name="sql">
+=======
+    <column id="498" parent="483" name="type">
+>>>>>>> Stashed changes
+      <DataType>TEXT|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="499" parent="483" name="name">
+      <DataType>TEXT|0s</DataType>
+      <Position>2</Position>
+    </column>
+    <column id="500" parent="483" name="tbl_name">
+      <DataType>TEXT|0s</DataType>
+      <Position>3</Position>
+    </column>
+    <column id="501" parent="483" name="rootpage">
+      <DataType>INT|0s</DataType>
+      <Position>4</Position>
+    </column>
+    <column id="502" parent="483" name="sql">
+>>>>>>> 7fe52f63bc97de8b2675e20f7843e9533cb978b2
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
+    <column id="510" parent="485" name="ID">
+      <DataType>SERIAL|0s</DataType>
+      <Position>1</Position>
+    </column>
+    <column id="511" parent="485" name="FIRST_NAME">
+      <DataType>VARCHAR(500)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+    </column>
+    <column id="512" parent="485" name="LAST_NAME">
+      <DataType>VARCHAR(500)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+    </column>
+    <column id="513" parent="485" name="EMAIL_ADDRESS">
+      <DataType>VARCHAR(500)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="514" parent="485" name="PASSWORD">
+      <DataType>VARCHAR(2000)|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+    </column>
+    <column id="515" parent="485" name="TOTAL_EVENTS_ATTENDED">
+      <DataType>INTEGER|0s</DataType>
+      <Position>6</Position>
+    </column>
+    <column id="516" parent="485" name="POINTS">
+      <DataType>INTEGER|0s</DataType>
+      <Position>7</Position>
+    </column>
+    <column id="517" parent="485" name="IMAGE_LINK_SRC">
+      <DataType>VARCHAR(50000)|0s</DataType>
+      <Position>8</Position>
+    </column>
+    <index id="518" parent="485" name="sqlite_autoindex_students_1">
+      <ColNames>ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <key id="519" parent="485">
+      <ColNames>ID</ColNames>
+      <Primary>1</Primary>
+      <UnderlyingIndexName>sqlite_autoindex_students_1</UnderlyingIndexName>
+    </key>
   </database-model>
 </dataSource>

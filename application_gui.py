@@ -105,11 +105,12 @@ class ui_main_window(object):
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
         self.app_logo.move(20, 10)
-        self.app_logo.setPixmap(
-            QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
         self.app_logo.setScaledContents(True)
         self.app_logo.show()
 
+        self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1000, -140, 300, 300)
+        self.log_out_button.setFlat(True)
 
         if sending_button == "student_login_button":
             self.setup_student_page()
@@ -172,7 +173,7 @@ class ui_main_window(object):
         self.day_events_label.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
 
-        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20, 485, 780, 200)
+        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", "vertical_layout", 20, 485, 780, 200)
         self.upcoming_events = self.upcoming_events_objects[0]
         self.upcoming_events_layout = self.upcoming_events_objects[1]
         self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
@@ -191,8 +192,7 @@ class ui_main_window(object):
         self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
         self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
-        # maps tab
-        # Title
+        # Maps Tab
         self.maps_label = self.create_QLabel("maps_tab", "maps_label", "Maps",
                                              20, 20, 600, 50)
         self.maps_line = self.create_QFrame("maps_tab", "maps_line", "HLine",
@@ -205,7 +205,7 @@ class ui_main_window(object):
         # self.map_container.setEnabled(True)
         # self.map_container.setFlat(True)
 
-        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", 850, 85, 350, 600)
+        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", "vertical_layout", 850, 85, 350, 600)
         self.maps = self.maps_objects[0]
         self.maps_layout = self.maps_objects[1]
         self.maps_scrollArea = self.maps_objects[2]
@@ -237,101 +237,100 @@ class ui_main_window(object):
         self.maps_scrollArea.setWidget(self.maps)
         self.maps_scrollArea.verticalScrollBar().setSliderPosition(0)
 
-        # self.maps_page_label = self.create_QLabel("maps_tab", "maps_page_label",
-        #                                           "  Events", 520, 55, 50, 30)
-
-        # Title
+        # Points Tab
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
-        self.points_title_line = self.create_QFrame("points_tab", "points_title_line",
-                                                    "HLine",
-                                                    10, 65, 600, 6)
-
-        # Body
-        self.personal_points_label = self.create_QLabel("points_tab", "personal_points_label", "  Personal Points", 20,
-                                                        80, 300, 30)
+        self.points_title_line = self.create_QFrame("points_tab", "points_title_line", "HLine", 10, 65, 600, 6)
+        self.personal_points_label = self.create_QLabel("points_tab", "personal_points_label", "  Personal Points", 20, 80, 300, 30)
         self.personal_points = self.create_QLineEdit("points_tab", "personal_points", True, 20, 110, 300, 300)
-
-        self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard",
-                                                           350, 80, 450, 30)
+        self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
         self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", True, 350, 110, 450, 300)
 
         # Rewards Tab
-        # Title
-
-        self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards",
-                                                20, 20, 600, 50)
-        self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine",
-                                                     10, 65, 600, 6)
-
-        # Body
-        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label",
-                                                             "  Your Points", 20, 80, 300, 30)
-        self.rewards_my_points = self.create_QLineEdit("rewards_tab", "rewards_my_points", True,
-                                                          50, 110, 100, 25)
-        self.reward_first_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
-                                                     50, 140, 200, 20)
-        self.reward_second_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
-                                                     280, 140, 200, 20)
-        self.reward_third_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
-                                                     510, 140, 200, 20)
-        self.reward_fourth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
-                                                     740, 140, 200, 20)
-        self.reward_fifth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
-                                                     970, 140, 200, 20)
-        self.reward_sixth_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
-                                                     50, 430, 200, 20)
-        self.reward_seventh_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
-                                                      280, 430, 200, 20)
-        self.reward_eighth_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
-                                                     510, 430, 200, 20)
-        self.reward_nineth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
-                                                      740, 430, 200, 20)
-        self.reward_tenth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
-                                                     970, 430, 200, 20)
-
-        self.reward_first = self.create_QLabel("rewards_tab", "reward_first", "", 50, 150, 200, 200)
-        self.reward_first.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_second = self.create_QLabel("rewards_tab", "reward_second", "", 280, 150, 200, 200)
-        self.reward_second.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_third = self.create_QLabel("rewards_tab", "reward_third", "", 510, 150, 200, 200)
-        self.reward_third.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_fourth = self.create_QLabel("rewards_tab", "reward_fourth", "", 740, 150, 200, 200)
-        self.reward_fourth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_fifth = self.create_QLabel("rewards_tab", "reward_fifth", "", 970, 150, 200, 200)
-        self.reward_fifth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_sixth = self.create_QLabel("rewards_tab", "reward_sixth", "", 50, 440, 200, 200)
-        self.reward_sixth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_seventh = self.create_QLabel("rewards_tab", "reward_seventh", "", 280, 440, 200, 200)
-        self.reward_seventh.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_eighth = self.create_QLabel("rewards_tab", "reward_eighth", "", 510, 440, 200, 200)
-        self.reward_eighth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_nineth = self.create_QLabel("rewards_tab", "reward_nineth", "", 740, 440, 200, 200)
-        self.reward_nineth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        self.reward_tenth = self.create_QLabel("rewards_tab", "reward_tenth", "", 970, 440, 200, 200)
-        self.reward_tenth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-
-
-        self.reward_One_Button = self.create_QPushButton("rewards_tab", "reward_One_Button", "300pts - Click to Redeem", "None",
-                                                         50, 340, 200, 50)
-        self.reward_Two_Button = self.create_QPushButton("rewards_tab", "reward_Two_Button", "300pts - Click to Redeem", "None",
-                                                         280, 340, 200, 50)
-        self.reward_Three_Button = self.create_QPushButton("rewards_tab", "reward_Three_Button", "300pts - Click to Redeem", "None",
-                                                         510, 340, 200, 50)
-        self.reward_Four_Button = self.create_QPushButton("rewards_tab", "reward_Four_Button", "500pts - Click to Redeem", "None",
-                                                         740, 340, 200, 50)
-        self.reward_Five_Button = self.create_QPushButton("rewards_tab", "reward_Five_Button", "500pts - Click to Redeem", "None",
-                                                         970, 340, 200, 50)
-        self.reward_Six_Button = self.create_QPushButton("rewards_tab", "reward_Six_Button", "750pts - Click to Redeem", "None",
-                                                         50, 630, 200, 50)
-        self.reward_Seven_Button = self.create_QPushButton("rewards_tab", "reward_Seven_Button", "1000pts - Click to Redeem", "None",
-                                                         280, 630, 200, 50)
-        self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "1500pts - Click to Redeem",
-                                                           "None",
-                                                           510, 630, 200, 50)
-        self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "3000pts - Click to Redeem", "None",740, 630, 200, 50)
-        self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "5000pts - Click to Redeem", "None", 970, 630, 200, 50)
+        # self.reward_first_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
+        #                                              50, 140, 200, 20)
+        # self.reward_second_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
+        #                                              280, 140, 200, 20)
+        # self.reward_third_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
+        #                                              510, 140, 200, 20)
+        # self.reward_fourth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
+        #                                              740, 140, 200, 20)
+        # self.reward_fifth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
+        #                                              970, 140, 200, 20)
+        # self.reward_sixth_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
+        #                                              50, 430, 200, 20)
+        # self.reward_seventh_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
+        #                                               280, 430, 200, 20)
+        # self.reward_eighth_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
+        #                                              510, 430, 200, 20)
+        # self.reward_nineth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
+        #                                               740, 430, 200, 20)
+        # self.reward_tenth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
+        #                                              970, 430, 200, 20)
+        #
+        # self.reward_first = self.create_QLabel("rewards_tab", "reward_first", "", 50, 150, 200, 200)
+        # self.reward_first.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_second = self.create_QLabel("rewards_tab", "reward_second", "", 280, 150, 200, 200)
+        # self.reward_second.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_third = self.create_QLabel("rewards_tab", "reward_third", "", 510, 150, 200, 200)
+        # self.reward_third.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_fourth = self.create_QLabel("rewards_tab", "reward_fourth", "", 740, 150, 200, 200)
+        # self.reward_fourth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_fifth = self.create_QLabel("rewards_tab", "reward_fifth", "", 970, 150, 200, 200)
+        # self.reward_fifth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_sixth = self.create_QLabel("rewards_tab", "reward_sixth", "", 50, 440, 200, 200)
+        # self.reward_sixth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_seventh = self.create_QLabel("rewards_tab", "reward_seventh", "", 280, 440, 200, 200)
+        # self.reward_seventh.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_eighth = self.create_QLabel("rewards_tab", "reward_eighth", "", 510, 440, 200, 200)
+        # self.reward_eighth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_nineth = self.create_QLabel("rewards_tab", "reward_nineth", "", 740, 440, 200, 200)
+        # self.reward_nineth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        # self.reward_tenth = self.create_QLabel("rewards_tab", "reward_tenth", "", 970, 440, 200, 200)
+        # self.reward_tenth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
+        #
+        #
+        # self.reward_One_Button = self.create_QPushButton("rewards_tab", "reward_One_Button", "300pts - Click to Redeem", "None",
+        #                                                  50, 340, 200, 50)
+        # self.reward_Two_Button = self.create_QPushButton("rewards_tab", "reward_Two_Button", "300pts - Click to Redeem", "None",
+        #                                                  280, 340, 200, 50)
+        # self.reward_Three_Button = self.create_QPushButton("rewards_tab", "reward_Three_Button", "300pts - Click to Redeem", "None",
+        #                                                  510, 340, 200, 50)
+        # self.reward_Four_Button = self.create_QPushButton("rewards_tab", "reward_Four_Button", "500pts - Click to Redeem", "None",
+        #                                                  740, 340, 200, 50)
+        # self.reward_Five_Button = self.create_QPushButton("rewards_tab", "reward_Five_Button", "500pts - Click to Redeem", "None",
+        #                                                  970, 340, 200, 50)
+        # self.reward_Six_Button = self.create_QPushButton("rewards_tab", "reward_Six_Button", "750pts - Click to Redeem", "None",
+        #                                                  50, 630, 200, 50)
+        # self.reward_Seven_Button = self.create_QPushButton("rewards_tab", "reward_Seven_Button", "1000pts - Click to Redeem", "None",
+        #                                                  280, 630, 200, 50)
+        # self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "1500pts - Click to Redeem",
+        #                                                    "None",
+        #                                                    510, 630, 200, 50)
+        # self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "3000pts - Click to Redeem", "None",740, 630, 200, 50)
+        # self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "5000pts - Click to Redeem", "None", 970, 630, 200, 50)
 
         # Student Profile Tab
+        self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
+        self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points", 20, 80, 300, 30)
+        self.rewards_my_points = self.create_QLineEdit("rewards_tab", "rewards_my_points", True, 50, 110, 100, 25)
+        self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 150, 1180, 540)
+        self.rewards = self.rewards_tab_objects[0]
+        self.rewards_layout = self.rewards_tab_objects[1]
+        self.rewards_events_scrollArea = self.rewards_tab_objects[2]
+
+        for i in range(4):
+            for j in range(3):
+                self.event_object = QtWidgets.QGroupBox(self.rewards)
+                self.event_object.setFixedSize(367, 350)
+                self.event_object.setLayout(QtWidgets.QGridLayout())
+                self.label = self.create_QLabel("event", "test", "   Event Name",0, 0, 100, 30)
+                self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
+                self.rewards_layout.addWidget(self.event_object, i, j)
+        self.rewards_events_scrollArea.setWidget(self.rewards)
+        self.rewards_events_scrollArea.verticalScrollBar().setSliderPosition(0)
+
+        # Profile Tab
         self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label", "My Profile", 20, 20, 600, 50)
         self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line", "HLine", 10, 65, 600, 6)
         self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data", True,20, 110, 300, 300)
@@ -632,7 +631,7 @@ class ui_main_window(object):
 
         return self.QTextEdit
 
-    def create_QScrollArea(self, container, object_name, x_coordinate, y_coordinate, fixed_width, min_length):
+    def create_QScrollArea(self, container, object_name, layout, x_coordinate, y_coordinate, fixed_width, min_length):
         self.scrollArea_object_container = QtWidgets.QWidget()
         if container == "upcoming_events_tab":
             self.QScrollArea = QtWidgets.QScrollArea(self.upcoming_events_tab)
@@ -640,14 +639,22 @@ class ui_main_window(object):
             self.QScrollArea = QtWidgets.QScrollArea(self.dashboard_tab)
         elif container == "maps_tab":
             self.QScrollArea = QtWidgets.QScrollArea(self.maps_tab)
+        elif container == "rewards_tab":
+            self.QScrollArea = QtWidgets.QScrollArea(self.rewards_tab)
         self.QScrollArea.setFixedWidth(fixed_width)
         self.QScrollArea.setFixedHeight(min_length)
         self.QScrollArea.move(x_coordinate, y_coordinate)
         self.QScrollArea.setWidgetResizable(True)
         self.QScrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.scroll_vertical_layout = QtWidgets.QVBoxLayout(self.scrollArea_object_container)
-        self.scrollArea_object_container.setLayout(self.scroll_vertical_layout)
-        return [self.scrollArea_object_container, self.scroll_vertical_layout, self.QScrollArea]
+        if layout == "vertical_layout":
+            self.scroll_vertical_layout = QtWidgets.QVBoxLayout(self.scrollArea_object_container)
+            self.scrollArea_object_container.setLayout(self.scroll_vertical_layout)
+            return [self.scrollArea_object_container, self.scroll_vertical_layout, self.QScrollArea]
+        elif layout == "grid_layout":
+            self.scroll_grid_layout = QtWidgets.QGridLayout(self.scrollArea_object_container)
+            self.scrollArea_object_container.setLayout(self.scroll_grid_layout)
+            self.QScrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
+            return [self.scrollArea_object_container, self.scroll_grid_layout, self.QScrollArea]
 
     def create_QFrame(self, container, object_name, orientation, x_coordinate, y_coordinate, width, length):
         if container == "login_widget_container":
@@ -686,6 +693,8 @@ class ui_main_window(object):
         # Creates and associates QLabel to specified container
         if container == "login_widget_container":
             self.QPushButton = QtWidgets.QPushButton(self.login_widget_container)
+        elif container == "central_widget":
+            self.QPushButton = QtWidgets.QPushButton(self.central_widget)
         elif container == "main_window":
             self.QPushButton = QtWidgets.QPushButton(main_window)
         elif container == "student_profile_tab":
@@ -694,7 +703,8 @@ class ui_main_window(object):
         elif container == "rewards_tab":
             self.QPushButton = QtWidgets.QPushButton(self.rewards_tab)
         self.QPushButton.setObjectName(object_name)
-        self.QPushButton.setText(text)
+        if text != "None":
+            self.QPushButton.setText(text)
         if icon != "None":
             self.QPushButton.setIcon(QIcon(icon))
         # Geometry of QLineEdit is specified by the passed function parameters
