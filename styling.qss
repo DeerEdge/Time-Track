@@ -62,7 +62,7 @@ QLabel#intro_label {
 }
 
 QWidget#central_widget {
-    background-color: rgb(214, 19, 19);
+    background-color: rgb(41, 89, 143);
 }
 
 QWidget#tab_widget {

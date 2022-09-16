@@ -1,27 +1,24 @@
 # Import PyQt5's widgets to be used throughout the program
-from datetime import time
-import time
-
-from PyQt5.QtCore import Qt,pyqtSignal, QDate
+from PyQt5.QtCore import Qt, pyqtSignal, QDate, QRunnable, pyqtSlot, QThreadPool
 from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
 from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
+from datetime import time
+
 # folium v0.12.1 - Used to display geographical data
 import folium
+import time
 import io
+import os
 import sqlite3
-import pyautogui
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
-# print("Connected to SQLite")
-
 sqlite_select_query = """SELECT * from events"""
 cursor.execute(sqlite_select_query)
 events = cursor.fetchall()
 for event in events:
-
     print(event)
 cursor.close()
 
@@ -122,8 +119,9 @@ class ui_main_window(object):
         main_window.setCentralWidget(self.central_widget)
 
     def setup_student_page(self):
-        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy",
-                                              200, 10, 600, 50)
+        global dashboard_slideshow
+        global slideshow_title
+        global slideshow_description
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
@@ -144,85 +142,35 @@ class ui_main_window(object):
         self.tab_widget.addTab(self.rewards_tab, "Rewards")
         self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
 
-        # Dashboard
+        # Dashboard Tab
+        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy", 200, 10, 600, 50)
 
-        # Title
-        self.dashboard_label = self.create_QLabel("dashboard_tab", "dashboard_label", "Dashboard",
-                                                  20, 20, 600, 50)
-        self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine",
-                                                       10, 65, 600, 6)
+        self.dashboard_label = self.create_QLabel("dashboard_tab", "dashboard_label", "Dashboard", 20, 20, 600, 50)
+        self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 600, 6)
+        dashboard_slideshow = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler", 20, 90, 840, 480)
+        dashboard_slideshow.setScaledContents(True)
+        slideshow_title = self.create_QLabel("dashboard_tab", "slideshow_title", "", 20, 580, 840, 20)
+        slideshow_title.setWordWrap(True)
+        slideshow_description = self.create_QLabel("dashboard_tab", "slideshow_description", "", 20, 600, 840, 100)
+        slideshow_description.setWordWrap(True)
+        slideshow_description.setAlignment(QtCore.Qt.AlignTop)
+        self.threadpool = QThreadPool()
+        slideshow = Slideshow()
+        self.threadpool.start(slideshow)
+        self.dashboard_separator_line = self.create_QFrame("dashboard_tab", "dashboard_separator_line", "VLine", 875, 40, 6, 630)
 
-        self.dashboard_slider = self.create_Horizontal_QSlider("dashboard_tab", 60, 200, 100, 20)
+        # Upcoming Events Tab
+        self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label", "Upcoming Events", 20, 20, 600, 50)
+        self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line", "HLine", 10, 65, 600, 6)
 
-        self.dashboard_slider_label = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler",
-                                                         50, 400, 300, 300)
-        self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
-        self.dashboard_slider.valueChanged[int].connect(self.changed_Value)
-
-        # self.dashboard_announcement_label = self.create_QLabel("dashboard_tab", "dashboard_announcement_label",
-        #                                                        "  Announcements", 20, 80, 560, 30)
-        # self.dashboard_announcement_objects = self.create_QScrollArea("dashboard_tab",
-        #                                                                  "dashboard_announcements_QScrollArea", 20,
-        #                                                                  110, 560, 340)
-        # self.dashboard_announcement_events = self.dashboard_announcement_objects[0]
-        # self.dashboard_announcement_events_layout = self.dashboard_announcement_objects[1]
-        # self.dashboard_announcement_events_scrollArea = self.dashboard_announcement_objects[2]
-        #
-        # for i in range(6):
-        #     self.event_object = QtWidgets.QGroupBox(self.dashboard_announcement_events)
-        #     self.event_object.setFixedSize(750, 50)
-        #     self.event_object.setLayout(QtWidgets.QVBoxLayout())
-        #
-        #     self.label = self.create_QLabel("event", "test", "event",
-        #                                         0, 0, 400, 30)
-        #     self.dashboard_announcement_events_layout.addWidget(self.event_object)
-        # self.dashboard_announcement_events_scrollArea.setWidget(self.dashboard_announcement_events)
-        # self.dashboard_announcement_events_scrollArea.verticalScrollBar().setSliderPosition(0)
-        #
-        # self.dashboard_important_events = self.create_QLineEdit("dashboard_tab", "dashboard_upcoming_events", True,
-        #                                                        600, 110, 200, 340)
-        # self.dashboard_important_events_label = self.create_QLabel("dashboard_tab",
-        #                                                           "dashboard_upcoming_events_label",
-        #                                                           "  Important Events", 600, 80, 200, 30)
-        #
-        # self.dashboard_upcoming_events_objects = self.create_QScrollArea("dashboard_tab", "dashboard_upcoming_events_QScrollArea", 20,
-        #                                                        485, 780, 200)
-        # self.dashboard_upcoming_events = self.dashboard_upcoming_events_objects[0]
-        # self.dashboard_upcoming_events_layout = self.dashboard_upcoming_events_objects[1]
-        # self.dashboard_upcoming_events_scrollArea = self.dashboard_upcoming_events_objects[2]
-        # self.dashboard_upcoming_events_label = self.create_QLabel("dashboard_tab", "dashboard_important_events_label",
-        #                                                           "  Upcoming Events", 20, 470, 780, 30)
-        #
-        # for i in range(6):
-        #     self.event_object = QtWidgets.QGroupBox(self.dashboard_upcoming_events)
-        #     self.event_object.setFixedSize(750, 50)
-        #     self.event_object.setLayout(QtWidgets.QVBoxLayout())
-        #     self.label = self.create_QLabel("event", "test", "   Event Name",
-        #                                            0, 0, 100, 30)
-        #     self.dashboard_upcoming_events_layout.addWidget(self.event_object)
-        # self.dashboard_upcoming_events_scrollArea.setWidget(self.dashboard_upcoming_events)
-        # self.dashboard_upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
-
-        # Upcoming Events
-
-        # Title
-        self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label",
-                                                        "Upcoming Events",
-                                                        20, 20, 600, 50)
-        self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line",
-                                                             "HLine", 10, 65, 600, 6)
-
-        # Body
         self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 350, 350)
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
 
-        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event",
-                                                   400, 80, 400, 30)
+        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 400, 80, 400, 30)
         self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
         current_day = self.student_calendar.selectedDate().toString()
         self.day_events_label.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
-
 
         self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", 20, 485, 780, 200)
         self.upcoming_events = self.upcoming_events_objects[0]
@@ -285,6 +233,7 @@ class ui_main_window(object):
         webView.setHtml(data.getvalue().decode())
         # Adds the map data to the QGroupBox layout
         self.map_frame.addWidget(webView)
+
         self.maps_scrollArea.setWidget(self.maps)
         self.maps_scrollArea.verticalScrollBar().setSliderPosition(0)
 
@@ -379,30 +328,15 @@ class ui_main_window(object):
         self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "1500pts - Click to Redeem",
                                                            "None",
                                                            510, 630, 200, 50)
-        self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "3000pts - Click to Redeem",
-                                                          "None",
-                                                          740, 630, 200, 50)
-        self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "5000pts - Click to Redeem",
-                                                          "None",
-                                                          970, 630, 200, 50)
+        self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "3000pts - Click to Redeem", "None",740, 630, 200, 50)
+        self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "5000pts - Click to Redeem", "None", 970, 630, 200, 50)
 
-        # Student Profile
-        # Title
-        self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label",
-                                                        "My Profile",
-                                                        20, 20, 600, 50)
-        self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line",
-                                                             "HLine",
-                                                             10, 65, 600, 6)
-        # Body
-        self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data", True,
-                                                          20, 110, 300, 300)
-        self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label",
-                                                             "  data", 20, 80, 300, 30)
-        # Button
-        self.student_profile_settings_button = self.create_QPushButton("main_window",
-                                                                       "student_profile_settings_button", "Press me",
-                                                                       "None", 700, 10, 100, 40)
+        # Student Profile Tab
+        self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label", "My Profile", 20, 20, 600, 50)
+        self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line", "HLine", 10, 65, 600, 6)
+        self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data", True,20, 110, 300, 300)
+        self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label", "  data", 20, 80, 300, 30)
+        self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
 
         self.tab_widget.show()
@@ -498,40 +432,13 @@ class ui_main_window(object):
                     if str(event_day) == str(events_day):
                         self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
+
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
         new_date = selected_date.split()
         self.check_events_on_day()
         # self.day_events.setText("Events on " + selected_date[4:] + ":")
         # self.day_events.setAlignment(Qt.AlignTop)
-  # creates a scroll bar
-
-    def create_Horizontal_QSlider(self, container, x_coordinate, y_coordinate, width, length):
-        if container == "dashboard_tab":
-            self.QSlider = QtWidgets.QSlider(Qt.Horizontal, self.dashboard_tab)
-        self.QSlider.setGeometry(x_coordinate, y_coordinate, width, length)
-        return self.QSlider
-
-  # changes the picture presented
-    def changed_Value(self, value):
-        counter = 0
-        value = self.dashboard_slider.value()
-        self.dashboard_slider.setValue(counter)
-        print(value)
-        while (counter <= 100):
-            print(counter)
-            self.dashboard_slider.setValue(counter)
-            time.sleep(1)
-            counter += 10
-
-        if value < 25:
-            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/hillcresetLogo.png'))
-        elif value < 50 and value > 25:
-            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest Huskies.png'))
-        else:
-            self.dashboard_slider_label.setPixmap(QPixmap('Application Pictures and Icons/Hillcrest silly.png'))
-
-
 
     def show_event_locations(self, user):
         if user == "student":
@@ -592,6 +499,9 @@ class ui_main_window(object):
                 document = self.day_events.document()
                 cursor = QTextCursor(document)
                 cursor.insertImage(picture)
+
+    # Widget Creation Functions
+    # def create_folium_map(self):
 
     def create_QCheckBox(self, container, x_coordinate, y_coordinate, width, length):
         if container == "dashboard_tab":
@@ -792,6 +702,41 @@ class ui_main_window(object):
         self.QPushButton.move(x_coordinate, y_coordinate)
         return self.QPushButton
 
+    def create_horizontal_QSlider(self, container, x_coordinate, y_coordinate, width, length):
+        if container == "dashboard_tab":
+            self.QSlider = QtWidgets.QSlider(Qt.Horizontal, self.dashboard_tab)
+        self.QSlider.setGeometry(x_coordinate, y_coordinate, width, length)
+        return self.QSlider
+
+class Slideshow(QRunnable):
+    @pyqtSlot()
+    def run(self) -> None:
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+
+        dir_path = r'Announcement Pictures'
+        picture_list = []
+
+        for path in os.listdir(dir_path):
+            if os.path.isfile(os.path.join(dir_path, path)):
+                picture_list.append(path)
+
+        index = 0
+        while True:
+            dashboard_slideshow.setPixmap(QPixmap("Announcement Pictures/" + picture_list[index]))
+            rowidnum = picture_list[index][0:1]
+            cursor.execute("SELECT rowid, * FROM slideshow WHERE id = " + rowidnum)
+            row = cursor.fetchall()
+
+            slideshow_title.setText(row[0][2])
+            slideshow_description.setText(row[0][3])
+            time.sleep(3)
+            index += 1
+            if index == len(picture_list):
+                index = 0
+
+        cursor.close()
+
 class TabBar(QTabBar):
     def tabSizeHint(self, index):
         self.setGeometry(0, 120, 180, 380)
@@ -834,7 +779,7 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Fusion')
     # Read the css file and apply the stylesheet
-    with open("styling.css", "r") as f:
+    with open("styling.qss", "r") as f:
         _style = f.read()
         app.setStyleSheet(_style)
     # A main window is created for the application
