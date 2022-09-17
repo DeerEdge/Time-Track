@@ -7,6 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 from datetime import time
+from folium.plugins import MarkerCluster
 
 # folium v0.12.1 - Used to display geographical data
 import folium
@@ -254,13 +255,11 @@ class ui_main_window(object):
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
         coordinate = (40.617847198627, -111.86923371648)
         global map
-        map = folium.Map(zoom_start=15, location=coordinate)
-
+        map = folium.Map(zoom_start=12, location=coordinate, control_scale=True)
         folium.Marker(
             location=coordinate,
             icon=folium.Icon(color="darkgreen", icon='user'),
         ).add_to(map)
-
         self.show_event_locations("student")
         # Save map data to data object
         data = io.BytesIO()
@@ -448,9 +447,10 @@ class ui_main_window(object):
         if user == "student":
             for event in events:
                 event_coordinate = (event[9], event[10])
+                marker_cluster = MarkerCluster().add_to(map)
                 folium.Marker(location=event_coordinate,
                               icon=folium.Icon(color="red", icon='circle', prefix='fa'),
-                              popup=(folium.Popup(f'<h6><b>{event[1]}</b></h6>' + "\n" + f'<h6><b>{event[2]}</b></h6>', show=True, min_width=20)),).add_to(map)
+                              popup=(folium.Popup(f'<h6><b>{event[1]}</b></h6>' + "\n" + f'<h6><b>{event[2]}</b></h6>', show=True, min_width=20)),).add_to(marker_cluster)
                 self.event_object = QtWidgets.QGroupBox(self.maps)
                 self.event_object.setFixedSize(250, 100)
                 self.event_object.setLayout(QtWidgets.QVBoxLayout())
