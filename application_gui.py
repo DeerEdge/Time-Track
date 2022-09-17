@@ -137,7 +137,7 @@ class ui_main_window(object):
             cursor.close()
 
             for user in admin_rows:
-                if self.student_username.text() == user[0][0] and self.student_password.text() == user[0][1]:
+                if self.administrator_username.text() == user[0] and self.administrator_password.text() == user[1]:
                     self.login_central_widget.deleteLater()
 
                     main_window.setFixedSize(1400, 800)
