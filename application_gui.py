@@ -224,8 +224,7 @@ class ui_main_window(object):
         self.upcoming_events = self.upcoming_events_objects[0]
         self.upcoming_events_layout = self.upcoming_events_objects[1]
         self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
-        self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_page_label",
-                                                             "  Upcoming Events", 20, 455, 780, 30)
+        self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_page_label", "  Upcoming Events", 20, 455, 780, 30)
 
         # Example of upcoming events
         for i in range(6):
@@ -246,7 +245,7 @@ class ui_main_window(object):
         self.map_container.setGeometry(QtCore.QRect(20, 80, 800, 600))
         # self.map_container.setEnabled(True)
         # self.map_container.setFlat(True)
-        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", "vertical_layout", 850, 85, 350, 600)
+        self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", "vertical_layout", 835, 85, 360, 595)
         self.maps = self.maps_objects[0]
         self.maps_layout = self.maps_objects[1]
         self.maps_scrollArea = self.maps_objects[2]
@@ -299,13 +298,13 @@ class ui_main_window(object):
         # Column count
         self.tableWidget.setColumnCount(2)
 
-        # self.tableWidget.setItem(0, 0, QTableWidgetItem("Name"))
-        # self.tableWidget.setItem(0, 1, QTableWidgetItem("Points"))
-        # for a, b, c in student_rows:
-        #     a, b, c = zip(*student_rows)
-        #     d = list(zip(b, a))
-        #     self.tableWidget.setItem(20, 0, QTableWidgetItem(str(d)))
-        #     self.tableWidget.setItem(20, 1, QTableWidgetItem(str(c)))
+        self.tableWidget.setItem(0, 0, QTableWidgetItem("Name"))
+        self.tableWidget.setItem(0, 1, QTableWidgetItem("Points"))
+        for a, b, c in student_rows:
+            a, b, c = zip(*student_rows)
+            d = list(zip(b, a))
+            self.tableWidget.setItem(20, 0, QTableWidgetItem(str(d)))
+            self.tableWidget.setItem(20, 1, QTableWidgetItem(str(c)))
 
 
         # Rewards Tab
@@ -509,10 +508,13 @@ class ui_main_window(object):
                               icon=folium.Icon(color="red", icon='circle', prefix='fa'),
                               popup=(folium.Popup(f'<h6><b>{event[1]}</b></h6>' + "\n" + f'<h6><b>{event[2]}</b></h6>', show=True, min_width=20)),).add_to(marker_cluster)
                 self.event_object = QtWidgets.QGroupBox(self.maps)
-                self.event_object.setFixedSize(250, 100)
+                self.event_object.setFixedSize(325, 100)
                 self.event_object.setLayout(QtWidgets.QVBoxLayout())
-                self.label = self.create_QLabel("event", str(event[0]), ("   " + event[1] + ", " + event[2]), 0, 0, 250, 70)
-                self.label.setWordWrap(True)
+                self.title = self.create_QLabel("event", "title", (event[1] + "\n" + event[2]), 10, 10, 305, 60)
+                self.title.setWordWrap(True)
+                self.date = self.create_QLabel("event", "date", (str(event[7]) + "/" + str(event[8]) + "/" + str(event[6])), 240, 0, 80, 60)
+                self.description = self.create_QLabel("event", "description", (event[3]), 10, 60, 305, 40)
+                self.description.setWordWrap(True)
                 self.maps_layout.addWidget(self.event_object)
 
     def check_events_on_day(self):
