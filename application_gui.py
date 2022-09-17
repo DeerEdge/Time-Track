@@ -95,6 +95,7 @@ class ui_main_window(object):
         self.administrator_login_button.clicked.connect(self.setup_portal)
 
     def setup_portal(self):
+
         sending_button = self.login_widget_container.sender().objectName()
         self.login_central_widget.deleteLater()
 
@@ -383,6 +384,13 @@ class ui_main_window(object):
 
         self.tab_widget.show()
 
+    def student_upcoming_events_calendar(self):
+        selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
+        new_date = selected_date.split()
+        self.check_events_on_day()
+        # self.day_events.setText("Events on " + selected_date[4:] + ":")
+        # self.day_events.setAlignment(Qt.AlignTop)
+
     def admin_events_calendar(self):
         selected_date = self.admin_events_tab.sender().selectedDate().toString()
         new_date = selected_date.split()
@@ -425,6 +433,10 @@ class ui_main_window(object):
                     if str(event_day) == str(events_day):
                         self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
+    # Logic Functions
+    def check_if_user_exists(self):
+
+
     def return_to_login_screen(self):
         global kill_thread_boolean
         kill_thread_boolean = True
@@ -432,14 +444,6 @@ class ui_main_window(object):
         main_window.setFixedSize(800, 500)
         self.setup_login_screen(main_window)
         main_window.setCentralWidget(self.login_central_widget)
-
-    # Logic Functions
-    def student_upcoming_events_calendar(self):
-        selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
-        new_date = selected_date.split()
-        self.check_events_on_day()
-        # self.day_events.setText("Events on " + selected_date[4:] + ":")
-        # self.day_events.setAlignment(Qt.AlignTop)
 
     def show_event_locations(self, user):
         if user == "student":
