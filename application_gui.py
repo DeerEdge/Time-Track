@@ -434,7 +434,7 @@ class ui_main_window(object):
                         self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
     # Logic Functions
-    def check_if_user_exists(self):
+    # def check_if_user_exists(self):
 
 
     def return_to_login_screen(self):
