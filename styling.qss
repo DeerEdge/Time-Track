@@ -25,6 +25,10 @@ QPushButton#login_screen_forgot_password:pressed {
     color: blue;
 }
 
+QLabel#incorrect_login{
+    color: red;
+}
+
 QPushButton#student_login_button {
     border: red;
     color: #FFFFFF;

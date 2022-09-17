@@ -56,72 +56,114 @@ class ui_main_window(object):
         self.login_screen_logo.show()
 
         # Student Login
-        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145,
-                                                      80, 200, 50)
-        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID",
-                                                         80, 122, 200, 50)
-        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80, 160,
-                                                      240, 30)
-        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",
-                                                         80, 187, 200, 50)
-        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80, 225,
-                                                      240, 30)
-        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
-                                                               "Forgot password?", "None", 65, 255, 140, 30)
-        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login", "None",
-                                                            80, 290, 240, 30)
+        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145, 80, 200, 50)
+        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID", 80, 122, 200, 50)
+        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80, 160, 240, 30)
+        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password", 80, 187, 200, 50)
+        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80, 225, 240, 30)
+        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password", "Forgot password?", "None", 65, 255, 140, 30)
+        self.student_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login", "Email ID and/or Password Icorrect. Please enter correct credentials.", 82, 275, 240, 50)
+        self.student_incorrect_login.setWordWrap(True)
+        self.student_incorrect_login.hide()
+        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login", "None", 80, 290, 240, 30)
         self.student_login_button.clicked.connect(self.setup_portal)
+        self.student_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 190, 310, 40, 50)
+        self.student_create_account = self.create_QPushButton("login_widget_container", "student_login_button", "Create a Student Account", "None", 80, 350, 240, 30)
 
         # Line divider between logins
-        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399,
-                                                     40, 1, 410)
+        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399, 40, 1, 410)
 
         # Administrator Login
-        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles",
-                                                            "Administrator Login",
-                                                            525, 80, 200, 50)
-        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID",
-                                                         480, 122, 200, 50)
-        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 160,
-                                                      240, 30)
-        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",
-                                                         480, 187, 200, 50)
-        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 225,
-                                                      240, 30)
-        self.administrator_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
-                                                               "Forgot password?", "None", 465, 255, 140, 30)
-        self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None",
-                                                            480, 290, 240, 30)
+        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles", "Administrator Login", 525, 80, 200, 50)
+        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID", 480, 122, 200, 50)
+        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 160, 240, 30)
+        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password", 480, 187, 200, 50)
+        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 225, 240, 30)
+        self.administrator_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password", "Forgot password?", "None", 465, 255, 140, 30)
+        self.administrator_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login", "Email ID and/or Password Icorrect. Please enter correct credentials.", 482, 275, 240, 50)
+        self.administrator_incorrect_login.setWordWrap(True)
+        self.administrator_incorrect_login.hide()
+        self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None", 480, 290, 240, 30)
         self.administrator_login_button.clicked.connect(self.setup_portal)
+        self.administrator_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 590, 310, 40, 50)
+        self.administrator_create_account = self.create_QPushButton("login_widget_container", "administrator_login_button", "Create an Administrator Account", "None", 480, 350, 240, 30)
 
     def setup_portal(self):
-
         sending_button = self.login_widget_container.sender().objectName()
-        self.login_central_widget.deleteLater()
-
-        main_window.setFixedSize(1400, 800)
-        self.central_widget = QtWidgets.QWidget(main_window)
-        self.central_widget.setObjectName("central_widget")
-        self.central_widget.resize(1400, 800)
-
-        self.app_logo = QtWidgets.QLabel(self.central_widget)
-        self.app_logo.setFixedSize(140, 140)
-        self.app_logo.move(20, 10)
-        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
-        self.app_logo.setScaledContents(True)
-        self.app_logo.show()
-
-        self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
-        self.log_out_button.setIconSize(QtCore.QSize(150, 150))
-        self.log_out_button.setFlat(True)
-        self.log_out_button.clicked.connect(self.return_to_login_screen)
-
         if sending_button == "student_login_button":
-            self.setup_student_page()
-        else:
-            self.setup_admin_page()
+            sqliteConnection = sqlite3.connect('identifier.sqlite')
+            cursor = sqliteConnection.cursor()
 
-        main_window.setCentralWidget(self.central_widget)
+            cursor.execute("SELECT EMAIL_ADDRESS, PASSWORD FROM students")
+            student_rows = cursor.fetchall()
+            cursor.close()
+
+            for user in student_rows:
+                if self.student_username.text() == user[0] and self.student_password.text() == user[1]:
+                    self.login_central_widget.deleteLater()
+
+                    main_window.setFixedSize(1400, 800)
+                    self.central_widget = QtWidgets.QWidget(main_window)
+                    self.central_widget.setObjectName("central_widget")
+                    self.central_widget.resize(1400, 800)
+
+                    self.app_logo = QtWidgets.QLabel(self.central_widget)
+                    self.app_logo.setFixedSize(140, 140)
+                    self.app_logo.move(20, 10)
+                    self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+                    self.app_logo.setScaledContents(True)
+                    self.app_logo.show()
+
+                    self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+                    self.log_out_button.setIconSize(QtCore.QSize(150, 150))
+                    self.log_out_button.setFlat(True)
+                    self.log_out_button.clicked.connect(self.return_to_login_screen)
+
+                    self.setup_student_page()
+                    main_window.setCentralWidget(self.central_widget)
+                    break
+            self.student_login_button.move(80, 320)
+            self.student_or_label.move(190, 340)
+            self.student_create_account.move(80, 380)
+            self.student_incorrect_login.show()
+
+
+        elif sending_button == "administrator_login_button":
+            sqliteConnection = sqlite3.connect('identifier.sqlite')
+            cursor = sqliteConnection.cursor()
+
+            cursor.execute("SELECT EMAIL_ADDRESS, PASSWORD FROM administrators")
+            admin_rows = cursor.fetchall()
+            cursor.close()
+
+            for user in admin_rows:
+                if self.student_username.text() == user[0][0] and self.student_password.text() == user[0][1]:
+                    self.login_central_widget.deleteLater()
+
+                    main_window.setFixedSize(1400, 800)
+                    self.central_widget = QtWidgets.QWidget(main_window)
+                    self.central_widget.setObjectName("central_widget")
+                    self.central_widget.resize(1400, 800)
+
+                    self.app_logo = QtWidgets.QLabel(self.central_widget)
+                    self.app_logo.setFixedSize(140, 140)
+                    self.app_logo.move(20, 10)
+                    self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+                    self.app_logo.setScaledContents(True)
+                    self.app_logo.show()
+
+                    self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+                    self.log_out_button.setIconSize(QtCore.QSize(150, 150))
+                    self.log_out_button.setFlat(True)
+                    self.log_out_button.clicked.connect(self.return_to_login_screen)
+
+                    self.setup_student_page()
+                    main_window.setCentralWidget(self.central_widget)
+                    break
+            self.administrator_login_button.move(480, 320)
+            self.administrator_or_label.move(590, 340)
+            self.administrator_create_account.move(480, 380)
+            self.administrator_incorrect_login.show()
 
     def setup_student_page(self):
         global dashboard_slideshow
@@ -241,70 +283,6 @@ class ui_main_window(object):
         self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", True, 350, 110, 450, 300)
 
         # Rewards Tab
-        # self.reward_first_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
-        #                                              50, 140, 200, 20)
-        # self.reward_second_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
-        #                                              280, 140, 200, 20)
-        # self.reward_third_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
-        #                                              510, 140, 200, 20)
-        # self.reward_fourth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
-        #                                              740, 140, 200, 20)
-        # self.reward_fifth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
-        #                                              970, 140, 200, 20)
-        # self.reward_sixth_label = self.create_QLabel("rewards_tab", "reward_first_label", "School Parking Voucher",
-        #                                              50, 430, 200, 20)
-        # self.reward_seventh_label = self.create_QLabel("rewards_tab", "reward_second_label", "School Parking Voucher",
-        #                                               280, 430, 200, 20)
-        # self.reward_eighth_label = self.create_QLabel("rewards_tab", "reward_third_label", "School Parking Voucher",
-        #                                              510, 430, 200, 20)
-        # self.reward_nineth_label = self.create_QLabel("rewards_tab", "reward_fourth_label", "School Parking Voucher",
-        #                                               740, 430, 200, 20)
-        # self.reward_tenth_label = self.create_QLabel("rewards_tab", "reward_fifth_label", "School Parking Voucher",
-        #                                              970, 430, 200, 20)
-        #
-        # self.reward_first = self.create_QLabel("rewards_tab", "reward_first", "", 50, 150, 200, 200)
-        # self.reward_first.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_second = self.create_QLabel("rewards_tab", "reward_second", "", 280, 150, 200, 200)
-        # self.reward_second.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_third = self.create_QLabel("rewards_tab", "reward_third", "", 510, 150, 200, 200)
-        # self.reward_third.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_fourth = self.create_QLabel("rewards_tab", "reward_fourth", "", 740, 150, 200, 200)
-        # self.reward_fourth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_fifth = self.create_QLabel("rewards_tab", "reward_fifth", "", 970, 150, 200, 200)
-        # self.reward_fifth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_sixth = self.create_QLabel("rewards_tab", "reward_sixth", "", 50, 440, 200, 200)
-        # self.reward_sixth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_seventh = self.create_QLabel("rewards_tab", "reward_seventh", "", 280, 440, 200, 200)
-        # self.reward_seventh.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_eighth = self.create_QLabel("rewards_tab", "reward_eighth", "", 510, 440, 200, 200)
-        # self.reward_eighth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_nineth = self.create_QLabel("rewards_tab", "reward_nineth", "", 740, 440, 200, 200)
-        # self.reward_nineth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        # self.reward_tenth = self.create_QLabel("rewards_tab", "reward_tenth", "", 970, 440, 200, 200)
-        # self.reward_tenth.setPixmap(QPixmap("Application Pictures and Icons/Hillcrest silly.png"))
-        #
-        #
-        # self.reward_One_Button = self.create_QPushButton("rewards_tab", "reward_One_Button", "300pts - Click to Redeem", "None",
-        #                                                  50, 340, 200, 50)
-        # self.reward_Two_Button = self.create_QPushButton("rewards_tab", "reward_Two_Button", "300pts - Click to Redeem", "None",
-        #                                                  280, 340, 200, 50)
-        # self.reward_Three_Button = self.create_QPushButton("rewards_tab", "reward_Three_Button", "300pts - Click to Redeem", "None",
-        #                                                  510, 340, 200, 50)
-        # self.reward_Four_Button = self.create_QPushButton("rewards_tab", "reward_Four_Button", "500pts - Click to Redeem", "None",
-        #                                                  740, 340, 200, 50)
-        # self.reward_Five_Button = self.create_QPushButton("rewards_tab", "reward_Five_Button", "500pts - Click to Redeem", "None",
-        #                                                  970, 340, 200, 50)
-        # self.reward_Six_Button = self.create_QPushButton("rewards_tab", "reward_Six_Button", "750pts - Click to Redeem", "None",
-        #                                                  50, 630, 200, 50)
-        # self.reward_Seven_Button = self.create_QPushButton("rewards_tab", "reward_Seven_Button", "1000pts - Click to Redeem", "None",
-        #                                                  280, 630, 200, 50)
-        # self.reward_Eight_Button = self.create_QPushButton("rewards_tab", "reward_Eight_Button", "1500pts - Click to Redeem",
-        #                                                    "None",
-        #                                                    510, 630, 200, 50)
-        # self.reward_Nine_Button = self.create_QPushButton("rewards_tab", "reward_Nine_Button", "3000pts - Click to Redeem", "None",740, 630, 200, 50)
-        # self.reward_Ten_Button = self.create_QPushButton("rewards_tab", "reward_Ten_Button", "5000pts - Click to Redeem", "None", 970, 630, 200, 50)
-
-        # Student Profile Tab
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
         self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points", 20, 80, 300, 30)
@@ -435,7 +413,6 @@ class ui_main_window(object):
 
     # Logic Functions
     # def check_if_user_exists(self):
-
 
     def return_to_login_screen(self):
         global kill_thread_boolean
