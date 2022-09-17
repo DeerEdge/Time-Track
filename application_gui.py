@@ -345,9 +345,11 @@ class ui_main_window(object):
 
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
-        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points", 20, 80, 300, 30)
-        self.rewards_my_points = self.create_QLineEdit("rewards_tab", "rewards_my_points", True, 50, 110, 100, 25)
-        self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 150, 1180, 540)
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points:",
+                                                          20, 80, 300, 30)
+        self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120,
+                                                           1180, 570)
+        self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120, 1180, 570)
         self.rewards = self.rewards_tab_objects[0]
         self.rewards_layout = self.rewards_tab_objects[1]
         self.rewards_events_scrollArea = self.rewards_tab_objects[2]
