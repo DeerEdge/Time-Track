@@ -281,6 +281,33 @@ class ui_main_window(object):
         self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
         self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", True, 350, 110, 450, 300)
 
+        # Sort Students By Points
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+        cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
+        student_rows = cursor.fetchall()
+        def sort_key(student_rows):
+            return student_rows[2]
+        student_rows.sort(key=sort_key, reverse=True)
+        cursor.close()
+
+        self.tableWidget = QTableWidget()
+
+        # Row count
+        self.tableWidget.setRowCount(20)
+
+        # Column count
+        self.tableWidget.setColumnCount(2)
+
+        # self.tableWidget.setItem(0, 0, QTableWidgetItem("Name"))
+        # self.tableWidget.setItem(0, 1, QTableWidgetItem("Points"))
+        # for a, b, c in student_rows:
+        #     a, b, c = zip(*student_rows)
+        #     d = list(zip(b, a))
+        #     self.tableWidget.setItem(20, 0, QTableWidgetItem(str(d)))
+        #     self.tableWidget.setItem(20, 1, QTableWidgetItem(str(c)))
+
+
         # Rewards Tab
         sqliteConnection = sqlite3.connect('identifier.sqlite')
         cursor = sqliteConnection.cursor()
