@@ -312,11 +312,38 @@ class ui_main_window(object):
         sqliteConnection = sqlite3.connect('identifier.sqlite')
         cursor = sqliteConnection.cursor()
 
-        cursor.execute("SELECT * FROM rewards")
-        rewards = cursor.fetchall()
+        cursor.execute("SELECT IMAGE_LINK_SRC FROM rewards")
+        pictures = cursor.fetchall()
+        cursor1 = sqliteConnection.cursor()
+
+        cursor1.execute("SELECT NAME FROM rewards")
+        names = cursor1.fetchall()
+
+        cursor2 = sqliteConnection.cursor()
+        cursor2.execute("SELECT DESCRIPTION  FROM rewards")
+        descriptions = cursor2.fetchall()
+        cursor3 = sqliteConnection.cursor()
+        cursor3.execute("SELECT POINTS  FROM rewards")
+        points = cursor3.fetchall()
+
         cursor.close()
-        for reward in rewards:
-            print(reward)
+        cursor1.close()
+        cursor2.close()
+        cursor3.close()
+        picture_list = []
+        name_list = []
+        description_list = []
+        points_list = []
+        for picture in pictures:
+            picture_list.append(picture)
+            print(picture_list)
+        for name in names:
+            name_list.append(name)
+        for description in descriptions:
+            description_list.append(description)
+        for point in points:
+            points_list.append(points)
+
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
         self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points", 20, 80, 300, 30)
@@ -327,23 +354,26 @@ class ui_main_window(object):
         self.rewards_events_scrollArea = self.rewards_tab_objects[2]
 
         index = 0
-        dir_path = r'Rewards Pictures'
-        picture_list = []
-
-        for path in os.listdir(dir_path):
-            if os.path.isfile(os.path.join(dir_path, path)):
-                picture_list.append(path)
 
         for i in range(3):
             for j in range(3):
                 self.event_object = QtWidgets.QGroupBox(self.rewards)
-                self.event_object.setFixedSize(367, 350)
+                self.event_object.setFixedSize(340, 300)
                 self.event_object.setLayout(QtWidgets.QGridLayout())
-                self.label = self.create_QLabel("event", "test", "   Event Name",0, 0, 100, 30)
+                self.label = self.create_QLabel("event", "test", "  " + name_list[index][0], 10, 10, 100, 30)
+                self.text = QTextEdit(self.event_object)
+                self.text.setGeometry(230, 40, 100, 200)
+                self.text.setText(description_list[index][0])
+                self.text.setAlignment(Qt.AlignTop)
+                self.text.setWordWrapMode(True)
                 self.picture = QLabel(self.event_object)
-                self.picture.setGeometry(20, 20, 200, 200)
-                self.picture.setPixmap(QPixmap("Rewards Pictures/" + picture_list[index]))
-                self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
+                self.picture.setGeometry(10, 40, 200, 200)
+                self.picture.setPixmap(QPixmap(picture_list[index][0]))
+                self.button = QPushButton(self.event_object)
+                self.button.setText("Redeem " + name_list[index][0])
+                self.button.setGeometry(10, 250, 320, 40)
+
+                # self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
                 self.rewards_layout.addWidget(self.event_object, i, j)
                 index += 1
                 if index == len(picture_list):
