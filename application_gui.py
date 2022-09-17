@@ -283,6 +283,14 @@ class ui_main_window(object):
         self.points_leaderboard = self.create_QLineEdit("points_tab", "point_leaderboard", True, 350, 110, 450, 300)
 
         # Rewards Tab
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+
+        cursor.execute("SELECT * FROM rewards")
+        rewards = cursor.fetchall()
+        cursor.close()
+        for reward in rewards:
+            print(reward)
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
         self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points", 20, 80, 300, 30)
@@ -292,14 +300,28 @@ class ui_main_window(object):
         self.rewards_layout = self.rewards_tab_objects[1]
         self.rewards_events_scrollArea = self.rewards_tab_objects[2]
 
-        for i in range(4):
+        index = 0
+        dir_path = r'Rewards Pictures'
+        picture_list = []
+
+        for path in os.listdir(dir_path):
+            if os.path.isfile(os.path.join(dir_path, path)):
+                picture_list.append(path)
+
+        for i in range(3):
             for j in range(3):
                 self.event_object = QtWidgets.QGroupBox(self.rewards)
                 self.event_object.setFixedSize(367, 350)
                 self.event_object.setLayout(QtWidgets.QGridLayout())
                 self.label = self.create_QLabel("event", "test", "   Event Name",0, 0, 100, 30)
+                self.picture = QLabel(self.event_object)
+                self.picture.setGeometry(20, 20, 200, 200)
+                self.picture.setPixmap(QPixmap("Rewards Pictures/" + picture_list[index]))
                 self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
                 self.rewards_layout.addWidget(self.event_object, i, j)
+                index += 1
+                if index == len(picture_list):
+                    index = 0
         self.rewards_events_scrollArea.setWidget(self.rewards)
         self.rewards_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
