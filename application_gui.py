@@ -25,6 +25,24 @@ for event in events:
     print(event)
 cursor.close()
 
+sqliteConnection = sqlite3.connect('identifier.sqlite')
+cursor = sqliteConnection.cursor()
+cursor.execute("SELECT * from students")
+students = cursor.fetchall()
+for student in students:
+    print(student)
+cursor.close()
+
+sqliteConnection = sqlite3.connect('identifier.sqlite')
+cursor = sqliteConnection.cursor()
+cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
+student_rows = cursor.fetchall()
+def sort_key(student_rows):
+    return student_rows[2]
+
+student_rows.sort(key=sort_key, reverse=True)
+cursor.close()
+
 # A class is created that holds all functions of the program
 class ui_main_window(object):
     # Window Setup Functions
@@ -284,25 +302,13 @@ class ui_main_window(object):
         self.points_leaderboard_scrollArea = self.points_leaderboard_objects[2]
         self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
 
-        # Sort Students By Points
-        sqliteConnection = sqlite3.connect('identifier.sqlite')
-        cursor = sqliteConnection.cursor()
-        cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
-        student_rows = cursor.fetchall()
-
-        def sort_key(student_rows):
-            return student_rows[2]
-
-        student_rows.sort(key=sort_key, reverse=True)
-        cursor.close()
-
         # Leaderboard
         for i in range(20):
             self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
             self.event_object.setFixedSize(400, 50)
             self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   Points",
-                                            0, 0, 100, 30)
+            self.label = self.create_QLabel("event", "test", "   " + "Last Name, First Name,    Points: " +
+                                            str(student[11]), 0, 0, 100, 30)
             self.points_leaderboard_layout.addWidget(self.event_object)
         self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
         self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
