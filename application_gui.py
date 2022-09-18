@@ -330,28 +330,42 @@ class ui_main_window(object):
         cursor3 = sqliteConnection.cursor()
         cursor3.execute("SELECT POINTS  FROM rewards")
         points = cursor3.fetchall()
+        cursor4 = sqliteConnection.cursor()
+        cursor.execute("SELECT EMAIL_ADDRESS, PASSWORD, POINTS FROM students")
+        student_rows = cursor.fetchall()
+        cursor5 = sqliteConnection.cursor()
+        cursor5.execute("SELECT intpoints  FROM rewards")
+        intpoints = cursor5.fetchall()
+
+        for user in student_rows:
+            if self.student_username.text() == user[0] and self.student_password.text() == user[1]:
+                student_points = user[2]
 
         cursor.close()
         cursor1.close()
         cursor2.close()
         cursor3.close()
+        cursor4.close()
         picture_list = []
         name_list = []
         description_list = []
         points_list = []
+        int_points_list = []
         for picture in pictures:
             picture_list.append(picture)
-            print(picture_list)
         for name in names:
             name_list.append(name)
         for description in descriptions:
             description_list.append(description)
         for point in points:
-            points_list.append(points)
+            points_list.append(point)
+        for points in intpoints:
+            int_points_list.append(points)
+
 
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
-        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points:",
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(student_points),
                                                           20, 80, 300, 30)
         self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120,
                                                            1180, 570)
@@ -368,6 +382,7 @@ class ui_main_window(object):
                 self.event_object.setFixedSize(340, 300)
                 self.event_object.setLayout(QtWidgets.QGridLayout())
                 self.label = self.create_QLabel("event", "test", "  " + name_list[index][0], 10, 10, 100, 30)
+                self.cost_label = self.create_QLabel("event", "test", "Cost: " + points_list[index][0] + " points", 220, 10, 100, 30)
                 self.text = QTextEdit(self.event_object)
                 self.text.setGeometry(230, 40, 100, 200)
                 self.text.setText(description_list[index][0])
@@ -379,6 +394,10 @@ class ui_main_window(object):
                 self.button = QPushButton(self.event_object)
                 self.button.setText("Redeem " + name_list[index][0])
                 self.button.setGeometry(10, 250, 320, 40)
+                # if self.button.pressed:
+                #     student_points = student_points - int_points_list[index][0]
+                #     print(student_points)
+
 
                 # self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
                 self.rewards_layout.addWidget(self.event_object, i, j)
