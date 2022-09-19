@@ -21,9 +21,7 @@ cursor = sqliteConnection.cursor()
 sqlite_select_query = """SELECT * from events"""
 cursor.execute(sqlite_select_query)
 events = cursor.fetchall()
-for event in events:
-    print(event)
-cursor.close()
+
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
@@ -406,9 +404,7 @@ class ui_main_window(object):
                 self.button.setText("Redeem " + name_list[index][0])
                 self.button.setGeometry(10, 250, 320, 40)
                 self.button.clicked.connect(self.deduct_points)
-                # if self.button.pressed:
-                #     student_points = student_points - int_points_list[index][0]
-                #     print(student_points)
+
 
 
                 # self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
@@ -419,13 +415,37 @@ class ui_main_window(object):
         self.rewards_events_scrollArea.setWidget(self.rewards)
         self.rewards_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
-        # Profile Tab
+        # Student Profile Tab
         self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label", "My Profile", 20, 20, 600, 50)
         self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line", "HLine", 10, 65, 600, 6)
-        self.student_profile_data = self.create_QLineEdit("student_profile_tab", "student_profile_data", True,20, 110, 300, 300)
-        self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label", "  data", 20, 80, 300, 30)
-        self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
-        self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
+        self.student_profile_data = self.create_QTextEdit("student_profile_tab", "student_profile_data", True, 20, 400, 300, 300)
+        self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label", "  User Data", 20, 370, 300, 30)
+        self.user_picture = self.create_QLabel("student_profile_tab", "user_picture", " Tester ", 20, 80, 300, 300)
+
+
+        first_name = logged_in_user_details[0][1]
+        last_name = logged_in_user_details[0][2]
+        date_of_birth = logged_in_user_details[0][8]
+        user_gender = logged_in_user_details[0][16]
+        grade = str(logged_in_user_details[0][7])
+        events_attended = str(logged_in_user_details[0][10])
+        user_points = str(logged_in_user_details[0][11])
+        user_picture = str(logged_in_user_details[0][12])
+        emergency_contact_name = logged_in_user_details[0][13]
+        emergency_contact_phone = logged_in_user_details[0][14]
+        emergency_contact_email = logged_in_user_details[0][15]
+        self.user_picture.setPixmap(QPixmap("Announcement Pictures/0 - Canyons Rank.jpeg"))
+        print(logged_in_user_details)
+        self.student_profile_data.setText("Name: " + first_name + last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attened: " + events_attended + '\nPoints: ' + user_points)
+
+        # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
+        # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
+
+
+
+
+
+
 
         self.tab_widget.show()
 
