@@ -29,8 +29,6 @@ sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
 cursor.execute("SELECT * from students")
 students = cursor.fetchall()
-for student in students:
-    print(student)
 cursor.close()
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -108,7 +106,9 @@ class ui_main_window(object):
         self.administrator_create_account = self.create_QPushButton("login_widget_container", "administrator_login_button", "Create an Administrator Account", "None", 480, 350, 240, 30)
 
     def setup_portal(self):
+        global logged_in_user_details
         sending_button = self.login_widget_container.sender().objectName()
+
         if sending_button == "student_login_button":
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
@@ -137,6 +137,16 @@ class ui_main_window(object):
                     self.log_out_button.setIconSize(QtCore.QSize(150, 150))
                     self.log_out_button.setFlat(True)
                     self.log_out_button.clicked.connect(self.return_to_login_screen)
+
+                    sqliteConnection = sqlite3.connect('identifier.sqlite')
+                    cursor = sqliteConnection.cursor()
+                    username = user[0]
+                    password = user[1]
+                    cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
+                                   (username, password))
+                    logged_in_user_details = cursor.fetchall()
+                    print(logged_in_user_details)
+                    cursor.close()
 
                     self.setup_student_page()
                     main_window.setCentralWidget(self.central_widget)
@@ -185,11 +195,17 @@ class ui_main_window(object):
             self.administrator_incorrect_login.show()
 
     def setup_student_page(self):
+        global logged_in_user_details
         global dashboard_slideshow
         global slideshow_title
         global slideshow_description
         global kill_thread_boolean
         global threadpool
+        global map
+
+        print(logged_in_user_details)
+        # user_details = logged_in_user_details
+        # print(user_details)
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
@@ -261,8 +277,6 @@ class ui_main_window(object):
         self.maps_line = self.create_QFrame("maps_tab", "maps_line", "HLine", 10, 65, 600, 6)
         self.map_container = QtWidgets.QGroupBox(self.maps_tab)
         self.map_container.setGeometry(QtCore.QRect(20, 80, 800, 600))
-        # self.map_container.setEnabled(True)
-        # self.map_container.setFlat(True)
         self.maps_objects = self.create_QScrollArea("maps_tab", "maps_QScrollArea", "vertical_layout", 835, 85, 360, 595)
         self.maps = self.maps_objects[0]
         self.maps_layout = self.maps_objects[1]
@@ -271,20 +285,13 @@ class ui_main_window(object):
         # The created QGroupBox container's layout is set to hold the web widget
         self.map_frame = QtWidgets.QVBoxLayout(self.map_container)
         coordinate = (40.617847198627, -111.86923371648)
-        global map
         map = folium.Map(zoom_start=12, location=coordinate, control_scale=True)
-        folium.Marker(
-            location=coordinate,
-            icon=folium.Icon(color="darkgreen", icon='user'),
-        ).add_to(map)
+        folium.Marker(location=coordinate, icon=folium.Icon(color="darkgreen", icon='user'),).add_to(map)
         self.show_event_locations("student")
-        # Save map data to data object
         data = io.BytesIO()
         map.save(data, close_file=False)
         webView = QWebEngineView()
-        # Sets the web widget to the map data
         webView.setHtml(data.getvalue().decode())
-        # Adds the map data to the QGroupBox layout
         self.map_frame.addWidget(webView)
 
         self.maps_scrollArea.setWidget(self.maps)
@@ -303,15 +310,15 @@ class ui_main_window(object):
         self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
 
         # Leaderboard
-        for i in range(20):
-            self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
-            self.event_object.setFixedSize(400, 50)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   " + "Last Name, First Name,    Points: " +
-                                            str(student[11]), 0, 0, 100, 30)
-            self.points_leaderboard_layout.addWidget(self.event_object)
-        self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
-        self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
+        # for i in range(20):
+        #     self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
+        #     self.event_object.setFixedSize(400, 50)
+        #     self.event_object.setLayout(QtWidgets.QVBoxLayout())
+        #     self.label = self.create_QLabel("event", "test", "   " + "Last Name, First Name,    Points: " +
+        #                                     str(students[11]), 0, 0, 100, 30)
+        #     self.points_leaderboard_layout.addWidget(self.event_object)
+        # self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
+        # self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         # Rewards Tab
         sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -340,6 +347,7 @@ class ui_main_window(object):
         for user in student_rows:
             if self.student_username.text() == user[0] and self.student_password.text() == user[1]:
                 student_points = user[2]
+                print(user)
 
         cursor.close()
         cursor1.close()
@@ -365,7 +373,7 @@ class ui_main_window(object):
 
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
-        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(student_points),
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(logged_in_user_details[0][11]),
                                                           20, 80, 300, 30)
         self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120,
                                                            1180, 570)
