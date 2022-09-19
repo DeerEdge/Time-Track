@@ -107,6 +107,9 @@ class ui_main_window(object):
 
     def setup_portal(self):
         global logged_in_user_details
+        global username
+        global password
+        global user
         sending_button = self.login_widget_container.sender().objectName()
 
         if sending_button == "student_login_button":
@@ -390,7 +393,7 @@ class ui_main_window(object):
                 self.event_object.setFixedSize(340, 300)
                 self.event_object.setLayout(QtWidgets.QGridLayout())
                 self.label = self.create_QLabel("event", "test", "  " + name_list[index][0], 10, 10, 100, 30)
-                self.cost_label = self.create_QLabel("event", "test", "Cost: " + points_list[index][0] + " points", 220, 10, 100, 30)
+                self.cost_label = self.create_QLabel("event", "point_cost", "Cost: " + points_list[index][0] + " points", 220, 10, 100, 30)
                 self.text = QTextEdit(self.event_object)
                 self.text.setGeometry(230, 40, 100, 200)
                 self.text.setText(description_list[index][0])
@@ -402,6 +405,7 @@ class ui_main_window(object):
                 self.button = QPushButton(self.event_object)
                 self.button.setText("Redeem " + name_list[index][0])
                 self.button.setGeometry(10, 250, 320, 40)
+                self.button.clicked.connect(self.deduct_points)
                 # if self.button.pressed:
                 #     student_points = student_points - int_points_list[index][0]
                 #     print(student_points)
@@ -524,7 +528,32 @@ class ui_main_window(object):
                         self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
     # Logic Functions
-    # def check_if_user_exists(self):
+    def deduct_points(self):
+        global logged_in_user_details
+        global username
+        global password
+        global user
+        point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
+        if logged_in_user_details[0][11] >= point_cost:
+            new_user_points = logged_in_user_details[0][11] - point_cost
+            print(new_user_points)
+            sqliteConnection = sqlite3.connect('identifier.sqlite')
+            cursor = sqliteConnection.cursor()
+            cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, logged_in_user_details[0][1]))
+            print(logged_in_user_details)
+            sqliteConnection.commit()
+            cursor.close()
+            sqliteConnection = sqlite3.connect('identifier.sqlite')
+            cursor = sqliteConnection.cursor()
+            username = user[0]
+            password = user[1]
+            cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
+                           (username, password))
+            logged_in_user_details = cursor.fetchall()
+            print(logged_in_user_details)
+            cursor.close()
+            self.rewards_my_points_label.setText("  Your Points: " + str(logged_in_user_details[0][11]))
+
 
     def return_to_login_screen(self):
         global kill_thread_boolean
