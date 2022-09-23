@@ -434,7 +434,7 @@ class ui_main_window(object):
         emergency_contact_name = logged_in_user_details[0][13]
         emergency_contact_phone = logged_in_user_details[0][14]
         emergency_contact_email = logged_in_user_details[0][15]
-        self.user_picture.setPixmap(QPixmap("Announcement Pictures/0 - Canyons Rank.jpeg"))
+        self.user_picture.setPixmap(QPixmap(user_picture))
         print(logged_in_user_details)
         self.student_profile_data.setText("Name: " + first_name + last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attened: " + events_attended + '\nPoints: ' + user_points)
 
