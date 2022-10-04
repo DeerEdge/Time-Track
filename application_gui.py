@@ -151,6 +151,8 @@ class ui_main_window(object):
 
                     self.setup_student_page()
                     main_window.setCentralWidget(self.central_widget)
+                    self.status_bar = QtWidgets.QStatusBar(main_window)
+                    main_window.setStatusBar(self.status_bar)
                     break
             self.student_login_button.move(80, 320)
             self.student_or_label.move(190, 340)
@@ -189,6 +191,8 @@ class ui_main_window(object):
 
                     self.setup_student_page()
                     main_window.setCentralWidget(self.central_widget)
+                    self.status_bar = QtWidgets.QStatusBar(main_window)
+                    main_window.setStatusBar(self.status_bar)
                     break
             self.administrator_login_button.move(480, 320)
             self.administrator_or_label.move(590, 340)
@@ -210,7 +214,7 @@ class ui_main_window(object):
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1400, 710)
+        self.tab_widget.resize(1405, 700)
         self.tab_widget.move(0, 55)
 
         self.dashboard_tab = QtWidgets.QWidget()
@@ -218,6 +222,7 @@ class ui_main_window(object):
         self.maps_tab = QtWidgets.QWidget()
         self.points_tab = QtWidgets.QWidget()
         self.rewards_tab = QtWidgets.QWidget()
+        self.community_tab = QtWidgets.QWidget()
         self.student_profile_tab = QtWidgets.QWidget()
 
         self.tab_widget.addTab(self.dashboard_tab, "Dashboard")
@@ -225,6 +230,7 @@ class ui_main_window(object):
         self.tab_widget.addTab(self.maps_tab, "Maps")
         self.tab_widget.addTab(self.points_tab, "Points")
         self.tab_widget.addTab(self.rewards_tab, "Rewards")
+        self.tab_widget.addTab(self.community_tab, "Community Chat")
         self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
 
         # Dashboard Tab
@@ -247,28 +253,31 @@ class ui_main_window(object):
         # Upcoming Events Tab
         self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label", "Upcoming Events", 20, 20, 600, 50)
         self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line", "HLine", 10, 65, 600, 6)
-        self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 350, 350)
+        self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 275, 275)
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
-        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 400, 80, 400, 30)
-        self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 400, 110, 400, 320)
+        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 315, 80, 430, 30)
+        self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 315, 110, 430, 560)
         current_day = self.student_calendar.selectedDate().toString()
         self.day_events_label.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
 
-        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", "vertical_layout", 20, 485, 780, 200)
+        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", "vertical_layout", 765, 110, 430, 560)
         self.upcoming_events = self.upcoming_events_objects[0]
         self.upcoming_events_layout = self.upcoming_events_objects[1]
         self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
-        self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_page_label", "  Upcoming Events", 20, 455, 780, 30)
+        self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_page_label", "  All Upcoming Events", 765, 80, 430, 30)
 
         # Example of upcoming events
-        for i in range(6):
+        for event in events:
             self.event_object = QtWidgets.QGroupBox(self.upcoming_events)
-            self.event_object.setFixedSize(750, 50)
+            self.event_object.setFixedSize(390, 100)
             self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   Event Name",
-                                                   0, 0, 100, 30)
-            self.check_box = self.create_QCheckBox("event", 725, 12, 30, 30)
+            self.title = self.create_QLabel("event", "title", (event[1] + "\n" + event[2]), 10, 10, 100, 30)
+            self.title.setWordWrap(True)
+            self.date = self.create_QLabel("event", "date", (str(event[7]) + "/" + str(event[8]) + "/" + str(event[6])),
+                                           240, 0, 80, 60)
+            self.description = self.create_QLabel("event", "description", (event[3]), 10, 60, 305, 40)
+            self.description.setWordWrap(True)
             self.upcoming_events_layout.addWidget(self.event_object)
         self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
         self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
@@ -436,16 +445,10 @@ class ui_main_window(object):
         emergency_contact_email = logged_in_user_details[0][15]
         self.user_picture.setPixmap(QPixmap(user_picture))
         print(logged_in_user_details)
-        self.student_profile_data.setText("Name: " + first_name + last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attened: " + events_attended + '\nPoints: ' + user_points)
+        self.student_profile_data.setText("Name: " + first_name + last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attended: " + events_attended + '\nPoints: ' + user_points)
 
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
-
-
-
-
-
-
 
         self.tab_widget.show()
 
