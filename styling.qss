@@ -127,6 +127,12 @@ QLabel#upcoming_events_page_label {
     background-color: rgb(161, 225, 237);
     border: 1px solid darkgrey;
 }
+QLabel#announcements {
+    font: 20px;
+    color: black;
+    background-color: rgb(161, 225, 237);
+    border: 1px solid darkgrey;
+}
 
 /* Points */
 
