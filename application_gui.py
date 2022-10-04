@@ -320,15 +320,15 @@ class ui_main_window(object):
         self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
 
         # Leaderboard
-        # for i in range(20):
-        #     self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
-        #     self.event_object.setFixedSize(400, 50)
-        #     self.event_object.setLayout(QtWidgets.QVBoxLayout())
-        #     self.label = self.create_QLabel("event", "test", "   " + "Last Name, First Name,    Points: " +
-        #                                     str(students[11]), 0, 0, 100, 30)
-        #     self.points_leaderboard_layout.addWidget(self.event_object)
-        # self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
-        # self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
+        for student in students:
+            self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
+            self.event_object.setFixedSize(400, 50)
+            self.event_object.setLayout(QtWidgets.QVBoxLayout())
+            self.label = self.create_QLabel("event", "test", "   " + "Last Name, First Name,    Points: " +
+                                            str(student[11]), 0, 0, 100, 30)
+            self.points_leaderboard_layout.addWidget(self.event_object)
+        self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
+        self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         # Rewards Tab
         sqliteConnection = sqlite3.connect('identifier.sqlite')
