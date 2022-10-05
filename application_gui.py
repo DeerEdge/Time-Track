@@ -130,6 +130,10 @@ class ui_main_window(object):
                     self.login_central_widget.deleteLater()
 
                     main_window.setFixedSize(1400, 800)
+                    qtRectangle = main_window.frameGeometry()
+                    centerPoint = QDesktopWidget().availableGeometry().center()
+                    qtRectangle.moveCenter(centerPoint)
+                    main_window.move(qtRectangle.topLeft())
                     self.central_widget = QtWidgets.QWidget(main_window)
                     self.central_widget.setObjectName("central_widget")
                     self.central_widget.resize(1400, 800)
@@ -367,8 +371,8 @@ class ui_main_window(object):
             self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
             self.event_object.setFixedSize(400, 50)
             self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   " + "Last Name, First Name,    Points: " +
-                                            str(student[11]), 0, 0, 400, 30)
+            self.label = self.create_QLabel("event", "test", "   " + str(student[2]) + ", " + str(student[1]) +
+                                            " Points: " + str(student[11]), 0, 0, 400, 30)
             self.points_leaderboard_layout.addWidget(self.event_object)
         self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
         self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
