@@ -8,6 +8,7 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 from datetime import time
 from folium.plugins import MarkerCluster
+from create_widget_functions import VerticalTabWidget
 
 # folium v0.12.1 - Used to display geographical data
 import folium
@@ -15,6 +16,9 @@ import time
 import io
 import os
 import sqlite3
+
+import create_widget_functions
+# import class files
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
@@ -38,6 +42,7 @@ sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
 cursor.execute("SELECT * FROM Announcement")
 announcements = cursor.fetchall()
+
 def sort_key(student_rows):
     return student_rows[2]
 
@@ -45,7 +50,7 @@ student_rows.sort(key=sort_key, reverse=True)
 cursor.close()
 
 # A class is created that holds all functions of the program
-class ui_main_window(object):
+class Main(object):
     # Window Setup Functions
     def setup_window(self, main_window):
         main_window.setWindowTitle("Time Track")
@@ -54,14 +59,13 @@ class ui_main_window(object):
         main_window.setFixedSize(800, 500)
         self.setup_login_screen(main_window)
 
-
     def setup_login_screen(self, main_window):
         self.login_central_widget = QtWidgets.QWidget(main_window)
         self.login_central_widget.resize(800, 500)
-
         self.login_screen_background = QtWidgets.QLabel(self.login_central_widget)
         self.login_screen_background.setFixedSize(800, 500)
-        self.login_screen_background.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
+        self.login_screen_background.setPixmap(
+            QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
         self.login_screen_background.setScaledContents(True)
         self.login_screen_background.show()
         self.login_widget_container = QtWidgets.QGroupBox(self.login_central_widget)
@@ -77,37 +81,65 @@ class ui_main_window(object):
         self.login_screen_logo.show()
 
         # Student Login
-        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145, 80, 200, 50)
-        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID", 80, 122, 200, 50)
-        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80, 160, 240, 30)
-        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password", 80, 187, 200, 50)
-        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80, 225, 240, 30)
-        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password", "Forgot password?", "None", 65, 255, 140, 30)
-        self.student_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login", "Email ID and/or Password Icorrect. Please enter correct credentials.", 82, 275, 240, 50)
+        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145,
+                                                      80, 200, 50)
+        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID",
+                                                         80, 122, 200, 50)
+        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80,
+                                                      160, 240, 30)
+        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",
+                                                         80, 187, 200, 50)
+        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80,
+                                                      225, 240, 30)
+        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
+                                                               "Forgot password?", "None", 65, 255, 140, 30)
+        self.student_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login",
+                                                          "Email ID and/or Password Icorrect. Please enter correct credentials.",
+                                                          82, 275, 240, 50)
         self.student_incorrect_login.setWordWrap(True)
         self.student_incorrect_login.hide()
-        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login", "None", 80, 290, 240, 30)
+        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login",
+                                                            "None", 80, 290, 240, 30)
         self.student_login_button.clicked.connect(self.setup_portal)
-        self.student_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 190, 310, 40, 50)
-        self.student_create_account = self.create_QPushButton("login_widget_container", "student_login_button", "Create a Student Account", "None", 80, 350, 240, 30)
+
+        self.student_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 190, 310, 40,
+                                                   50)
+        self.student_create_account = self.create_QPushButton("login_widget_container", "student_login_button",
+                                                              "Create a Student Account", "None", 80, 350, 240, 30)
 
         # Line divider between logins
-        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399, 40, 1, 410)
+        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399,
+                                                     40, 1, 410)
 
         # Administrator Login
-        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles", "Administrator Login", 525, 80, 200, 50)
-        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID", 480, 122, 200, 50)
-        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 160, 240, 30)
-        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password", 480, 187, 200, 50)
-        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 225, 240, 30)
-        self.administrator_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password", "Forgot password?", "None", 465, 255, 140, 30)
-        self.administrator_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login", "Email ID and/or Password Icorrect. Please enter correct credentials.", 482, 275, 240, 50)
+        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles",
+                                                            "Administrator Login", 525, 80, 200, 50)
+        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels",
+                                                               "Email ID", 480, 122, 200, 50)
+        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False,
+                                                            480, 160, 240, 30)
+        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels",
+                                                               "Password", 480, 187, 200, 50)
+        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False,
+                                                            480, 225, 240, 30)
+        self.administrator_forgot_password = self.create_QPushButton("login_widget_container",
+                                                                     "login_screen_forgot_password", "Forgot password?",
+                                                                     "None", 465, 255, 140, 30)
+        self.administrator_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login",
+                                                                "Email ID and/or Password Icorrect. Please enter correct credentials.",
+                                                                482, 275, 240, 50)
         self.administrator_incorrect_login.setWordWrap(True)
         self.administrator_incorrect_login.hide()
-        self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None", 480, 290, 240, 30)
+        self.administrator_login_button = self.create_QPushButton("login_widget_container",
+                                                                  "administrator_login_button", "Login", "None", 480,
+                                                                  290, 240, 30)
         self.administrator_login_button.clicked.connect(self.setup_portal)
-        self.administrator_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 590, 310, 40, 50)
-        self.administrator_create_account = self.create_QPushButton("login_widget_container", "administrator_login_button", "Create an Administrator Account", "None", 480, 350, 240, 30)
+        self.administrator_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 590,
+                                                         310, 40, 50)
+        self.administrator_create_account = self.create_QPushButton("login_widget_container",
+                                                                    "administrator_login_button",
+                                                                    "Create an Administrator Account", "None", 480, 350,
+                                                                    240, 30)
         main_window.setStatusBar(None)
 
     def setup_portal(self):
@@ -157,7 +189,6 @@ class ui_main_window(object):
                     cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
                                    (username, password))
                     logged_in_user_details = cursor.fetchall()
-                    print(logged_in_user_details)
                     cursor.close()
 
                     self.setup_student_page()
@@ -219,7 +250,6 @@ class ui_main_window(object):
         global threadpool
         global map
 
-        print(logged_in_user_details)
         # user_details = logged_in_user_details
         # print(user_details)
 
@@ -241,7 +271,6 @@ class ui_main_window(object):
         self.tab_widget.addTab(self.maps_tab, "Maps")
         self.tab_widget.addTab(self.points_tab, "Points")
         self.tab_widget.addTab(self.rewards_tab, "Rewards")
-        self.tab_widget.addTab(self.community_tab, "Community Chat")
         self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
 
         # Dashboard Tab
@@ -404,7 +433,7 @@ class ui_main_window(object):
         for user in student_rows:
             if self.student_username.text() == user[0] and self.student_password.text() == user[1]:
                 student_points = user[2]
-                print(user)
+                # print(user)
 
         cursor.close()
         cursor1.close()
@@ -491,7 +520,6 @@ class ui_main_window(object):
         emergency_contact_phone = logged_in_user_details[0][14]
         emergency_contact_email = logged_in_user_details[0][15]
         self.user_picture.setPixmap(QPixmap(user_picture))
-        print(logged_in_user_details)
         self.student_profile_data.setText("Name: " + first_name + last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attended: " + events_attended + '\nPoints: ' + user_points)
 
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
@@ -606,11 +634,10 @@ class ui_main_window(object):
         point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
         if logged_in_user_details[0][11] >= point_cost:
             new_user_points = logged_in_user_details[0][11] - point_cost
-            print(new_user_points)
+            # print(new_user_points)
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
             cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, logged_in_user_details[0][1]))
-            print(logged_in_user_details)
             sqliteConnection.commit()
             cursor.close()
             sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -620,7 +647,6 @@ class ui_main_window(object):
             cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
                            (username, password))
             logged_in_user_details = cursor.fetchall()
-            print(logged_in_user_details)
             cursor.close()
             self.rewards_my_points_label.setText("  Your Points: " + str(logged_in_user_details[0][11]))
 
@@ -699,222 +725,41 @@ class ui_main_window(object):
 
     # Widget Creation Functions
     def create_QCheckBox(self, container, x_coordinate, y_coordinate, width, length):
-        if container == "dashboard_tab":
-            self.QCheckBox = QtWidgets.QCheckBox(self.dashboard_tab)
-        elif container == "upcoming_events_tab":
-            self.QCheckBox = QtWidgets.QCheckBox(self.upcoming_events_tab)
-        elif container == "event":
-            self.QCheckBox = QtWidgets.QCheckBox(self.event_object)
-        self.QCheckBox.resize(width, length)
-        self.QCheckBox.move(x_coordinate, y_coordinate)
-        return QCheckBox
+        return create_widget_functions.create_QCheckBox.__init__(self, container, x_coordinate, y_coordinate, width, length)
 
     def create_QCalendar(self, container, x_coordinate, y_coordinate, width, length):
-        if container == "upcoming_events_tab":
-            self.QCalender = QtWidgets.QCalendarWidget(self.upcoming_events_tab)
-        elif container == "admin_events_tab":
-            self.QCalender = QtWidgets.QCalendarWidget(self.admin_events_tab)
-        self.QCalender.setGeometry(x_coordinate, y_coordinate, width, length)
-        return self.QCalender
+        return create_widget_functions.create_QCalendar.__init__(self, container, x_coordinate, y_coordinate, width, length)
 
-    def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length,):
-        # Creates and associates QLabel to specified container
-        if container == "login_widget_container":
-            self.QLabel = QtWidgets.QLabel(self.login_widget_container)
-        elif container == "central_widget":
-            self.QLabel = QtWidgets.QLabel(self.central_widget)
-        elif container == "dashboard_tab":
-            self.QLabel = QtWidgets.QLabel(self.dashboard_tab)
-        elif container == "upcoming_events_tab":
-            self.QLabel = QtWidgets.QLabel(self.upcoming_events_tab)
-        elif container == "points_tab":
-            self.QLabel = QtWidgets.QLabel(self.points_tab)
-        elif container == "rewards_tab":
-            self.QLabel = QtWidgets.QLabel(self.rewards_tab)
-        elif container == "student_profile_tab":
-            self.QLabel = QtWidgets.QLabel(self.student_profile_tab)
-        elif container == "event":
-            self.QLabel = QtWidgets.QLabel(self.event_object)
-
-        #Administrator
-        elif container == "admin_dashboard_tab":
-            self.QLabel = QtWidgets.QLabel(self.admin_dashboard_tab)
-        elif container == "admin_events_tab":
-            self.QLabel = QtWidgets.QLabel(self.admin_events_tab)
-        elif container == "maps_tab":
-            self.QLabel = QtWidgets.QLabel(self.maps_tab)
-        elif container == "admin_statistics_tab":
-            self.QLabel = QtWidgets.QLabel(self.admin_statistics_tab)
-        elif container == "admin_student_view_tab":
-            self.QLabel = QtWidgets.QLabel(self.admin_student_view_tab)
-        self.QLabel.setObjectName(object_name)
-        self.QLabel.setText(text)
-        # Geometry of QLabel is specified by the passed function parameters
-        self.QLabel.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
-        return self.QLabel
+    def create_QLabel(self, container, object_name, text, x_coordinate, y_coordinate, width, length):
+        return create_widget_functions.create_QLabel.__init__(self, container, object_name, text, x_coordinate, y_coordinate, width, length)
 
     def create_QLineEdit(self, container, object_name, read_only, x_coordinate, y_coordinate, width, length):
-        # Creates and associates QLabel to specified container
-        if container == "login_widget_container":
-            self.QLineEdit = QtWidgets.QLineEdit(self.login_widget_container)
-        elif container == "dashboard_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.dashboard_tab)
-        elif container == "admin_dashboard_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.admin_dashboard_tab)
-        elif container == "upcoming_events_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.upcoming_events_tab)
-        elif container == "points_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.points_tab)
-        elif container == "rewards_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.rewards_tab)
-        elif container == "student_profile_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.student_profile_tab)
-
-            # Administrator
-        elif container == "admin_dashboard_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.admin_dashboard_tab)
-        elif container == "admin_events_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.admin_events_tab)
-        elif container == "maps_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.maps_tab)
-        elif container == "admin_statistics_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.admin_statistics_tab)
-        elif container == "admin_student_view_tab":
-            self.QLineEdit = QtWidgets.QLineEdit(self.admin_student_view_tab)
-        self.QLineEdit.setObjectName(object_name)
-        # user cannot type in the boxes
-        self.QLineEdit.setReadOnly(read_only)
-        # Geometry of QLineEdit is specified by the passed function parameters
-        self.QLineEdit.setFixedSize(width, length)
-        self.QLineEdit.move(x_coordinate, y_coordinate)
-        return self.QLineEdit
+        return create_widget_functions.create_QLineEdit.__init__(self, container, object_name, read_only, x_coordinate, y_coordinate, width, length)
 
     def create_QTextEdit(self, container, object_name, read_only, x_coordinate, y_coordinate, width, length):
-        # Creates and associates QLabel to specified container
-        if container == "login_widget_container":
-            self.QTextEdit = QtWidgets.QTextEdit(self.login_widget_container)
-        elif container == "dashboard_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.dashboard_tab)
-        elif container == "admin_dashboard_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.admin_dashboard_tab)
-        elif container == "upcoming_events_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.upcoming_events_tab)
-        elif container == "points_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.points_tab)
-        elif container == "rewards_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.rewards_tab)
-        elif container == "student_profile_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.student_profile_tab)
-
-            # Administrator
-        elif container == "admin_dashboard_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.admin_dashboard_tab)
-        elif container == "admin_events_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.admin_events_tab)
-        elif container == "maps_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.maps_tab)
-        elif container == "admin_statistics_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.admin_statistics_tab)
-        elif container == "admin_student_view_tab":
-            self.QTextEdit = QtWidgets.QTextEdit(self.admin_student_view_tab)
-        self.QTextEdit.setObjectName(object_name)
-        # user cannot type in the boxes
-        self.QTextEdit.setReadOnly(read_only)
-        # Geometry of QLineEdit is specified by the passed function parameters
-        self.QTextEdit.setFixedSize(width, length)
-        self.QTextEdit.move(x_coordinate, y_coordinate)
-        self.QTextEdit.setWordWrapMode(True)
-
-        return self.QTextEdit
+        return create_widget_functions.create_QTextEdit.__init__(self, container, object_name, read_only, x_coordinate, y_coordinate, width, length)
 
     def create_QScrollArea(self, container, object_name, layout, x_coordinate, y_coordinate, fixed_width, min_length):
-        self.scrollArea_object_container = QtWidgets.QWidget()
-        if container == "upcoming_events_tab":
-            self.QScrollArea = QtWidgets.QScrollArea(self.upcoming_events_tab)
-        elif container == "dashboard_tab":
-            self.QScrollArea = QtWidgets.QScrollArea(self.dashboard_tab)
-        elif container == "maps_tab":
-            self.QScrollArea = QtWidgets.QScrollArea(self.maps_tab)
-        elif container == "points_tab":
-            self.QScrollArea = QtWidgets.QScrollArea(self.points_tab)
-        elif container == "rewards_tab":
-            self.QScrollArea = QtWidgets.QScrollArea(self.rewards_tab)
-        self.QScrollArea.setFixedWidth(fixed_width)
-        self.QScrollArea.setFixedHeight(min_length)
-        self.QScrollArea.move(x_coordinate, y_coordinate)
-        self.QScrollArea.setWidgetResizable(True)
-        self.QScrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        if layout == "vertical_layout":
-            self.scroll_vertical_layout = QtWidgets.QVBoxLayout(self.scrollArea_object_container)
-            self.scrollArea_object_container.setLayout(self.scroll_vertical_layout)
-            return [self.scrollArea_object_container, self.scroll_vertical_layout, self.QScrollArea]
-        elif layout == "grid_layout":
-            self.scroll_grid_layout = QtWidgets.QGridLayout(self.scrollArea_object_container)
-            self.scrollArea_object_container.setLayout(self.scroll_grid_layout)
-            self.QScrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOn)
-            return [self.scrollArea_object_container, self.scroll_grid_layout, self.QScrollArea]
+        return create_widget_functions.create_QScrollArea.__init__(self, container, object_name, layout, x_coordinate, y_coordinate, fixed_width, min_length)
 
     def create_QFrame(self, container, object_name, orientation, x_coordinate, y_coordinate, width, length):
-        if container == "login_widget_container":
-            self.QFrame = QtWidgets.QFrame(self.login_widget_container)
-        elif container == "dashboard_tab":
-            self.QFrame = QtWidgets.QFrame(self.dashboard_tab)
-        elif container == "admin_dashboard_tab":
-            self.QFrame = QtWidgets.QFrame(self.admin_dashboard_tab)
-        elif container == "upcoming_events_tab":
-            self.QFrame = QtWidgets.QFrame(self.upcoming_events_tab)
-        elif container == "points_tab":
-            self.QFrame = QtWidgets.QFrame(self.points_tab)
-        elif container == "rewards_tab":
-            self.QFrame = QtWidgets.QFrame(self.rewards_tab)
-        elif container == "student_profile_tab":
-            self.QFrame = QtWidgets.QFrame(self.student_profile_tab)
-            # Administrator
-        elif container == "admin_dashboard_tab":
-            self.QFrame = QtWidgets.QFrame(self.admin_dashboard_tab)
-        elif container == "admin_events_tab":
-            self.QFrame = QtWidgets.QFrame(self.admin_events_tab)
-        elif container == "maps_tab":
-            self.QFrame = QtWidgets.QFrame(self.maps_tab)
-        elif container == "admin_statistics_tab":
-            self.QFrame = QtWidgets.QFrame(self.admin_statistics_tab)
-        elif container == "admin_student_view_tab":
-            self.QFrame = QtWidgets.QFrame(self.admin_student_view_tab)
-        self.QFrame.setObjectName(object_name)
-        self.QFrame.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
-        if orientation == "VLine":
-            self.QFrame.setFrameShape(QtWidgets.QFrame.VLine)
-        else:
-            self.QFrame.setFrameShape(QtWidgets.QFrame.HLine)
+        return create_widget_functions.create_QFrame.__init__(self, container, object_name, orientation, x_coordinate, y_coordinate, width, length)
 
     def create_QPushButton(self, container, object_name, text, icon, x_coordinate, y_coordinate, width, length):
-        # Creates and associates QLabel to specified container
-        if container == "login_widget_container":
-            self.QPushButton = QtWidgets.QPushButton(self.login_widget_container)
-        elif container == "central_widget":
-            self.QPushButton = QtWidgets.QPushButton(self.central_widget)
-        elif container == "main_window":
+        if container == "main_window":
             self.QPushButton = QtWidgets.QPushButton(main_window)
-        elif container == "student_profile_tab":
-            self.QPushButton = QtWidgets.QPushButton(self.student_profile_tab)
+            if text != "None":
+                self.QPushButton.setText(text)
+            if icon != "None":
+                self.QPushButton.setIcon(QIcon(icon))
+            self.QPushButton.setFixedSize(width, length)
+            self.QPushButton.move(x_coordinate, y_coordinate)
 
-        elif container == "rewards_tab":
-            self.QPushButton = QtWidgets.QPushButton(self.rewards_tab)
-        self.QPushButton.setObjectName(object_name)
-        if text != "None":
-            self.QPushButton.setText(text)
-        if icon != "None":
-            self.QPushButton.setIcon(QIcon(icon))
-        # Geometry of QLineEdit is specified by the passed function parameters
-        self.QPushButton.setFixedSize(width, length)
-        self.QPushButton.move(x_coordinate, y_coordinate)
-        return self.QPushButton
+            return self.QPushButton
+        else: return create_widget_functions.create_QPushButton.__init__(self, container, object_name, text, icon, x_coordinate, y_coordinate, width, length)
 
     def create_horizontal_QSlider(self, container, x_coordinate, y_coordinate, width, length):
-        if container == "dashboard_tab":
-            self.QSlider = QtWidgets.QSlider(Qt.Horizontal, self.dashboard_tab)
-        self.QSlider.setGeometry(x_coordinate, y_coordinate, width, length)
-        return self.QSlider
+        return create_widget_functions.create_horizontal_QSlider.__init__(self, container, x_coordinate, y_coordinate, width, length)
 
 # A custom-built widget that creates a slideshow
 class Slideshow(QRunnable):
@@ -933,55 +778,20 @@ class Slideshow(QRunnable):
         index = 0
         while True:
             dashboard_slideshow.setPixmap(QPixmap("Announcement Pictures/" + picture_list[index]))
-            rowidnum = picture_list[index][0:1]
-            cursor.execute("SELECT rowid, * FROM slideshow WHERE id = " + rowidnum)
+
+            cursor.execute("SELECT rowid, * FROM slideshow WHERE id = " + str(index))
             row = cursor.fetchall()
 
-            slideshow_title.setText(row[0][2])
-            slideshow_description.setText(row[0][3])
-            time.sleep(3)
-            index += 1
-            if index == len(picture_list):
+            if index == len(picture_list)-1:
                 index = 0
+            else:
+                slideshow_title.setText(row[0][2])
+                slideshow_description.setText(row[0][3])
+                time.sleep(3)
+                index += 1
             if kill_thread_boolean == True:
                 break
         cursor.close()
-
-class TabBar(QTabBar):
-    def tabSizeHint(self, index):
-        self.setGeometry(0, 120, 180, 380)
-        s = QTabBar.tabSizeHint(self, index)
-        s.transpose()
-        return s
-
-    def paintEvent(self, event):
-        painter = QStylePainter(self)
-        opt = QStyleOptionTab()
-
-        for i in range(self.count()):
-            self.initStyleOption(opt, i)
-            painter.drawControl(QStyle.CE_TabBarTabShape, opt)
-            painter.save()
-
-            s = opt.rect.size()
-            s.transpose()
-            r = QtCore.QRect(QtCore.QPoint(), s)
-            r.moveCenter(opt.rect.center())
-            opt.rect = r
-
-            c = self.tabRect(i).center()
-            painter.translate(c)
-            painter.rotate(90)
-            painter.translate(-c)
-            painter.drawControl(QStyle.CE_TabBarTabLabel, opt)
-            painter.restore()
-
-class VerticalTabWidget(QTabWidget):
-    def __init__(self, *args, **kwargs):
-        QTabWidget.__init__(self, *args, **kwargs)
-        self.setTabBar(TabBar())
-        self.setTabPosition(QtWidgets.QTabWidget.West)
-        self.setStyleSheet("QTabBar::tab { height: 180px; width: 50px;}")
 
 if __name__ == "__main__":
     import sys
@@ -995,7 +805,7 @@ if __name__ == "__main__":
     # A main window is created for the application
     main_window = QtWidgets.QMainWindow()
     # The user interface sets up the main window class
-    ui = ui_main_window()
+    ui = Main()
     ui.setup_window(main_window)
     main_window.show()
     sys.exit(app.exec_())
