@@ -43,6 +43,9 @@ cursor = sqliteConnection.cursor()
 cursor.execute("SELECT * FROM Announcement")
 announcements = cursor.fetchall()
 
+first_name = ""
+last_name = ""
+
 def sort_key(student_rows):
     return student_rows[2]
 
@@ -153,7 +156,7 @@ class Main(object):
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
 
-            cursor.execute("SELECT EMAIL_ADDRESS, PASSWORD FROM students")
+            cursor.execute("SELECT EMAIL_ADDRESS, PASSWORD, FIRST_NAME, LAST_NAME FROM students")
             student_rows = cursor.fetchall()
             cursor.close()
 
@@ -186,12 +189,14 @@ class Main(object):
                     cursor = sqliteConnection.cursor()
                     username = user[0]
                     password = user[1]
-                    cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
-                                   (username, password))
+                    first_name = user[2]
+                    last_name = user[3]
+                    cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ? AND FIRST_NAME = ? AND LAST_NAME = ?",
+                                   (username, password, first_name, last_name))
                     logged_in_user_details = cursor.fetchall()
                     cursor.close()
 
-                    self.setup_student_page()
+                    self.setup_student_page(first_name, last_name)
                     main_window.setCentralWidget(self.central_widget)
                     self.status_bar = QtWidgets.QStatusBar(main_window)
                     main_window.setStatusBar(self.status_bar)
@@ -241,7 +246,7 @@ class Main(object):
             self.administrator_create_account.move(480, 380)
             self.administrator_incorrect_login.show()
 
-    def setup_student_page(self):
+    def setup_student_page(self, first_name, last_name):
         global logged_in_user_details
         global dashboard_slideshow
         global slideshow_title
@@ -274,7 +279,7 @@ class Main(object):
         self.tab_widget.addTab(self.student_profile_tab, "My Student Profile")
 
         # Dashboard Tab
-        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Wallace McCarthy", 200, 10, 600, 50)
+        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as " + first_name + " " + last_name, 200, 10, 600, 50)
         self.dashboard_label = self.create_QLabel("dashboard_tab", "dashboard_label", "Dashboard", 20, 20, 600, 50)
         self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 600, 6)
         dashboard_slideshow = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler", 20, 90, 840, 480)
@@ -520,7 +525,7 @@ class Main(object):
         emergency_contact_phone = logged_in_user_details[0][14]
         emergency_contact_email = logged_in_user_details[0][15]
         self.user_picture.setPixmap(QPixmap(user_picture))
-        self.student_profile_data.setText("Name: " + first_name + last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attended: " + events_attended + '\nPoints: ' + user_points)
+        self.student_profile_data.setText("Name: " + first_name + " "+ last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attended: " + events_attended + '\nPoints: ' + user_points)
 
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
