@@ -1,6 +1,5 @@
 # Import PyQt5's widgets to be used throughout the program
 import threading
-
 from PyQt5.QtCore import Qt, pyqtSignal, QDate, QRunnable, pyqtSlot, QThreadPool
 from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
 from PyQt5.QtWidgets import *
@@ -8,7 +7,6 @@ from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
 from datetime import time
 from folium.plugins import MarkerCluster
-from create_widget_functions import VerticalTabWidget
 
 # folium v0.12.1 - Used to display geographical data
 import folium
@@ -17,8 +15,11 @@ import io
 import os
 import sqlite3
 
+# import class functions
 import create_widget_functions
-# import class files
+import user_details
+
+from create_widget_functions import VerticalTabWidget
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
@@ -26,20 +27,12 @@ sqlite_select_query = """SELECT * from events"""
 cursor.execute(sqlite_select_query)
 events = cursor.fetchall()
 
-
-sqliteConnection = sqlite3.connect('identifier.sqlite')
-cursor = sqliteConnection.cursor()
 cursor.execute("SELECT * from students")
 students = cursor.fetchall()
-cursor.close()
 
-sqliteConnection = sqlite3.connect('identifier.sqlite')
-cursor = sqliteConnection.cursor()
 cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
 student_rows = cursor.fetchall()
 
-sqliteConnection = sqlite3.connect('identifier.sqlite')
-cursor = sqliteConnection.cursor()
 cursor.execute("SELECT * FROM Announcement")
 announcements = cursor.fetchall()
 
@@ -52,13 +45,10 @@ def sort_key(student_rows):
 student_rows.sort(key=sort_key, reverse=True)
 cursor.close()
 
-# A class is created that holds all functions of the program
 class Main(object):
-    # Window Setup Functions
     def setup_window(self, main_window):
         main_window.setWindowTitle("Time Track")
         main_window.setObjectName("main_window")
-        # The size of the window is specified using "resize()"
         main_window.setFixedSize(800, 500)
         self.setup_login_screen(main_window)
 
@@ -67,8 +57,7 @@ class Main(object):
         self.login_central_widget.resize(800, 500)
         self.login_screen_background = QtWidgets.QLabel(self.login_central_widget)
         self.login_screen_background.setFixedSize(800, 500)
-        self.login_screen_background.setPixmap(
-            QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
+        self.login_screen_background.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
         self.login_screen_background.setScaledContents(True)
         self.login_screen_background.show()
         self.login_widget_container = QtWidgets.QGroupBox(self.login_central_widget)
@@ -78,78 +67,51 @@ class Main(object):
         self.login_screen_logo = QtWidgets.QLabel(self.login_widget_container)
         self.login_screen_logo.setFixedSize(200, 200)
         self.login_screen_logo.move(-20, -75)
-        self.login_screen_logo.setPixmap(
-            QtGui.QPixmap("Application Pictures and Icons/Time Track Logo.png"))
+        self.login_screen_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Logo.png"))
         self.login_screen_logo.setScaledContents(True)
         self.login_screen_logo.show()
 
         # Student Login
-        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145,
-                                                      80, 200, 50)
-        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID",
-                                                         80, 122, 200, 50)
-        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80,
-                                                      160, 240, 30)
-        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",
-                                                         80, 187, 200, 50)
-        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80,
-                                                      225, 240, 30)
-        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password",
-                                                               "Forgot password?", "None", 65, 255, 140, 30)
-        self.student_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login",
-                                                          "Email ID and/or Password Icorrect. Please enter correct credentials.",
-                                                          82, 275, 240, 50)
+        self.student_login_title = self.create_QLabel("login_widget_container", "login_titles", "Student Login", 145,80, 200, 50)
+        self.student_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID", 80, 122, 200, 50)
+        self.student_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80,160, 240, 30)
+        self.student_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password",80, 187, 200, 50)
+        self.student_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 80,225, 240, 30)
+
+        self.student_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password","Forgot password?", "None", 65, 255, 140, 30)
+        self.student_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login", "Email ID and/or Password Icorrect. Please enter correct credentials.", 82, 275, 240, 50)
         self.student_incorrect_login.setWordWrap(True)
         self.student_incorrect_login.hide()
-        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login",
-                                                            "None", 80, 290, 240, 30)
+        self.student_login_button = self.create_QPushButton("login_widget_container", "student_login_button", "Login", "None", 80, 290, 240, 30)
         self.student_login_button.clicked.connect(self.setup_portal)
-
-        self.student_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 190, 310, 40,
-                                                   50)
-        self.student_create_account = self.create_QPushButton("login_widget_container", "student_login_button",
-                                                              "Create a Student Account", "None", 80, 350, 240, 30)
+        self.student_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 190, 310, 40,50)
+        self.student_create_account = self.create_QPushButton("login_widget_container", "student_login_button", "Create a Student Account", "None", 80, 350, 240, 30)
 
         # Line divider between logins
-        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399,
-                                                     40, 1, 410)
+        self.login_divider_line = self.create_QFrame("login_widget_container", "login_screen_elements", "VLine", 399, 40, 1, 410)
 
         # Administrator Login
-        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles",
-                                                            "Administrator Login", 525, 80, 200, 50)
-        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels",
-                                                               "Email ID", 480, 122, 200, 50)
-        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False,
-                                                            480, 160, 240, 30)
-        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels",
-                                                               "Password", 480, 187, 200, 50)
-        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False,
-                                                            480, 225, 240, 30)
-        self.administrator_forgot_password = self.create_QPushButton("login_widget_container",
-                                                                     "login_screen_forgot_password", "Forgot password?",
-                                                                     "None", 465, 255, 140, 30)
-        self.administrator_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login",
-                                                                "Email ID and/or Password Icorrect. Please enter correct credentials.",
-                                                                482, 275, 240, 50)
+        self.administrator_login_title = self.create_QLabel("login_widget_container", "login_titles", "Administrator Login", 525, 80, 200, 50)
+        self.administrator_username_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Email ID", 480, 122, 200, 50)
+        self.administrator_username = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 160, 240, 30)
+        self.administrator_password_label = self.create_QLabel("login_widget_container", "login_screen_labels", "Password", 480, 187, 200, 50)
+        self.administrator_password = self.create_QLineEdit("login_widget_container", "login_screen_text_fields", False, 480, 225, 240, 30)
+
+        self.administrator_forgot_password = self.create_QPushButton("login_widget_container", "login_screen_forgot_password", "Forgot password?", "None", 465, 255, 140, 30)
+        self.administrator_incorrect_login = self.create_QLabel("login_widget_container", "incorrect_login", "Email ID and/or Password Icorrect. Please enter correct credentials.", 482, 275, 240, 50)
         self.administrator_incorrect_login.setWordWrap(True)
         self.administrator_incorrect_login.hide()
-        self.administrator_login_button = self.create_QPushButton("login_widget_container",
-                                                                  "administrator_login_button", "Login", "None", 480,
-                                                                  290, 240, 30)
+        self.administrator_login_button = self.create_QPushButton("login_widget_container", "administrator_login_button", "Login", "None", 480, 290, 240, 30)
         self.administrator_login_button.clicked.connect(self.setup_portal)
-        self.administrator_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 590,
-                                                         310, 40, 50)
-        self.administrator_create_account = self.create_QPushButton("login_widget_container",
-                                                                    "administrator_login_button",
-                                                                    "Create an Administrator Account", "None", 480, 350,
-                                                                    240, 30)
+        self.administrator_or_label = self.create_QLabel("login_widget_container", "login_screen_labels", "or", 590, 310, 40, 50)
+        self.administrator_create_account = self.create_QPushButton("login_widget_container", "administrator_login_button", "Create an Administrator Account", "None", 480, 350, 240, 30)
         main_window.setStatusBar(None)
 
     def setup_portal(self):
-        global logged_in_user_details
         global username
         global password
         global user
+
         sending_button = self.login_widget_container.sender().objectName()
 
         if sending_button == "student_login_button":
@@ -162,51 +124,12 @@ class Main(object):
 
             for user in student_rows:
                 if self.student_username.text() == user[0] and self.student_password.text() == user[1]:
-                    self.login_central_widget.deleteLater()
-
-                    main_window.setFixedSize(1400, 800)
-                    qtRectangle = main_window.frameGeometry()
-                    centerPoint = QDesktopWidget().availableGeometry().center()
-                    qtRectangle.moveCenter(centerPoint)
-                    main_window.move(qtRectangle.topLeft())
-                    self.central_widget = QtWidgets.QWidget(main_window)
-                    self.central_widget.setObjectName("central_widget")
-                    self.central_widget.resize(1400, 800)
-
-                    self.app_logo = QtWidgets.QLabel(self.central_widget)
-                    self.app_logo.setFixedSize(140, 140)
-                    self.app_logo.move(20, 10)
-                    self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
-                    self.app_logo.setScaledContents(True)
-                    self.app_logo.show()
-
-                    self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
-                    self.log_out_button.setIconSize(QtCore.QSize(150, 150))
-                    self.log_out_button.setFlat(True)
-                    self.log_out_button.clicked.connect(self.return_to_login_screen)
-
-                    sqliteConnection = sqlite3.connect('identifier.sqlite')
-                    cursor = sqliteConnection.cursor()
-                    username = user[0]
-                    password = user[1]
-                    first_name = user[2]
-                    last_name = user[3]
-                    cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ? AND FIRST_NAME = ? AND LAST_NAME = ?",
-                                   (username, password, first_name, last_name))
-                    logged_in_user_details = cursor.fetchall()
-                    cursor.close()
-
-                    self.setup_student_page(first_name, last_name)
-                    main_window.setCentralWidget(self.central_widget)
-                    self.status_bar = QtWidgets.QStatusBar(main_window)
-                    main_window.setStatusBar(self.status_bar)
+                    self.initialize_student_page()
                     break
             self.student_login_button.move(80, 320)
             self.student_or_label.move(190, 340)
             self.student_create_account.move(80, 380)
             self.student_incorrect_login.show()
-
-
         elif sending_button == "administrator_login_button":
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
@@ -217,37 +140,82 @@ class Main(object):
 
             for user in admin_rows:
                 if self.administrator_username.text() == user[0] and self.administrator_password.text() == user[1]:
-                    self.login_central_widget.deleteLater()
-
-                    main_window.setFixedSize(1400, 800)
-                    self.central_widget = QtWidgets.QWidget(main_window)
-                    self.central_widget.setObjectName("central_widget")
-                    self.central_widget.resize(1400, 800)
-
-                    self.app_logo = QtWidgets.QLabel(self.central_widget)
-                    self.app_logo.setFixedSize(140, 140)
-                    self.app_logo.move(20, 10)
-                    self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
-                    self.app_logo.setScaledContents(True)
-                    self.app_logo.show()
-
-                    self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None", "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
-                    self.log_out_button.setIconSize(QtCore.QSize(150, 150))
-                    self.log_out_button.setFlat(True)
-                    self.log_out_button.clicked.connect(self.return_to_login_screen)
-
-                    self.setup_student_page()
-                    main_window.setCentralWidget(self.central_widget)
-                    self.status_bar = QtWidgets.QStatusBar(main_window)
-                    main_window.setStatusBar(self.status_bar)
+                    self.initialize_administrator_page()
                     break
             self.administrator_login_button.move(480, 320)
             self.administrator_or_label.move(590, 340)
             self.administrator_create_account.move(480, 380)
             self.administrator_incorrect_login.show()
 
+    def initialize_student_page(self):
+        self.login_central_widget.deleteLater()
+
+        main_window.setFixedSize(1400, 800)
+        qtRectangle = main_window.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qtRectangle.moveCenter(centerPoint)
+        main_window.move(qtRectangle.topLeft())
+        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget.setObjectName("central_widget")
+        self.central_widget.resize(1400, 800)
+
+        self.app_logo = QtWidgets.QLabel(self.central_widget)
+        self.app_logo.setFixedSize(140, 140)
+        self.app_logo.move(20, 10)
+        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+        self.app_logo.setScaledContents(True)
+        self.app_logo.show()
+
+        self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None",
+                                                      "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+        self.log_out_button.setIconSize(QtCore.QSize(150, 150))
+        self.log_out_button.setFlat(True)
+        self.log_out_button.clicked.connect(self.return_to_login_screen)
+
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+        username = user[0]
+        password = user[1]
+        first_name = user[2]
+        last_name = user[3]
+        cursor.execute(
+            "SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ? AND FIRST_NAME = ? AND LAST_NAME = ?",
+            (username, password, first_name, last_name))
+        self.logged_in_user_details = cursor.fetchall()
+        cursor.close()
+
+        self.setup_student_page(first_name, last_name)
+        main_window.setCentralWidget(self.central_widget)
+        self.status_bar = QtWidgets.QStatusBar(main_window)
+        main_window.setStatusBar(self.status_bar)
+
+    def initialize_administrator_page(self):
+        self.login_central_widget.deleteLater()
+
+        main_window.setFixedSize(1400, 800)
+        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget.setObjectName("central_widget")
+        self.central_widget.resize(1400, 800)
+
+        self.app_logo = QtWidgets.QLabel(self.central_widget)
+        self.app_logo.setFixedSize(140, 140)
+        self.app_logo.move(20, 10)
+        self.app_logo.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Time Track Icon.png"))
+        self.app_logo.setScaledContents(True)
+        self.app_logo.show()
+
+        self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None",
+                                                      "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+        self.log_out_button.setIconSize(QtCore.QSize(150, 150))
+        self.log_out_button.setFlat(True)
+        self.log_out_button.clicked.connect(self.return_to_login_screen)
+
+        self.setup_student_page()
+        main_window.setCentralWidget(self.central_widget)
+        self.status_bar = QtWidgets.QStatusBar(main_window)
+        main_window.setStatusBar(self.status_bar)
+
     def setup_student_page(self, first_name, last_name):
-        global logged_in_user_details
         global dashboard_slideshow
         global slideshow_title
         global slideshow_description
@@ -255,8 +223,7 @@ class Main(object):
         global threadpool
         global map
 
-        # user_details = logged_in_user_details
-        # print(user_details)
+        user_details.get_user_details.__init__(self)
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
@@ -320,19 +287,13 @@ class Main(object):
         # Upcoming Events Tab
         self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label", "Upcoming Events", 20, 20, 600, 50)
         self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line", "HLine", 10, 65, 600, 6)
-        self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 275, 275)
+        self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 600, 600)
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
-        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 315, 80, 430, 30)
-        self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 315, 110, 430, 560)
+        self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 765, 80, 430, 30)
+        self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 765, 110, 430, 560)
         current_day = self.student_calendar.selectedDate().toString()
         self.day_events_label.setText("Events on: " + current_day[4:] + ":")
         self.day_events.setAlignment(Qt.AlignTop)
-
-        self.upcoming_events_objects = self.create_QScrollArea("upcoming_events_tab", "upcoming_events_QScrollArea", "vertical_layout", 765, 110, 430, 560)
-        self.upcoming_events = self.upcoming_events_objects[0]
-        self.upcoming_events_layout = self.upcoming_events_objects[1]
-        self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
-        self.upcoming_events_page_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_page_label", "  All Upcoming Events", 765, 80, 430, 30)
 
         for event in events:
             self.event_object = QtWidgets.QGroupBox(self.upcoming_events)
@@ -391,8 +352,10 @@ class Main(object):
         # Points Tab
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
         self.points_title_line = self.create_QFrame("points_tab", "points_title_line", "HLine", 10, 65, 600, 6)
-        self.personal_points_label = self.create_QLabel("points_tab", "personal_points_label", "  Personal Points", 20, 80, 300, 30)
-        self.personal_points = self.create_QLineEdit("points_tab", "personal_points", True, 20, 110, 300, 300)
+
+        self.personal_points_label = self.create_QLabel("points_tab", " ", "Personal Points : " + str(self.user_points), 20, 80, 300, 30)
+        # self.personal_points = self.create_QLineEdit("points_tab", "personal_points", True, 20, 110, 300, 300)
+
         self.points_leaderboard_objects = self.create_QScrollArea("points_tab", "points_leaderboard_QScrollArea",
                                                                   "vertical_layout", 350, 110, 450, 300)
         self.points_leaderboard = self.points_leaderboard_objects[0]
@@ -417,34 +380,19 @@ class Main(object):
 
         cursor.execute("SELECT IMAGE_LINK_SRC FROM rewards")
         pictures = cursor.fetchall()
-        cursor1 = sqliteConnection.cursor()
-
-        cursor1.execute("SELECT NAME FROM rewards")
-        names = cursor1.fetchall()
-
-        cursor2 = sqliteConnection.cursor()
-        cursor2.execute("SELECT DESCRIPTION  FROM rewards")
-        descriptions = cursor2.fetchall()
-        cursor3 = sqliteConnection.cursor()
-        cursor3.execute("SELECT POINTS  FROM rewards")
-        points = cursor3.fetchall()
-        cursor4 = sqliteConnection.cursor()
+        cursor.execute("SELECT NAME FROM rewards")
+        names = cursor.fetchall()
+        cursor.execute("SELECT DESCRIPTION  FROM rewards")
+        descriptions = cursor.fetchall()
+        cursor.execute("SELECT POINTS  FROM rewards")
+        points = cursor.fetchall()
         cursor.execute("SELECT EMAIL_ADDRESS, PASSWORD, POINTS FROM students")
         student_rows = cursor.fetchall()
-        cursor5 = sqliteConnection.cursor()
-        cursor5.execute("SELECT intpoints  FROM rewards")
-        intpoints = cursor5.fetchall()
+        cursor.execute("SELECT intpoints  FROM rewards")
+        intpoints = cursor.fetchall()
 
-        for user in student_rows:
-            if self.student_username.text() == user[0] and self.student_password.text() == user[1]:
-                student_points = user[2]
-                # print(user)
 
         cursor.close()
-        cursor1.close()
-        cursor2.close()
-        cursor3.close()
-        cursor4.close()
         picture_list = []
         name_list = []
         description_list = []
@@ -464,10 +412,8 @@ class Main(object):
 
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
-        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(logged_in_user_details[0][11]),
-                                                          20, 80, 300, 30)
-        self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120,
-                                                           1180, 570)
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(self.user_points), 20, 80, 300, 30)
+        self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120, 1180, 570)
         self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120, 1180, 570)
         self.rewards = self.rewards_tab_objects[0]
         self.rewards_layout = self.rewards_tab_objects[1]
@@ -512,20 +458,8 @@ class Main(object):
         self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label", "  User Data", 20, 370, 300, 30)
         self.user_picture = self.create_QLabel("student_profile_tab", "user_picture", " Tester ", 20, 80, 300, 300)
 
-
-        first_name = logged_in_user_details[0][1]
-        last_name = logged_in_user_details[0][2]
-        date_of_birth = logged_in_user_details[0][8]
-        user_gender = logged_in_user_details[0][16]
-        grade = str(logged_in_user_details[0][7])
-        events_attended = str(logged_in_user_details[0][10])
-        user_points = str(logged_in_user_details[0][11])
-        user_picture = str(logged_in_user_details[0][12])
-        emergency_contact_name = logged_in_user_details[0][13]
-        emergency_contact_phone = logged_in_user_details[0][14]
-        emergency_contact_email = logged_in_user_details[0][15]
-        self.user_picture.setPixmap(QPixmap(user_picture))
-        self.student_profile_data.setText("Name: " + first_name + " "+ last_name + "\nGrade: " + grade + "\nGender: " + user_gender + "\nDate of Birth: " + date_of_birth + "\nEvents Attended: " + events_attended + '\nPoints: ' + user_points)
+        self.user_picture.setPixmap(QPixmap(self.user_profile_picture))
+        self.student_profile_data.setText("Name: " + first_name + " "+ last_name + "\nGrade: " + self.grade + "\nGender: " + self.user_gender + "\nDate of Birth: " + self.date_of_birth + "\nEvents Attended: " + self.events_attended + '\nPoints: ' + self.user_points)
 
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
@@ -533,8 +467,7 @@ class Main(object):
         self.tab_widget.show()
 
     def setup_admin_page(self):
-        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath",
-                                              200, 10, 600, 50)
+        self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath", 200, 10, 600, 50)
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
@@ -554,8 +487,7 @@ class Main(object):
 
         self.count = 0
 
-        self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20,
-                                                        20, 600, 50)
+        self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20, 20, 600, 50)
         self.admin_dashboard_line = self.create_QFrame("admin_dashboard_tab", "admin_dashboard_line", "HLine", 10, 65, 600, 6)
 
         self.admin_events_label = self.create_QLabel("admin_events_tab", "admin_events_label", "Events", 20, 20, 600, 50)
@@ -565,9 +497,8 @@ class Main(object):
 
         # setting selected date
         # self.admin_calendar.clicked.connect(lambda: self.admin_current_events.setText(text + str(self.count)))
-        self.admin_events_title = self.create_QLabel("admin_events_tab", "admin_events_text", "Current Events", 400, 80, 400,
-                                                            30)
-        self.admin_current_events = self.create_QLineEdit("admin_events_tab", "admin_current_events", True, 400, 110, 400, 320, )
+        self.admin_events_title = self.create_QLabel("admin_events_tab", "admin_events_text", "Current Events", 400, 80, 400, 30)
+        self.admin_current_events = self.create_QLineEdit("admin_events_tab", "admin_current_events", True, 400, 110, 400, 320)
         current_day = self.admin_calendar.selectedDate().toString()
         self.admin_current_events.setText("Events on " + current_day[4:] + ":")
         self.admin_current_events.setAlignment(Qt.AlignTop)
@@ -575,8 +506,7 @@ class Main(object):
         self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics", 20, 20, 600, 50)
         self.admin_statistics_line = self.create_QFrame("admin_statistics_tab", "admin_statistics_line", "HLine", 10, 65, 600, 6)
 
-        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label", "Student View", 20, 20,
-                                                           600, 50)
+        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label", "Student View", 20, 20,600, 50)
         self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
         self.tab_widget.show()
@@ -597,30 +527,8 @@ class Main(object):
         event_month = new_date[1]
         event_day = new_date[2]
         new_month = 1
-        if event_month == "Jan":
-            new_month = 1
-        elif event_month == "Feb":
-            new_month = 2
-        elif event_month == "Mar":
-            new_month = 3
-        elif event_month == "Apr":
-            new_month = 4
-        elif event_month == "May":
-            new_month = 5
-        elif event_month == "Jun":
-            new_month = 6
-        elif event_month == "Jul":
-            new_month = 7
-        elif event_month == "Aug":
-            new_month = 8
-        elif event_month == "Sep":
-            new_month = 9
-        elif event_month == "Oct":
-            new_month = 10
-        elif event_month == "Nov":
-            new_month = 11
-        elif event_month == "Dec":
-            new_month = 12
+        month_dict = {"Jan" : 1, "Feb" : 2, "Mar" : 3, "Apr" : 4, "May" : 5, "Jun" : 6, "Jul" : 7, "Aug" : 8, "Sep" : 9, "Oct" : 10, "Nov" : 11, "Dec" : 12}
+        new_month = month_dict[event_month]
         for event in events:
             events_day = event[8]
             events_month = event[7]
@@ -632,28 +540,27 @@ class Main(object):
 
     # Logic Functions
     def deduct_points(self):
-        global logged_in_user_details
         global username
         global password
         global user
         point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
-        if logged_in_user_details[0][11] >= point_cost:
-            new_user_points = logged_in_user_details[0][11] - point_cost
+        if self.user_points >= point_cost:
+            new_user_points = self.logged_in_user_details[0][11] - point_cost
             # print(new_user_points)
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
-            cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, logged_in_user_details[0][1]))
+            cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, self.user_points))
             sqliteConnection.commit()
-            cursor.close()
-            sqliteConnection = sqlite3.connect('identifier.sqlite')
-            cursor = sqliteConnection.cursor()
+
             username = user[0]
             password = user[1]
             cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
                            (username, password))
-            logged_in_user_details = cursor.fetchall()
+            self.logged_in_user_details = cursor.fetchall()
             cursor.close()
-            self.rewards_my_points_label.setText("  Your Points: " + str(logged_in_user_details[0][11]))
+            self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
+
+            user_details.get_user_details.__init__()
 
 
     def return_to_login_screen(self):
@@ -688,30 +595,8 @@ class Main(object):
         numerical_data_list[2] = int(numerical_data_list[2])
         numerical_data_list[3] = int(numerical_data_list[3])
 
-        if numerical_data_list[1] == "Jan":
-            numerical_data_list[1] = 1
-        elif numerical_data_list[1] == "Feb":
-            numerical_data_list[1] = 2
-        elif numerical_data_list[1] == "Mar":
-            numerical_data_list[1] = 3
-        elif numerical_data_list[1] == "Apr":
-            numerical_data_list[1] = 4
-        elif numerical_data_list[1] == "May":
-            numerical_data_list[1] = 5
-        elif numerical_data_list[1] == "Jun":
-            numerical_data_list[1] = 6
-        elif numerical_data_list[1] == "Jul":
-            numerical_data_list[1] = 7
-        elif numerical_data_list[1] == "Aug":
-            numerical_data_list[1] = 8
-        elif numerical_data_list[1] == "Sep":
-            numerical_data_list[1] = 9
-        elif numerical_data_list[1] == "Oct":
-            numerical_data_list[1] = 10
-        elif numerical_data_list[1] == "Nov":
-            numerical_data_list[1] = 11
-        elif numerical_data_list[1] == "Dec":
-            numerical_data_list[1] = 12
+        month_dict = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+        numerical_data_list[1] = month_dict[numerical_data_list[1]]
         self.day_events.clear()
         current_text = self.day_events.toPlainText()
         for event in events:
@@ -800,16 +685,12 @@ class Slideshow(QRunnable):
 
 if __name__ == "__main__":
     import sys
-    # An application is created
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Fusion')
-    # Read the css file and apply the stylesheet
     with open("styling.qss", "r") as f:
         _style = f.read()
         app.setStyleSheet(_style)
-    # A main window is created for the application
     main_window = QtWidgets.QMainWindow()
-    # The user interface sets up the main window class
     ui = Main()
     ui.setup_window(main_window)
     main_window.show()
