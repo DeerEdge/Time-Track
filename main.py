@@ -30,6 +30,9 @@ events = cursor.fetchall()
 cursor.execute("SELECT * from students")
 students = cursor.fetchall()
 
+cursor.execute("SELECT email_address, first_name, last_name, points, RANK() OVER(ORDER BY points DESC) 'Rank' from students")
+students_leaderboard = cursor.fetchall()
+
 cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
 student_rows = cursor.fetchall()
 
@@ -364,12 +367,12 @@ class Main(object):
         self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
 
         # Leaderboard
-        for student in students:
+        for student in students_leaderboard:
             self.event_object = QtWidgets.QGroupBox(self.points_leaderboard)
             self.event_object.setFixedSize(400, 50)
             self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.label = self.create_QLabel("event", "test", "   " + str(student[2]) + ", " + str(student[1]) +
-                                            " Points: " + str(student[11]), 0, 0, 400, 30)
+            self.label = self.create_QLabel("event", "test", "   " + str(student[1]) + ", " + str(student[2]) +
+                                            " Points: " + str(student[3]), 0, 0, 400, 30)
             self.points_leaderboard_layout.addWidget(self.event_object)
         self.points_leaderboard_scrollArea.setWidget(self.points_leaderboard)
         self.points_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
