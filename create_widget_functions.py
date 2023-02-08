@@ -1,7 +1,16 @@
 from PyQt5 import QtWidgets, QtCore, Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QCheckBox, QTabWidget, QTabBar, QStylePainter, QStyleOptionTab, QStyle
+from PyQt5.QtWidgets import QCheckBox, QTabWidget, QTabBar, QStylePainter, QStyleOptionTab, QStyle, QComboBox
 
+class create_QComboBox:
+    def __init__(self, container, x_coordinate, y_coordinate, width, length):
+        # Creates and associates QComboBox to specified container
+        if container == "points_tab":
+            self.QComboBox = QtWidgets.QComboBox(self.points_tab)
+
+        # Geometry of QComboBox is specified by the passed function parameters
+        self.QComboBox.setGeometry(QtCore.QRect(x_coordinate, y_coordinate, width, length))
+        return self.QComboBox
 
 class create_QCheckBox():
     def __init__(self, container, x_coordinate, y_coordinate, width, length):
@@ -13,7 +22,7 @@ class create_QCheckBox():
             self.QCheckBox = QtWidgets.QCheckBox(self.event_object)
         self.QCheckBox.resize(width, length)
         self.QCheckBox.move(x_coordinate, y_coordinate)
-        return QCheckBox
+        return self.QCheckBox
 
 class create_QCalendar():
     def __init__(self, container, x_coordinate, y_coordinate, width, length):

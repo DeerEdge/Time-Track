@@ -1,5 +1,10 @@
 # Import PyQt5's widgets to be used throughout the program
 import threading
+import sys
+import turtle
+import tables
+import colorama
+from colorama import Fore
 from PyQt5.QtCore import Qt, pyqtSignal, QDate, QRunnable, pyqtSlot, QThreadPool
 from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
 from PyQt5.QtWidgets import *
@@ -20,6 +25,7 @@ import create_widget_functions
 import user_details
 
 from create_widget_functions import VerticalTabWidget
+
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
@@ -47,6 +53,7 @@ def sort_key(student_rows):
 
 student_rows.sort(key=sort_key, reverse=True)
 cursor.close()
+
 
 class Main(object):
     def setup_window(self, main_window):
@@ -294,8 +301,8 @@ class Main(object):
         self.student_calendar.selectionChanged.connect(self.student_upcoming_events_calendar)
         self.day_events_label = self.create_QLabel("upcoming_events_tab", "day_events_label", "  Selected Event", 765, 80, 430, 30)
         self.day_events = self.create_QTextEdit("upcoming_events_tab", "day_events", True, 765, 110, 430, 560)
-        current_day = self.student_calendar.selectedDate().toString()
-        self.day_events_label.setText("Events on: " + current_day[4:] + ":")
+        self.current_day = self.student_calendar.selectedDate().toString()
+        self.day_events_label.setText("Events on: " + self.current_day[4:] + ":") #changed to self
         self.day_events.setAlignment(Qt.AlignTop)
 
         for event in events:
@@ -356,15 +363,47 @@ class Main(object):
         self.points_label = self.create_QLabel("points_tab", "points_label", "Points", 20, 20, 600, 50)
         self.points_title_line = self.create_QFrame("points_tab", "points_title_line", "HLine", 10, 65, 600, 6)
 
-        self.personal_points_label = self.create_QLabel("points_tab", " ", "Personal Points : " + str(self.user_points), 20, 80, 300, 30)
-        # self.personal_points = self.create_QLineEdit("points_tab", "personal_points", True, 20, 110, 300, 300)
+    # combo boxes and stars
+
+        self.QComboBox = QtWidgets.QComboBox(self.points_tab)
+        self.QComboBox.setGeometry(QtCore.QRect(60, 170, 200, 50))
+        self.QComboBox.addItem("Select Event")
+        self.QComboBox.addItem("Football Game")
+        self.QComboBox.addItem("Volleyball Game")
+        self.QComboBox.addItem("Basketball Game")
+        self.QComboBox.addItem("Swim Meet")
+        self.QComboBox.addItem("Wrestling Competition")
+
+# stars/ rating
+
+        self.QComboBox = QtWidgets.QComboBox(self.points_tab)
+        self.QComboBox.setGeometry(QtCore.QRect(440, 170, 200, 50))
+        self.QComboBox.addItem("Rate Event")
+        self.QComboBox.addItem("⭐⭐⭐⭐⭐" + " --> Amazing")
+        self.QComboBox.addItem("⭐⭐⭐⭐" + " --> Good")
+        self.QComboBox.addItem("⭐⭐⭐"+ " --> Average")
+        self.QComboBox.addItem("⭐⭐"  + " -->Bad")
+        self.QComboBox.addItem("⭐" + " -->Horrible")
+# describe field
+        self.info = QTextEdit(self.points_tab)
+        self.info.setGeometry(50, 260, 600, 300)
+        self.info.setAlignment(Qt.AlignTop)
+        self.info.setWordWrapMode(True)
+# send button
+
+        self.QPushButton = QtWidgets.QPushButton(self.points_tab)
+        self.QPushButton.setText("Send For Approval")
+        self.QPushButton.setGeometry(160, 600, 350, 50)
+
 
         self.points_leaderboard_objects = self.create_QScrollArea("points_tab", "points_leaderboard_QScrollArea",
-                                                                  "vertical_layout", 350, 110, 450, 300)
+                                                                  "vertical_layout", 750, 80, 450, 300)
         self.points_leaderboard = self.points_leaderboard_objects[0]
         self.points_leaderboard_layout = self.points_leaderboard_objects[1]
         self.points_leaderboard_scrollArea = self.points_leaderboard_objects[2]
-        self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard", 350, 80, 450, 30)
+        self.points_leaderboard_label = self.create_QLabel("points_tab", "points_leaderboard_label", "  Leaderboard: ", 750, 40, 450, 30)
+        self.points_leaderboard_label  = self.create_QLabel("points_tab", " ", "Personal Points : " + str(self.user_points), 900, 40, 300, 30)
+
 
         # Leaderboard
         for student in students_leaderboard:
@@ -415,7 +454,7 @@ class Main(object):
 
         self.rewards_label = self.create_QLabel("rewards_tab", "rewards_label", "Rewards", 20, 20, 600, 50)
         self.rewards_title_line = self.create_QFrame("rewards_tab", "rewards_title_line", "HLine", 10, 65, 600, 6)
-        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(self.user_points), 20, 80, 300, 30)
+        self.rewards_my_points_label = self.create_QLabel("rewards_tab", "rewards_my_points_label", "  Your Points: " + str(self.user_points), 950, 40, 300, 30)
         self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120, 1180, 570)
         self.rewards_tab_objects = self.create_QScrollArea("rewards_tab", "rewards_QScrollArea", "grid_layout", 20, 120, 1180, 570)
         self.rewards = self.rewards_tab_objects[0]
@@ -457,13 +496,13 @@ class Main(object):
         # Student Profile Tab
         self.student_profile_label = self.create_QLabel("student_profile_tab", "student_profile_label", "My Profile", 20, 20, 600, 50)
         self.student_profile_title_line = self.create_QFrame("student_profile_tab", "student_profile_title_line", "HLine", 10, 65, 600, 6)
-        self.student_profile_data = self.create_QTextEdit("student_profile_tab", "student_profile_data", True, 20, 400, 300, 300)
-        self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label", "  User Data", 20, 370, 300, 30)
-        self.user_picture = self.create_QLabel("student_profile_tab", "user_picture", " Tester ", 20, 80, 300, 300)
+        self.student_profile_data = self.create_QTextEdit("student_profile_tab", "student_profile_data", True, 900, 50, 300, 300)
+        self.student_profile_data_label = self.create_QLabel("student_profile_tab", "student_profile_data_label", "  User Data", 900, 20, 300, 30)
+        self.user_picture = self.create_QLabel("student_profile_tab", "user_picture", " Tester ", 20, 110, 300, 300) # for chips pic
+        self.student_purchases_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Past Purchases ", 20, 80, 300, 50)
 
         self.user_picture.setPixmap(QPixmap(self.user_profile_picture))
-        self.student_profile_data.setText("Name: " + first_name + " "+ last_name + "\nGrade: " + self.grade + "\nGender: " + self.user_gender + "\nDate of Birth: " + self.date_of_birth + "\nEvents Attended: " + self.events_attended + '\nPoints: ' + self.user_points)
-
+        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + self.grade + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + self.events_attended + '\n\n Points: ' + self.user_points)
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
 
@@ -680,7 +719,7 @@ class Slideshow(QRunnable):
             else:
                 slideshow_title.setText(row[0][2])
                 slideshow_description.setText(row[0][3])
-                time.sleep(3)
+                time.sleep(5)
                 index += 1
             if kill_thread_boolean == True:
                 break

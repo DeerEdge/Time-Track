@@ -163,6 +163,9 @@ QLabel#points_leaderboard_label {
 QLabel#rewards_label {
     font: bold 30px;
 }
+QLabel#rewards_my_points_label {
+    font: bold 20px;
+}
 QFrame#rewards_title_line {
     background-color:black;
 }
@@ -171,6 +174,9 @@ QFrame#rewards_title_line {
 
 QLabel#student_profile_label {
     font: bold 30px;
+}
+QLabel#student_purchases_label {
+    font: bold 15px;
 }
 
 QFrame#student_profile_title_line {
@@ -182,6 +188,7 @@ QLabel#student_profile_data_label {
     color: black;
     background-color: rgb(161, 225, 237);
     border: 1px solid darkgrey;
+    spacing: double;
 }
 
  /* Administrator login */
