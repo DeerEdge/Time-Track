@@ -19,7 +19,6 @@ import time
 import io
 import os
 import sqlite3
-import user_details
 
 # import class functions
 import create_widget_functions
@@ -503,7 +502,7 @@ class Main(object):
         self.student_purchases_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Past Purchases ", 20, 80, 300, 50)
 
         self.user_picture.setPixmap(QPixmap(self.user_profile_picture))
-        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + self.grade + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + self.events_attended + '\n\n Points: ' + self.user_points)
+        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + str(self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(self.events_attended) + '\n\n Points: ' + str(self.user_points))
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
 
@@ -587,12 +586,12 @@ class Main(object):
         global password
         global user
         point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
-        if int(self.user_points) >= point_cost:
+        if self.user_points >= point_cost:
             new_user_points = self.logged_in_user_details[0][11] - point_cost
             # print(new_user_points)
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
-            cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, self.user_points))
+            cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, self.first_name))
             sqliteConnection.commit()
 
             username = user[0]
@@ -603,8 +602,8 @@ class Main(object):
             cursor.close()
             self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
 
-            user_details_obj = user_details.get_user_details()
-            user_details_obj.get_user_details()
+            user_details.get_user_details.__init__(self)
+
 
     def return_to_login_screen(self):
         global kill_thread_boolean
