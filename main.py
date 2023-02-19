@@ -19,6 +19,7 @@ import time
 import io
 import os
 import sqlite3
+import user_details
 
 # import class functions
 import create_widget_functions
@@ -586,7 +587,7 @@ class Main(object):
         global password
         global user
         point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
-        if self.user_points >= point_cost:
+        if int(self.user_points) >= point_cost:
             new_user_points = self.logged_in_user_details[0][11] - point_cost
             # print(new_user_points)
             sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -602,8 +603,8 @@ class Main(object):
             cursor.close()
             self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
 
-            user_details.get_user_details.__init__()
-
+            user_details_obj = user_details.get_user_details()
+            user_details_obj.get_user_details()
 
     def return_to_login_screen(self):
         global kill_thread_boolean
