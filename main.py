@@ -295,6 +295,10 @@ class Main(object):
 
 
         # Upcoming Events Tab
+        # Calendar Widget
+        # Scroll Area with the creation of event objects
+        # Default to current date
+        #
         self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label", "Upcoming Events", 20, 20, 600, 50)
         self.upcoming_events_title_line = self.create_QFrame("upcoming_events_tab", "upcoming_events_title_line", "HLine", 10, 65, 600, 6)
         self.student_calendar = self.create_QCalendar("upcoming_events_tab", 20, 80, 600, 600)
@@ -502,7 +506,7 @@ class Main(object):
         self.student_purchases_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Past Purchases ", 20, 80, 300, 50)
 
         self.user_picture.setPixmap(QPixmap(self.user_profile_picture))
-        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + self.grade + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + self.events_attended + '\n\n Points: ' + self.user_points)
+        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + str(self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(self.events_attended) + '\n\n Points: ' + str(self.user_points))
         # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
         # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
 
@@ -602,7 +606,7 @@ class Main(object):
             cursor.close()
             self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
 
-            user_details.get_user_details.__init__()
+            user_details.get_user_details.__init__(self)
 
 
     def return_to_login_screen(self):
