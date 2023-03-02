@@ -219,7 +219,7 @@ class Main(object):
         self.log_out_button.setFlat(True)
         self.log_out_button.clicked.connect(self.return_to_login_screen)
 
-        self.setup_student_page()
+        self.setup_admin_page()
         main_window.setCentralWidget(self.central_widget)
         self.status_bar = QtWidgets.QStatusBar(main_window)
         main_window.setStatusBar(self.status_bar)
@@ -531,7 +531,7 @@ class Main(object):
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1000, 650)
+        self.tab_widget.resize(1405, 750)
         self.tab_widget.move(0, 55)
 
         # Administrator Login
