@@ -508,7 +508,7 @@ class Main(object):
         self.tab_widget.show()
 
     def update_points(self):
-        updated_user_points = self.logged_in_user_details[0][11] + 100
+        updated_user_points = self.logged_in_user_details[0][11] + 20
         sqliteConnection = sqlite3.connect('identifier.sqlite')
         cursor = sqliteConnection.cursor()
         cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (updated_user_points, self.first_name))
@@ -518,13 +518,11 @@ class Main(object):
 
         self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
         self.points_leaderboard_label.setText("Personal Points : " + str(self.user_points))
-
+        cursor.close()
 
         user_details.get_user_details.__init__(self)
 
         print("clicked button")
-
-
 
     def setup_admin_page(self):
         self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath", 200, 10, 600, 50)
@@ -604,14 +602,17 @@ class Main(object):
         global password
         global user
         point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
+
         if self.user_points >= point_cost:
-            new_user_points = self.logged_in_user_details[0][11] - point_cost
+
             # print(new_user_points)
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
+            new_user_points = self.logged_in_user_details[0][11] - point_cost
             cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (new_user_points, self.first_name))
             sqliteConnection.commit()
 
+            self.user_points = new_user_points
             username = user[0]
             password = user[1]
             cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
