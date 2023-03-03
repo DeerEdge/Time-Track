@@ -26,7 +26,6 @@ import user_details
 
 from create_widget_functions import VerticalTabWidget
 
-
 sqliteConnection = sqlite3.connect('identifier.sqlite')
 cursor = sqliteConnection.cursor()
 sqlite_select_query = """SELECT * from events"""
@@ -220,7 +219,7 @@ class Main(object):
         self.log_out_button.setFlat(True)
         self.log_out_button.clicked.connect(self.return_to_login_screen)
 
-        self.setup_student_page()
+        self.setup_admin_page()
         main_window.setCentralWidget(self.central_widget)
         self.status_bar = QtWidgets.QStatusBar(main_window)
         main_window.setStatusBar(self.status_bar)
@@ -393,6 +392,8 @@ class Main(object):
 
         self.QPushButton = QtWidgets.QPushButton(self.points_tab)
         self.QPushButton.setText("Send For Approval")
+        self.QPushButton.setAccessibleName("push_button")
+        self.QPushButton.clicked.connect(self.update_points)
         self.QPushButton.setGeometry(160, 600, 350, 50)
 
 
@@ -483,8 +484,6 @@ class Main(object):
                 self.button.setGeometry(10, 250, 320, 40)
                 self.button.clicked.connect(self.deduct_points)
 
-
-
                 # self.check_box = self.create_QCheckBox("event", 305, 12, 30, 30)
                 self.rewards_layout.addWidget(self.event_object, i, j)
                 index += 1
@@ -508,12 +507,31 @@ class Main(object):
 
         self.tab_widget.show()
 
+    def update_points(self):
+        updated_user_points = self.logged_in_user_details[0][11] + 100
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+        cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (updated_user_points, self.first_name))
+        sqliteConnection.commit()
+
+        self.user_points = updated_user_points
+
+        self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
+        self.points_leaderboard_label.setText("Personal Points : " + str(self.user_points))
+
+
+        user_details.get_user_details.__init__(self)
+
+        print("clicked button")
+
+
+
     def setup_admin_page(self):
         self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath", 200, 10, 600, 50)
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1000, 650)
+        self.tab_widget.resize(1405, 750)
         self.tab_widget.move(0, 55)
 
         # Administrator Login
