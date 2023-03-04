@@ -41,9 +41,6 @@ students_leaderboard = cursor.fetchall()
 cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
 student_rows = cursor.fetchall()
 
-cursor.execute("SELECT * FROM Announcement")
-announcements = cursor.fetchall()
-
 first_name = ""
 last_name = ""
 
@@ -260,38 +257,45 @@ class Main(object):
         self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 600, 6)
         dashboard_slideshow = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler", 20, 90, 840, 480)
         dashboard_slideshow.setScaledContents(True)
-        slideshow_title = self.create_QLabel("dashboard_tab", "slideshow_title", "", 20, 580, 840, 20)
+        self.slideshow_description_groupbox = QtWidgets.QGroupBox(self.dashboard_tab)
+        self.slideshow_description_groupbox.setGeometry(20, 580, 840, 100)
+        slideshow_title = self.create_QLabel("slideshow_description_groupbox", "slideshow_title", "", 10, 10, 830, 20)
         slideshow_title.setWordWrap(True)
-        slideshow_description = self.create_QLabel("dashboard_tab", "slideshow_description", "", 20, 600, 840, 100)
+        slideshow_description = self.create_QLabel("slideshow_description_groupbox", "slideshow_description", "", 10, 35, 830, 100)
         slideshow_description.setWordWrap(True)
         slideshow_description.setAlignment(QtCore.Qt.AlignTop)
         kill_thread_boolean = False
         threadpool = QThreadPool()
         slideshow = Slideshow()
         threadpool.start(slideshow)
-        self.dashboard_separator_line = self.create_QFrame("dashboard_tab", "dashboard_separator_line", "VLine", 875, 40, 6, 630)
 
-        self.announcements = self.create_QLabel("dashboard_tab", "announcements", "Announcements", 900, 40, 300, 30)
-        self.upcoming_events_objects = self.create_QScrollArea("dashboard_tab", "upcoming_events_QScrollArea",
-                                                               "vertical_layout", 900, 110, 300, 560)
-        self.upcoming_events = self.upcoming_events_objects[0]
-        self.upcoming_events_layout = self.upcoming_events_objects[1]
-        self.upcoming_events_scrollArea = self.upcoming_events_objects[2]
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+        cursor.execute("SELECT * FROM Announcement")
+        announcements = cursor.fetchall()
 
-        for announcement in announcements:
-            self.event_object = QtWidgets.QGroupBox(self.upcoming_events)
-            self.event_object.setFixedSize(260, 100)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.title = self.create_QLabel("event", "title", (announcement[1] + "\n" + announcement[2]), 10, 10, 100, 30)
-            self.title.setWordWrap(True)
-            # self.date = self.create_QLabel("event", "date", (str(announcement[7]) + "/" + str(announcement[8]) + "/" + str(announcement[6])),
-            #                                180, 0, 80, 30)
-            self.description = self.create_QLabel("event", "description", (announcement[3]), 10, 60, 230, 40)
-            self.description.setWordWrap(True)
-            self.upcoming_events_layout.addWidget(self.event_object)
-        self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
-        self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
+        self.side_announcement1 = QtWidgets.QGroupBox(self.dashboard_tab)
+        self.side_announcement1.setGeometry(880, 88, 320, 290)
+        self.sa1_picture = QLabel(self.side_announcement1)
+        self.sa1_picture.setGeometry(10, 15, 300, 200)
+        self.sa1_picture.setPixmap(QPixmap(announcements[0][6]))
+        self.sa1_picture.setScaledContents(True)
+        self.sa1_title = QtWidgets.QLabel(self.side_announcement1)
+        self.sa1_title.setWordWrap(True)
+        self.sa1_title.setGeometry(10, 220, 300, 50)
+        self.sa1_title.setText(announcements[0][1] + announcements[0][2])
 
+
+        self.side_announcement2 = QtWidgets.QGroupBox(self.dashboard_tab)
+        self.side_announcement2.setGeometry(880, 388, 320, 290)
+        self.sa2_picture = QLabel(self.side_announcement2)
+        self.sa2_picture.setGeometry(10, 15, 300, 200)
+        self.sa2_picture.setPixmap(QPixmap(announcements[1][6]))
+        self.sa2_picture.setScaledContents(True)
+        self.sa2_title = QtWidgets.QLabel(self.side_announcement2)
+        self.sa2_title.setWordWrap(True)
+        self.sa2_title.setGeometry(10, 220, 300, 50)
+        self.sa2_title.setText(announcements[1][1] + announcements[1][2])
 
         # Upcoming Events Tab
         self.upcoming_events_label = self.create_QLabel("upcoming_events_tab", "upcoming_events_label", "Upcoming Events", 20, 20, 600, 50)
@@ -303,35 +307,6 @@ class Main(object):
         self.current_day = self.student_calendar.selectedDate().toString()
         self.day_events_label.setText("Events on: " + self.current_day[4:] + ":") #changed to self
         self.day_events.setAlignment(Qt.AlignTop)
-
-        for event in events:
-            self.event_object = QtWidgets.QGroupBox(self.upcoming_events)
-            self.event_object.setFixedSize(390, 100)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.title = self.create_QLabel("event", "title", (event[1] + "\n" + event[2]), 10, 10, 100, 30)
-            self.title.setWordWrap(True)
-            self.date = self.create_QLabel("event", "date", (str(event[7]) + "/" + str(event[8]) + "/" + str(event[6])),
-                                           240, 0, 80, 60)
-            self.description = self.create_QLabel("event", "description", (event[3]), 10, 60, 305, 40)
-            self.description.setWordWrap(True)
-            self.upcoming_events_layout.addWidget(self.event_object)
-        self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
-        self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
-
-        # Example of upcoming events
-        for event in events:
-            self.event_object = QtWidgets.QGroupBox(self.upcoming_events)
-            self.event_object.setFixedSize(390, 100)
-            self.event_object.setLayout(QtWidgets.QVBoxLayout())
-            self.title = self.create_QLabel("event", "title", (event[1] + "\n" + event[2]), 10, 10, 100, 30)
-            self.title.setWordWrap(True)
-            self.date = self.create_QLabel("event", "date", (str(event[7]) + "/" + str(event[8]) + "/" + str(event[6])),
-                                           240, 0, 80, 60)
-            self.description = self.create_QLabel("event", "description", (event[3]), 10, 60, 305, 40)
-            self.description.setWordWrap(True)
-            self.upcoming_events_layout.addWidget(self.event_object)
-        self.upcoming_events_scrollArea.setWidget(self.upcoming_events)
-        self.upcoming_events_scrollArea.verticalScrollBar().setSliderPosition(0)
 
         # Maps Tab
         self.maps_label = self.create_QLabel("maps_tab", "maps_label", "Maps", 20, 20, 600, 50)

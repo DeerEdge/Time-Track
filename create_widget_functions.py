@@ -50,6 +50,8 @@ class create_QLabel():
             self.QLabel = QtWidgets.QLabel(self.rewards_tab)
         elif container == "student_profile_tab":
             self.QLabel = QtWidgets.QLabel(self.student_profile_tab)
+        elif container == "slideshow_description_groupbox":
+            self.QLabel = QtWidgets.QLabel(self.slideshow_description_groupbox)
         elif container == "event":
             self.QLabel = QtWidgets.QLabel(self.event_object)
 
