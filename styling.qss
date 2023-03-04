@@ -88,7 +88,6 @@ QLabel#dashboard_announcement_label {
     background-color: rgb(161, 225, 237);
     border: 1px solid darkgrey;
 }
-
 QLabel#dashboard_upcoming_events_label {
     font: 20px;
     color: black;

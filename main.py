@@ -1,29 +1,22 @@
 # Import PyQt5's widgets to be used throughout the program
-import threading
-import sys
-import turtle
-import tables
-import colorama
-from colorama import Fore
-from PyQt5.QtCore import Qt, pyqtSignal, QDate, QRunnable, pyqtSlot, QThreadPool
-from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
-from PyQt5.QtWidgets import *
-from PyQt5 import QtGui, QtCore, QtWidgets
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEngineSettings
-from datetime import time
-from folium.plugins import MarkerCluster
-
-# folium v0.12.1 - Used to display geographical data
-import folium
-import time
 import io
 import os
 import sqlite3
+from datetime import time
+import time
+
+# folium v0.12.1 - Used to display geographical data
+import folium
+from PyQt5 import QtGui, QtCore, QtWidgets
+from PyQt5.QtCore import Qt, QRunnable, pyqtSlot, QThreadPool
+from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
+from PyQt5.QtWebEngineWidgets import QWebEngineView
+from PyQt5.QtWidgets import *
+from folium.plugins import MarkerCluster
 
 # import class functions
 import create_widget_functions
 import user_details
-
 from create_widget_functions import VerticalTabWidget
 
 sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -527,7 +520,6 @@ class Main(object):
         self.tab_widget.addTab(self.admin_events_tab, "Events")
         self.tab_widget.addTab(self.admin_statistics_tab, "Statistics")
         self.tab_widget.addTab(self.admin_student_view_tab, "Student View")
-
         self.count = 0
 
         self.admin_dashboard_label = self.create_QLabel("admin_dashboard_tab", "admin_dashboard_label", "Dashboard", 20, 20, 600, 50)
@@ -552,6 +544,12 @@ class Main(object):
         self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label", "Student View", 20, 20,600, 50)
         self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
+
+     #   self.adminApprovalLable = self.create_QLabel("admin_dashboard_tab", "adminApprovalLable", "My Profil", 20, 20, 600, 50)
+        self.adminApprovalLine = self.create_QFrame("admin_dashboard_tab", "adminApprovalLine", "HLine", 10, 65, 600, 6)
+        self.adminApprovalData = self.create_QTextEdit("admin_dashboard_tab", "adminApprovalData", True, 900, 50, 300, 300)
+        self.adminApprovalBlue = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Requests Pending Approval", 900, 20, 300, 30)
+        self.adminApprovalData.setText("Student 1: " '\n\nStudent 2: ' + '\n\nStudent 3: ' + '\n\nStudent 4: ' + '\n\nStudent 5 ')
         self.tab_widget.show()
 
     def student_upcoming_events_calendar(self):
