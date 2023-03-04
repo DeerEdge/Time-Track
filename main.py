@@ -483,21 +483,31 @@ class Main(object):
         self.tab_widget.show()
 
     def update_points(self):
-        updated_user_points = self.logged_in_user_details[0][11] + 20
+
         sqliteConnection = sqlite3.connect('identifier.sqlite')
         cursor = sqliteConnection.cursor()
+        updated_user_points = self.logged_in_user_details[0][11] + 20
         cursor.execute("UPDATE students SET POINTS = ? WHERE FIRST_NAME = ?", (updated_user_points, self.first_name))
         sqliteConnection.commit()
 
         self.user_points = updated_user_points
 
+        username = user[0]
+        password = user[1]
+        cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
+                       (username, password))
+        self.logged_in_user_details = cursor.fetchall()
+        cursor.close()
+
         self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
         self.points_leaderboard_label.setText("Personal Points : " + str(self.user_points))
-        cursor.close()
+        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + str(
+            self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(
+            self.events_attended) + '\n\n Points: ' + str(self.user_points))
 
         user_details.get_user_details.__init__(self)
 
-        print("clicked button")
+        
 
     def setup_admin_page(self):
         self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath", 200, 10, 600, 50)
