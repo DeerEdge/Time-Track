@@ -34,6 +34,9 @@ students_leaderboard = cursor.fetchall()
 cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS FROM students")
 student_rows = cursor.fetchall()
 
+cursor.execute("SELECT FIRST_NAME, LAST_NAME, POINTS, EVENT, RATING, DESCRIPTION FROM approval")
+admin_approval_rows = cursor.fetchall()
+
 first_name = ""
 last_name = ""
 
@@ -42,6 +45,10 @@ def sort_key(student_rows):
 
 student_rows.sort(key=sort_key, reverse=True)
 cursor.close()
+
+event_combobox_selection = ""
+rating_combobox_selection = ""
+description_box = ""
 
 
 class Main(object):
@@ -332,36 +339,41 @@ class Main(object):
 
     # combo boxes and stars
 
-        self.QComboBox = QtWidgets.QComboBox(self.points_tab)
-        self.QComboBox.setGeometry(QtCore.QRect(60, 170, 200, 50))
-        self.QComboBox.addItem("Select Event")
-        self.QComboBox.addItem("Football Game")
-        self.QComboBox.addItem("Volleyball Game")
-        self.QComboBox.addItem("Basketball Game")
-        self.QComboBox.addItem("Swim Meet")
-        self.QComboBox.addItem("Wrestling Competition")
+        self.event_combobox = QComboBox(self.points_tab)
+        self.event_combobox.setGeometry(QtCore.QRect(60, 170, 200, 50))
+        self.event_combobox.addItem("Select Event")
+        self.event_combobox.addItem("Football Game")
+        self.event_combobox.addItem("Volleyball Game")
+        self.event_combobox.addItem("Basketball Game")
+        self.event_combobox.addItem("Swim Meet")
+        self.event_combobox.addItem("Wrestling Competition")
+
 
 # stars/ rating
 
-        self.QComboBox = QtWidgets.QComboBox(self.points_tab)
-        self.QComboBox.setGeometry(QtCore.QRect(440, 170, 200, 50))
-        self.QComboBox.addItem("Rate Event")
-        self.QComboBox.addItem("⭐⭐⭐⭐⭐" + " --> Amazing")
-        self.QComboBox.addItem("⭐⭐⭐⭐" + " --> Good")
-        self.QComboBox.addItem("⭐⭐⭐"+ " --> Average")
-        self.QComboBox.addItem("⭐⭐"  + " -->Bad")
-        self.QComboBox.addItem("⭐" + " -->Horrible")
+        self.rating_combobox = QComboBox(self.points_tab)
+        self.rating_combobox.setGeometry(QtCore.QRect(440, 170, 200, 50))
+        self.rating_combobox.addItem("Rate Event")
+        self.rating_combobox.addItem("⭐⭐⭐⭐⭐" + " --> Amazing")
+        self.rating_combobox.addItem("⭐⭐⭐⭐" + " --> Good")
+        self.rating_combobox.addItem("⭐⭐⭐"+ " --> Average")
+        self.rating_combobox.addItem("⭐⭐"  + " -->Bad")
+        self.rating_combobox.addItem("⭐" + " -->Horrible")
+
+
 # describe field
         self.info = QTextEdit(self.points_tab)
         self.info.setGeometry(50, 260, 600, 300)
         self.info.setAlignment(Qt.AlignTop)
         self.info.setWordWrapMode(True)
+
+
 # send button
 
         self.QPushButton = QtWidgets.QPushButton(self.points_tab)
         self.QPushButton.setText("Send For Approval")
         self.QPushButton.setAccessibleName("push_button")
-        self.QPushButton.clicked.connect(self.update_points)
+        self.QPushButton.clicked.connect(self.send_approval)
         self.QPushButton.setGeometry(160, 600, 350, 50)
 
 
@@ -475,6 +487,27 @@ class Main(object):
 
         self.tab_widget.show()
 
+    def send_approval(self):
+        sqliteConnection = sqlite3.connect('identifier.sqlite')
+        cursor = sqliteConnection.cursor()
+
+        first_name = user[2]
+        last_name = user[3]
+
+        event_combobox_selection = self.event_combobox.currentText()
+        rating_combobox_selection = self.rating_combobox.currentText()
+        description_box = self.info.toPlainText()
+
+
+
+        cursor.execute(
+            "INSERT INTO approval (FIRST_NAME, LAST_NAME, POINTS, EVENT, RATING, DESCRIPTION) VALUES ('" + first_name + "', '" + last_name + "', '" + str(
+                self.user_points) + "', '" + event_combobox_selection + "', '" + rating_combobox_selection + "', '" + description_box + "')")
+        sqliteConnection.commit()
+        cursor.close()
+
+
+
     def update_points(self):
 
         sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -487,9 +520,13 @@ class Main(object):
 
         username = user[0]
         password = user[1]
-        cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
-                       (username, password))
+        first_name = user[2]
+        last_name = user[3]
+
+        cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ? AND FIRST_NAME = ? AND LAST_NAME = ?",
+                       (username, password, first_name, last_name))
         self.logged_in_user_details = cursor.fetchall()
+
         cursor.close()
 
         self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
@@ -498,9 +535,10 @@ class Main(object):
             self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(
             self.events_attended) + '\n\n Points: ' + str(self.user_points))
 
+
         user_details.get_user_details.__init__(self)
 
-        
+
 
     def setup_admin_page(self):
         self.intro_label = self.create_QLabel("central_widget", "intro_label", "Signed in as Dheeraj Vislawath", 200, 10, 600, 50)
@@ -549,8 +587,29 @@ class Main(object):
         self.adminApprovalLine = self.create_QFrame("admin_dashboard_tab", "adminApprovalLine", "HLine", 10, 65, 600, 6)
         self.adminApprovalData = self.create_QTextEdit("admin_dashboard_tab", "adminApprovalData", True, 900, 50, 300, 300)
         self.adminApprovalBlue = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Requests Pending Approval", 900, 20, 300, 30)
-        self.adminApprovalData.setText("Student 1: " '\n\nStudent 2: ' + '\n\nStudent 3: ' + '\n\nStudent 4: ' + '\n\nStudent 5 ')
         self.tab_widget.show()
+
+        approval_text = ""
+        self.adminApprovalData.clear()  # clear the widget before adding new values
+        layout = QVBoxLayout()  # create a vertical layout for the new widgets
+        for approval in admin_approval_rows:
+            widget = QWidget()  # create a new widget for each row
+            hbox = QHBoxLayout()  # create a horizontal layout for the new widget
+            label = QLabel()  # create a label to display the data for the row
+            label.setText("Name: " + str(approval[0]) + " " + str(approval[1]) + "\nPoints: " + str(
+                approval[2]) + "\nEvent: " + str(approval[3]) + "\nRating: " + str(
+                approval[4]) + "\nDescription: " + str(approval[5]))
+            button = QPushButton("Approve")  # create an "Approved" button for the row
+            button.setFixedSize(100, 30)  # set the size of the button
+            button.setProperty("row", approval)  # set the "row" property of the button to the current approval row
+            hbox.addWidget(label)  # add the label and button to the horizontal layout
+            hbox.addWidget(button)
+            widget.setLayout(hbox)  # set the horizontal layout as the widget's layout
+            layout.addWidget(widget)  # add the widget to the vertical layout
+        self.adminApprovalData.setLayout(layout)  # set the vertical layout as the adminApprovalData widget's layout
+
+        self.adminApprovalData.setText(approval_text)
+
 
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
