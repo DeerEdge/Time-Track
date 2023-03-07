@@ -9,7 +9,7 @@ import time
 import folium
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtCore import Qt, QRunnable, pyqtSlot, QThreadPool
-from PyQt5.QtGui import QIcon, QPixmap, QTextCursor
+from PyQt5.QtGui import QIcon, QPixmap, QTextCursor, QFont
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from PyQt5.QtWidgets import *
 from folium.plugins import MarkerCluster
@@ -49,6 +49,11 @@ cursor.close()
 event_combobox_selection = ""
 rating_combobox_selection = ""
 description_box = ""
+
+name_annoucement_text_stuff = ""
+details_annoucement_text_stuff = ""
+
+
 
 
 class Main(object):
@@ -373,6 +378,7 @@ class Main(object):
         self.QPushButton = QtWidgets.QPushButton(self.points_tab)
         self.QPushButton.setText("Send For Approval")
         self.QPushButton.setAccessibleName("push_button")
+        self.QPushButton.clicked.connect(self.update_points)
         self.QPushButton.clicked.connect(self.send_approval)
         self.QPushButton.setGeometry(160, 600, 350, 50)
 
@@ -508,7 +514,17 @@ class Main(object):
 
 
 
+    def approved_points(self):
+        approved_message = QMessageBox()
+        approved_message.setText("Approved hours")
+        approved_message.setIcon(QMessageBox.Information)
+        approved_message.exec_()
+
     def update_points(self):
+        message = QMessageBox()
+        message.setText("Sent to Administrator")
+        message.setIcon(QMessageBox.Information)
+        message.exec_()
 
         sqliteConnection = sqlite3.connect('identifier.sqlite')
         cursor = sqliteConnection.cursor()
@@ -529,14 +545,14 @@ class Main(object):
 
         cursor.close()
 
-        self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
-        self.points_leaderboard_label.setText("Personal Points : " + str(self.user_points))
-        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + str(
-            self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(
-            self.events_attended) + '\n\n Points: ' + str(self.user_points))
-
-
-        user_details.get_user_details.__init__(self)
+        # self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
+        # self.points_leaderboard_label.setText("Personal Points : " + str(self.user_points))
+        # self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + str(
+        #     self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(
+        #     self.events_attended) + '\n\n Points: ' + str(self.user_points))
+        #
+        #
+        # user_details.get_user_details.__init__(self)
 
 
 
@@ -583,7 +599,31 @@ class Main(object):
         self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
 
-     #   self.adminApprovalLable = self.create_QLabel("admin_dashboard_tab", "adminApprovalLable", "My Profil", 20, 20, 600, 50)
+        self.send_annoucements_label = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Send Announcements", 10, 100, 500, 55)
+        self.send_annoucements_label.setFont(QFont('Open Sans', 19, QFont.Bold))
+
+        self.name_of_annoucement_label = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Name of Announcement", 10, 175, 500, 55)
+        self.name_of_annoucement_label.setFont(QFont('Calibri', 12))
+
+        self.name_annoucement_text = QTextEdit(self.admin_dashboard_tab)
+        self.name_annoucement_text.setGeometry(10, 220, 300, 30)
+        self.name_annoucement_text.setAlignment(Qt.AlignTop)
+        self.name_annoucement_text.setWordWrapMode(True)
+
+        self.name_of_annoucement_label = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Announcement Details", 10, 300, 500, 55)
+        self.name_of_annoucement_label.setFont(QFont('Calibri', 12))
+
+        self.annoucement_detail = QTextEdit(self.admin_dashboard_tab)
+        self.annoucement_detail.setGeometry(10, 350, 450, 200)
+        self.annoucement_detail.setAlignment(Qt.AlignTop)
+        self.annoucement_detail.setWordWrapMode(True)
+
+        self.QPushButton = QtWidgets.QPushButton(self.admin_dashboard_tab)
+        self.QPushButton.setText("Send Announcement")
+        self.QPushButton.clicked.connect(self.send_annoucement)
+        self.QPushButton.setGeometry(10, 600, 450, 50)
+
+     #  self.adminApprovalLable = self.create_QLabel("admin_dashboard_tab", "adminApprovalLable", "My Profil", 20, 20, 600, 50)
         self.adminApprovalLine = self.create_QFrame("admin_dashboard_tab", "adminApprovalLine", "HLine", 10, 65, 600, 6)
         self.adminApprovalData = self.create_QTextEdit("admin_dashboard_tab", "adminApprovalData", True, 900, 50, 300, 300)
         self.adminApprovalBlue = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Requests Pending Approval", 900, 20, 300, 30)
@@ -602,6 +642,7 @@ class Main(object):
             button = QPushButton("Approve")  # create an "Approved" button for the row
             button.setFixedSize(100, 30)  # set the size of the button
             button.setProperty("row", approval)  # set the "row" property of the button to the current approval row
+            button.clicked.connect(self.approved_points)
             hbox.addWidget(label)  # add the label and button to the horizontal layout
             hbox.addWidget(button)
             widget.setLayout(hbox)  # set the horizontal layout as the widget's layout
@@ -611,6 +652,21 @@ class Main(object):
         self.adminApprovalData.setText(approval_text)
 
 
+    def send_annoucement(self):
+        try:
+            sqliteConnection = sqlite3.connect('identifier.sqlite')
+            cursor = sqliteConnection.cursor()
+
+            name_annoucement_text_stuff = self.name_annoucement_text.toPlainText()
+            details_annoucement_text_stuff = self.annoucement_detail.toPlainText()
+
+            cursor.execute(
+                "INSERT INTO Announcement (NAME, DETAILS, ADDRESS, LONGITUDE, LATITUDE, IMAGE_LINK_SOURCE) VALUES ('" + str(name_annoucement_text_stuff) + "', '" + str(details_annoucement_text_stuff) + "', '" + "N/A" + "', '" + "N/A" + "', '" + "N/A" + "', '" + "N/A" + "')")
+            sqliteConnection.commit()
+            cursor.close()
+        except Exception as e:
+            print(e)
+            
     def student_upcoming_events_calendar(self):
         selected_date = self.upcoming_events_tab.sender().selectedDate().toString()
         new_date = selected_date.split()
