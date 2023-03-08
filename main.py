@@ -526,17 +526,13 @@ class Main(object):
                                                              "  User Data", 900, 20, 300, 30)
         self.user_picture = self.create_QLabel("student_profile_tab", "user_picture", " Tester ", 20, 110, 300,
                                                300)  # for chips pic
-        self.student_purchases_label = self.create_QLabel("student_profile_tab", "student_purchases_label",
-                                                          "Past Purchases ", 20, 80, 300, 50)
+        self.student_purchases_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Past Purchases ", 20, 80, 300, 50)
 
+        # The next few lines consist of the container that consists of the user's information, and the prizes that they have bought before.
         self.user_picture.setPixmap(QPixmap(self.user_profile_picture))
-        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n Grade: ' + str(
-            self.grade) + '\n\n Gender: ' + self.user_gender + '\n\n Date of Birth: ' + self.date_of_birth + '\n\n Events Attended: ' + str(
-            self.events_attended) + '\n\n Points: ' + str(self.user_points))
-        # self.student_profile_settings_button = self.create_QPushButton("main_window", "student_profile_settings_button", "Press me", "None", 700, 10, 100, 40)
-        # self.student_profile_settings_button.clicked.connect(self.admin_events_calendar)
-
-
+        self.student_profile_data.setText("Name: " + first_name + " " + last_name + '\n\n\n Grade: ' + str(
+            self.grade) + '\n\n\n Gender: ' + self.user_gender + '\n\n\n Date of Birth: ' + self.date_of_birth + '\n\n\n Events Attended: ' + str(
+            self.events_attended) + '\n\n\n Points: ' + str(self.user_points))
 
         self.student_purchases_image1 = QtWidgets.QLabel(self.student_profile_tab)
         self.student_purchases_image1.setFixedSize(200, 200)
@@ -545,7 +541,6 @@ class Main(object):
         self.student_purchases_image1.setPixmap(QtGui.QPixmap("Rewards Pictures/0 - Fun-Sized Candy Bar.png"))
         self.student_purchases_image1.setScaledContents(True)
         self.student_purchases_image1.show()
-
         self.student_purchases_image1_label = self.create_QLabel("student_profile_tab", "student_purchases_label","Fun-sized candy bar", 38, 345, 200, 50)
 
         self.student_purchases_image2 = QtWidgets.QLabel(self.student_profile_tab)
@@ -554,9 +549,7 @@ class Main(object):
         self.student_purchases_image2.setPixmap(QtGui.QPixmap("Rewards Pictures/6 - Hillcrest Hoodie.png"))
         self.student_purchases_image2.setScaledContents(True)
         self.student_purchases_image2.show()
-
-        self.student_purchases_image2_label = self.create_QLabel("student_profile_tab", "student_purchases_label",
-                                                                 "Hillcrest Hoodie", 390, 345, 200, 50)
+        self.student_purchases_image2_label = self.create_QLabel("student_profile_tab", "student_purchases_label","Hillcrest Hoodie", 390, 345, 200, 50)
 
         self.student_purchases_image3 = QtWidgets.QLabel(self.student_profile_tab)
         self.student_purchases_image3.setFixedSize(200, 200)
@@ -564,9 +557,7 @@ class Main(object):
         self.student_purchases_image3.setPixmap(QtGui.QPixmap("Rewards Pictures/7 - Hillcrest Blanket.png"))
         self.student_purchases_image3.setScaledContents(True)
         self.student_purchases_image3.show()
-
-        self.student_purchases_image3_label = self.create_QLabel("student_profile_tab", "student_purchases_label",
-                                                                 "Hillcrest Blanket", 55, 620, 200, 50)
+        self.student_purchases_image3_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Hillcrest Blanket", 55, 620, 200, 50)
 
         self.student_purchases_image4 = QtWidgets.QLabel(self.student_profile_tab)
         self.student_purchases_image4.setFixedSize(200, 200)
@@ -574,9 +565,32 @@ class Main(object):
         self.student_purchases_image4.setPixmap(QtGui.QPixmap("Rewards Pictures/2 - Chips.png"))
         self.student_purchases_image4.setScaledContents(True)
         self.student_purchases_image4.show()
+        self.student_purchases_image4_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Chips", 420, 620, 200, 50)
 
-        self.student_purchases_image4_label = self.create_QLabel("student_profile_tab", "student_purchases_label",
-                                                                 "Chips", 420, 620, 200, 50)
+        self.student_purchases_image5 = QtWidgets.QLabel(self.student_profile_tab)
+        self.student_purchases_image5.setFixedSize(200, 200)
+        self.student_purchases_image5.move(650, 160)
+        self.student_purchases_image5.setPixmap(QtGui.QPixmap("Rewards Pictures/3 - Drinks.png"))
+        self.student_purchases_image5.setScaledContents(True)
+        self.student_purchases_image5.show()
+        self.student_purchases_image5_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "Drinks", 720, 345, 200, 50)
+
+        self.student_purchases_image6 = QtWidgets.QLabel(self.student_profile_tab)
+        self.student_purchases_image6.setFixedSize(200, 200)
+        self.student_purchases_image6.move(650, 430)
+        self.student_purchases_image6.setPixmap(QtGui.QPixmap("Rewards Pictures/5 - Hillcrest Shirt.png"))
+        self.student_purchases_image6.setScaledContents(True)
+        self.student_purchases_image6.show()
+        self.student_purchases_image6_label = self.create_QLabel("student_profile_tab", "student_purchases_label", "T-Shirt", 720, 620, 200, 50)
+
+
+        #push button for admin contact from user.
+        self.QPushButton = QtWidgets.QPushButton(self.student_profile_tab)
+        self.QPushButton.setText("Contact Administrator")
+        #self.QPushButton.setAccessibleName("push_button")
+        # self.QPushButton.clicked.connect(self.update_points)
+        # self.QPushButton.clicked.connect(self.send_approval)
+        self.QPushButton.setGeometry(900, 350, 300, 50)
 
         self.tab_widget.show()
 
@@ -684,25 +698,19 @@ class Main(object):
 
         # setting selected date
         # self.admin_calendar.clicked.connect(lambda: self.admin_current_events.setText(text + str(self.count)))
-        self.admin_events_title = self.create_QLabel("admin_events_tab", "admin_events_text", "Current Events", 400, 80,
-                                                     400, 30)
-        self.admin_current_events = self.create_QLineEdit("admin_events_tab", "admin_current_events", True, 400, 110,
-                                                          400, 320)
+        self.admin_events_title = self.create_QLabel("admin_events_tab", "admin_events_text", "Current Events", 400, 80, 400, 30)
+        self.admin_current_events = self.create_QLineEdit("admin_events_tab", "admin_current_events", True, 400, 110, 400, 320)
         current_day = self.admin_calendar.selectedDate().toString()
         self.admin_current_events.setText("Events on " + current_day[4:] + ":")
         self.admin_current_events.setAlignment(Qt.AlignTop)
 
-        self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics",
-                                                         20, 20, 600, 50)
-        self.admin_statistics_line = self.create_QFrame("admin_statistics_tab", "admin_statistics_line", "HLine", 10,
-                                                        65, 600, 6)
+        self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics", 20, 20, 600, 50)
+        self.admin_statistics_line = self.create_QFrame("admin_statistics_tab", "admin_statistics_line", "HLine", 10, 65, 600, 6)
 
-        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label",
-                                                           "Student View", 20, 20, 600, 50)
+        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label","Student View", 20, 20, 600, 50)
         self.admin_student_view_label.setStyleSheet("font-weight: bold; font-size: 30px;")
 
-        self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine",
-                                                          10, 65, 600, 6)
+        self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
         self.send_annoucements_label = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Send Announcements", 10, 100, 500, 55)
         self.send_annoucements_label.setFont(QFont('Open Sans', 19, QFont.Bold))
@@ -730,8 +738,7 @@ class Main(object):
 
         self.adminApprovalLine = self.create_QFrame("admin_dashboard_tab", "adminApprovalLine", "HLine", 10, 65, 600, 6)
         self.adminApprovalData = self.create_QTextEdit("admin_dashboard_tab", "adminApprovalData", True, 750, 80, 400, 500)
-        self.adminApprovalBlue = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue",
-                                                    " Requests Pending Approval", 750, 50, 300, 30)
+        self.adminApprovalBlue = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Requests Pending Approval", 750, 50, 300, 30)
         self.adminApprovalBlue.setStyleSheet("font-weight: bold; font-size: 20px;")
 
         self.student_view_profile_one = self.create_QTextEdit("admin_student_view_tab", "student_view_profile_one", 400,50,150,300,300)
@@ -739,10 +746,18 @@ class Main(object):
         self.student_view_profile_one_label = self.create_QLabel("admin_student_view_tab", "student_view_profile_one_label", "Student 1", 50, 37, 200,200)
         self.student_view_profile_one_label.setStyleSheet("font-weight: bold; font-size: 20px;")
 
+        self.QPushButton_dm1 = QtWidgets.QPushButton(self.admin_student_view_tab)
+        self.QPushButton_dm1.setText("Private Message Student 1")
+        self.QPushButton_dm1.setGeometry(50, 450, 300, 50)
+
         self.student_view_profile_two = self.create_QTextEdit("admin_student_view_tab", "student_view_profile_two", 400, 450, 150, 300, 300)
         self.student_view_profile_two_text = self.create_QLabel("admin_student_view_tab", "student_view_profile_two_text", "Name: Sang Hyun Chun \n\n\nGrade: 11\n\n\nGender: Male\n\n\nDate of Birth: 10/24/05\n\n\nEvents Attended: 1\n\n\nPoints: 10", 460, 135, 300, 300)
         self.student_view_profile_two_label = self.create_QLabel("admin_student_view_tab", "student_view_profile_two_label", "Student 2", 450, 37, 200,200)
         self.student_view_profile_two_label.setStyleSheet("font-weight: bold; font-size: 20px;")
+
+        self.QPushButton_dm2 = QtWidgets.QPushButton(self.admin_student_view_tab)
+        self.QPushButton_dm2.setText("Private Message Student 1")
+        self.QPushButton_dm2.setGeometry(50, 450, 300, 50)
 
         self.student_view_profile_three = self.create_QTextEdit("admin_student_view_tab", "student_view_profile_two", 400, 850, 150, 300, 300)
         self.student_view_profile_three_text = self.create_QLabel("admin_student_view_tab", "student_view_profile_two_text", "Name: Dheeraj Vislawath \n\n\nGrade: 11\n\n\nGender: Male\n\n\nDate of Birth: 02/24/06\n\n\nEvents Attended: 2\n\n\nPoints: 100",860, 135, 300, 300)
