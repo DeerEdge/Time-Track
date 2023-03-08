@@ -189,6 +189,13 @@ QLabel#student_profile_data_label {
     border: 1px solid darkgrey;
     spacing: double;
 }
+QLabel#student_view_profile_one {
+    font: 20px;
+    color: black;
+    background-color: rgb(161,225, 237);
+    border: 1px solid darkgrey;
+    spacing: double;
+}
 
  /* Administrator login */
 
@@ -224,10 +231,9 @@ QLabel#student_profile_data_label {
     background-color: black;
  }
 
- QLabel#admin_student_view_label {
-    font: bold 30px;
+ QLabel#student_view_profile_one_label {
+    font: bold 20px;
  }
-
  QFrame#admin_student_view_line {
     background-color: black;
  }
