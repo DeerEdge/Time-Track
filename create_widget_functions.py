@@ -66,6 +66,12 @@ class create_QLabel():
             self.QLabel = QtWidgets.QLabel(self.admin_statistics_tab)
         elif container == "admin_student_view_tab":
             self.QLabel = QtWidgets.QLabel(self.admin_student_view_tab)
+        elif container == "admin_statistics_tab":
+            self.QLabel = QtWidgets.QLabel(self.admin_statistics_tab)
+        elif container == "rand":
+            self.QLabel = QtWidgets.QLabel(self.rand_win_gb)
+        elif container == "top":
+            self.QLabel = QtWidgets.QLabel(self.top_win_gb)
         self.QLabel.setWordWrap(True)
         self.QLabel.setObjectName(object_name)
         self.QLabel.setText(text)
@@ -163,6 +169,8 @@ class create_QScrollArea():
             self.QScrollArea = QtWidgets.QScrollArea(self.points_tab)
         elif container == "rewards_tab":
             self.QScrollArea = QtWidgets.QScrollArea(self.rewards_tab)
+        elif container == "admin_statistics_tab":
+            self.QScrollArea = QtWidgets.QScrollArea(self.admin_statistics_tab)
         self.QScrollArea.setFixedWidth(fixed_width)
         self.QScrollArea.setFixedHeight(min_length)
         self.QScrollArea.move(x_coordinate, y_coordinate)
@@ -223,6 +231,8 @@ class create_QPushButton():
             self.QPushButton = QtWidgets.QPushButton(self.student_profile_tab)
         elif container == "rewards_tab":
             self.QPushButton = QtWidgets.QPushButton(self.rewards_tab)
+        elif container == "admin_statistics_tab":
+            self.QPushButton = QtWidgets.QPushButton(self.admin_statistics_tab)
         self.QPushButton.setObjectName(object_name)
         if text != "None":
             self.QPushButton.setText(text)

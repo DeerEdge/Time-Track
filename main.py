@@ -63,13 +63,14 @@ class Main(object):
         main_window.setFixedSize(800, 500)
         self.setup_login_screen(main_window)
 
+    # Sets up the initial login screen
     def setup_login_screen(self, main_window):
         self.login_central_widget = QtWidgets.QWidget(main_window)
         self.login_central_widget.resize(800, 500)
         self.login_screen_background = QtWidgets.QLabel(self.login_central_widget)
         self.login_screen_background.setFixedSize(800, 500)
-        self.login_screen_background.setPixmap(
-            QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
+        self.login_screen_background.setPixmap(QtGui.QPixmap("Application Pictures and Icons/Login Screen Background.png"))
+
         self.login_screen_background.setScaledContents(True)
         self.login_screen_background.show()
         self.login_widget_container = QtWidgets.QGroupBox(self.login_central_widget)
@@ -692,17 +693,78 @@ class Main(object):
         self.admin_current_events.setText("Events on " + current_day[4:] + ":")
         self.admin_current_events.setAlignment(Qt.AlignTop)
 
-        self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics",
-                                                         20, 20, 600, 50)
-        self.admin_statistics_line = self.create_QFrame("admin_statistics_tab", "admin_statistics_line", "HLine", 10,
-                                                        65, 600, 6)
+        # ADMIN STATISTICS TAB
+        self.admin_statistics_label = self.create_QLabel("admin_statistics_tab", "admin_statistics_label", "Statistics", 20, 20, 600, 50)
+        self.admin_statistics_line = self.create_QFrame("admin_statistics_tab", "admin_statistics_line", "HLine", 10, 65, 600, 6)
+        self.admin_leaderboard_title_label = self.create_QLabel("admin_statistics_tab", "leaderboard_admin", "Student Leaderboard", 20, 5, 400, 200)
+        self.admin_leaderboard_objects = self.create_QScrollArea("admin_statistics_tab", "points_leaderboard_QScrollArea", "vertical_layout", 20, 120, 600, 550)
+        self.admin_leaderboard = self.admin_leaderboard_objects[0]
+        self.admin_leaderboard_layout = self.admin_leaderboard_objects[1]
+        self.admin_leaderboard_scrollArea = self.admin_leaderboard_objects[2]
 
-        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label",
-                                                           "Student View", 20, 20, 600, 50)
+        self.rank = 1
+        for student in students_leaderboard:
+            self.event_object = QtWidgets.QGroupBox(self.admin_leaderboard)
+            self.event_object.setFixedSize(578, 100)
+            self.event_object.setLayout(QtWidgets.QVBoxLayout())
+            self.label = self.create_QLabel("event", "test", "   " + "Name: " + str(student[1]) + " "+ str(student[2]), 0, 5, 400, 30)
+            print(student, students)
+            self.label2 = self.create_QLabel("event", "test", "   " + "Student Birthday: " + str(students[0][8]), 0, 25, 400, 30)
+            self.label3 = self.create_QLabel("event", "test", "   " + "Attennding School: " + str(students[0][9]), 0, 45, 400, 30)
+            self.label4 = self.create_QLabel("event", "test", "   " + "Grade: " + str(students[0][7]), 0, 65, 400, 30)
+            self.label5 = self.create_QLabel("event", "test", "   " + "Rank: " + str(self.rank), 513, 5, 400, 30)
+            self.rank += 1
+            self.label6 = self.create_QLabel("event", "test", "   " + "Points: " + str(student[3]), 483, 25, 400, 30)
+            self.admin_leaderboard_layout.addWidget(self.event_object)
+        self.admin_leaderboard_scrollArea.setWidget(self.admin_leaderboard)
+        self.admin_leaderboard_scrollArea.verticalScrollBar().setSliderPosition(0)
+
+        self.choose_rand_winner = QtWidgets.QPushButton(self.admin_statistics_tab)
+        self.choose_rand_winner.setText("Select a Random Winner")
+        self.choose_rand_winner.setGeometry(690, 120, 450, 50)
+
+        self.rand_win_gb = QtWidgets.QGroupBox(self.admin_statistics_tab)
+        self.rand_win_gb.setFixedSize(578, 100)
+        self.rand_win_gb.move(630, 180)
+        self.rand_win_gb.setLayout(QtWidgets.QVBoxLayout())
+        self.rand_label = self.create_QLabel("rand", "test",
+                                             "   " + "Name: " + str(students[0][1]) + " " + str(students[0][2]), 0,
+                                             5, 400, 30)
+        self.rand_label2 = self.create_QLabel("rand", "test", "   " + "Student Birthday: " + str(students[0][8]), 0,
+                                              25,
+                                              400, 30)
+        self.rand_label3 = self.create_QLabel("rand", "test", "   " + "Attennding School: " + str(students[0][9]), 0,
+                                              45,
+                                              400, 30)
+        self.rand_label4 = self.create_QLabel("rand", "test", "   " + "Grade: " + str(students[0][7]), 0, 65, 400, 30)
+        self.rand_label6 = self.create_QLabel("rand", "test", "   " + "Points: " + str(students[0][11]), 483, 25, 400,
+                                              30)
+
+        self.choose_top_winner = QtWidgets.QPushButton(self.admin_statistics_tab)
+        self.choose_top_winner.setText("Select Winner with Most Points")
+        self.choose_top_winner.setGeometry(690, 380, 450, 50)
+
+        self.top_win_gb = QtWidgets.QGroupBox(self.admin_statistics_tab)
+        self.top_win_gb.setFixedSize(578, 100)
+        self.top_win_gb.move(630, 440)
+        self.top_win_gb.setLayout(QtWidgets.QVBoxLayout())
+        self.top_label = self.create_QLabel("top", "test",
+                                             "   " + "Name: " + str(students[1][1]) + " " + str(students[1][2]), 0,
+                                             5, 400, 30)
+        self.top_label2 = self.create_QLabel("top", "test", "   " + "Student Birthday: " + str(students[1][8]), 0,
+                                              25,
+                                              400, 30)
+        self.top_label3 = self.create_QLabel("top", "test", "   " + "Attennding School: " + str(students[1][9]), 0,
+                                              45,
+                                              400, 30)
+        self.top_label4 = self.create_QLabel("top", "test", "   " + "Grade: " + str(students[1][7]), 0, 65, 400, 30)
+        self.top_label6 = self.create_QLabel("top", "test", "   " + "Points: " + str(students[1][11]), 483, 25, 400,
+                                              30)
+
+        # ADMIN STUDENT VIEW
+        self.admin_student_view_label = self.create_QLabel("admin_student_view_tab", "admin_student_view_label", "Student View", 20, 20, 600, 50)
         self.admin_student_view_label.setStyleSheet("font-weight: bold; font-size: 30px;")
-
-        self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine",
-                                                          10, 65, 600, 6)
+        self.admin_student_view_line = self.create_QFrame("admin_student_view_tab", "admin_student_view_line", "HLine", 10, 65, 600, 6)
 
         self.send_annoucements_label = self.create_QLabel("admin_dashboard_tab", "adminApprovalBlue", " Send Announcements", 10, 100, 500, 55)
         self.send_annoucements_label.setFont(QFont('Open Sans', 19, QFont.Bold))
@@ -778,6 +840,20 @@ class Main(object):
 
         self.adminApprovalData.setText(approval_text)
 
+    def rand_win(self):
+        self.rand_win_gb = QtWidgets.QGroupBox(self.admin_statistics_tab)
+        self.rand_win_gb.setFixedSize(578, 100)
+        self.rand_win_gb.move(600, 10)
+        self.rand_win_gb.setLayout(QtWidgets.QVBoxLayout())
+        self.rand_label = self.create_QLabel("event", "test", "   " + "Name: " + str(students[1][1]) + " " + str(students[1][2]), 0,
+                                        5, 400, 30)
+        self.rand_label2 = self.create_QLabel("event", "test", "   " + "Student Birthday: " + str(students[1][8]), 0, 25,
+                                         400, 30)
+        self.rand_label3 = self.create_QLabel("event", "test", "   " + "Attennding School: " + str(students[1][9]), 0, 45,
+                                         400, 30)
+        self.rand_label4 = self.create_QLabel("event", "test", "   " + "Grade: " + str(students[1][7]), 0, 65, 400, 30)
+        self.rand_label6 = self.create_QLabel("event", "test", "   " + "Points: " + str(students[1][11]), 483, 25, 400, 30)
+
     def send_annoucement(self):
         try:
             sqliteConnection = sqlite3.connect('identifier.sqlite')
@@ -835,15 +911,15 @@ class Main(object):
                     if str(event_day) == str(events_day):
                         self.admin_current_events.setText("Events on " + selected_date[4:] + ": " + event[2])
 
-    # Logic Functions
+    # Deduct points from the user that pruchases the merchandise
     def deduct_points(self):
         global username
         global password
         global user
         point_cost = int(self.rewards_tab.sender().parent().findChild(QtWidgets.QLabel, "point_cost").text()[6:9])
 
+        # Validates that the user has enough points to purchase the item
         if self.user_points >= point_cost:
-            # print(new_user_points)
             sqliteConnection = sqlite3.connect('identifier.sqlite')
             cursor = sqliteConnection.cursor()
             new_user_points = self.logged_in_user_details[0][11] - point_cost
@@ -853,8 +929,8 @@ class Main(object):
             self.user_points = new_user_points
             username = user[0]
             password = user[1]
-            cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?",
-                           (username, password))
+            cursor.execute("SELECT * FROM students WHERE EMAIL_ADDRESS = ? AND PASSWORD = ?", (username, password))
+
             self.logged_in_user_details = cursor.fetchall()
             cursor.close()
             self.rewards_my_points_label.setText("  Your Points: " + str(self.user_points))
@@ -992,27 +1068,25 @@ class Slideshow(QRunnable):
 
         index = 0
 
-        # set the first image before the loop. image over this if slideshow doesnt work
-        dashboard_slideshow.setPixmap(QPixmap("Announcement Pictures/" + picture_list[index]))
-
         while True:
             try:
-                cursor.execute("SELECT rowid, * FROM slideshow WHERE id = ?", (str(index),))
-                row = cursor.fetchone()
+                if index % 2 == 0:
+                    # set the image after the index has been updated
+                    dashboard_slideshow.setPixmap(QPixmap("Announcement Pictures/3 - Canyons Rank.jpeg"))
 
-                if index == len(picture_list) - 1:
-                    index = 0
+                    slideshow_title.setText("Canyons District Students Rank No. 1 in Utah for Overall Testing Scores")
+                    slideshow_description.setText("Canyons School District is the highest-ranked district in Utah for overall testing scores, according to Public School Review. The ranking is based on the percentage of schools within a District to have placed in the top 5 percent of all schools statewide for math and reading test scores.")
                 else:
-                    index += 1
+                    dashboard_slideshow.setPixmap(QPixmap("Announcement Pictures/1 - Canyons Safe.jpeg"))
 
-                # set the image after the index has been updated
-                dashboard_slideshow.setPixmap(QPixmap("Announcement Pictures/" + picture_list[index]))
-
-                slideshow_title.setText(row[2])
-                slideshow_description.setText(row[3])
+                    slideshow_title.setText("CSD Thinks Safe: Summer Months Spent Conducting Districtwide Security Review")
+                    slideshow_description.setText("In response to heightened worries about school safety following the last-week-of-school tragedy in Uvalde, Texas, Canyons has undertaken a review of the safety and security measures at the District’s campuses and central offices.")
                 time.sleep(5)
+                index += 1
+
             except Exception as e:
                 print(f"Error occurred: {e}")
+
 
             if kill_thread_boolean:
                 break
