@@ -187,14 +187,14 @@ class Main(object):
     def initialize_student_page(self):
         self.login_central_widget.deleteLater()
 
-        main_window.setFixedSize(1400, 800)
+        main_window.setFixedSize(1150, 650) # resize
         qtRectangle = main_window.frameGeometry()
         centerPoint = QDesktopWidget().availableGeometry().center()
         qtRectangle.moveCenter(centerPoint)
         main_window.move(qtRectangle.topLeft())
         self.central_widget = QtWidgets.QWidget(main_window)
         self.central_widget.setObjectName("central_widget")
-        self.central_widget.resize(1400, 800)
+        self.central_widget.resize(1150, 650) # resize
 
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
@@ -204,7 +204,7 @@ class Main(object):
         self.app_logo.show()
 
         self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None",
-                                                      "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+                                                      "Application Pictures and Icons/Log Out.png", 980, -50, 160, 160)
         self.log_out_button.setIconSize(QtCore.QSize(150, 150))
         self.log_out_button.setFlat(True)
         self.log_out_button.clicked.connect(self.return_to_login_screen)
@@ -229,10 +229,10 @@ class Main(object):
     def initialize_administrator_page(self):
         self.login_central_widget.deleteLater()
 
-        main_window.setFixedSize(1400, 800)
+        main_window.setFixedSize(1150, 650)
         self.central_widget = QtWidgets.QWidget(main_window)
         self.central_widget.setObjectName("central_widget")
-        self.central_widget.resize(1400, 800)
+        self.central_widget.resize(1150, 650)
 
         self.app_logo = QtWidgets.QLabel(self.central_widget)
         self.app_logo.setFixedSize(140, 140)
@@ -242,7 +242,7 @@ class Main(object):
         self.app_logo.show()
 
         self.log_out_button = self.create_QPushButton("central_widget", "log_out", "None",
-                                                      "Application Pictures and Icons/Log Out.png", 1240, -50, 160, 160)
+                                                      "Application Pictures and Icons/Log Out.png", 980, -50, 160, 160)
         self.log_out_button.setIconSize(QtCore.QSize(150, 150))
         self.log_out_button.setFlat(True)
         self.log_out_button.clicked.connect(self.return_to_login_screen)
@@ -264,7 +264,7 @@ class Main(object):
 
         self.tab_widget = VerticalTabWidget(self.central_widget)
         self.tab_widget.setObjectName("tab_widget")
-        self.tab_widget.resize(1405, 700)
+        self.tab_widget.resize(1150, 650)
         self.tab_widget.move(0, 55)
 
         self.dashboard_tab = QtWidgets.QWidget()
@@ -287,14 +287,13 @@ class Main(object):
                                               "Signed in as " + first_name + " " + last_name, 200, 10, 600, 50)
         self.dashboard_label = self.create_QLabel("dashboard_tab", "dashboard_label", "Dashboard", 20, 20, 600, 50)
         self.dashboard_title_line = self.create_QFrame("dashboard_tab", "dashboard_title_line", "HLine", 10, 65, 600, 6)
-        dashboard_slideshow = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler", 20, 90, 840, 480)
+        dashboard_slideshow = self.create_QLabel("dashboard_tab", "dashboard_slider_label", "filler", 20, 90, 550, 320) #changed
         dashboard_slideshow.setScaledContents(True)
         self.slideshow_description_groupbox = QtWidgets.QGroupBox(self.dashboard_tab)
-        self.slideshow_description_groupbox.setGeometry(20, 580, 840, 100)
-        slideshow_title = self.create_QLabel("slideshow_description_groupbox", "slideshow_title", "", 10, 10, 830, 20)
+        self.slideshow_description_groupbox.setGeometry(20, 420, 550, 110) #20, 580, 840, 100
+        slideshow_title = self.create_QLabel("slideshow_description_groupbox", "slideshow_title", "", 10, 10, 530, 30) # 10, 10, 830, 20
         slideshow_title.setWordWrap(True)
-        slideshow_description = self.create_QLabel("slideshow_description_groupbox", "slideshow_description", "", 10,
-                                                   35, 830, 100)
+        slideshow_description = self.create_QLabel("slideshow_description_groupbox", "slideshow_description", "", 10, 40, 530, 150) # 10, 40, 830, 60
         slideshow_description.setWordWrap(True)
         slideshow_description.setAlignment(QtCore.Qt.AlignTop)
         kill_thread_boolean = False
@@ -308,25 +307,25 @@ class Main(object):
         announcements = cursor.fetchall()
 
         self.side_announcement1 = QtWidgets.QGroupBox(self.dashboard_tab)
-        self.side_announcement1.setGeometry(880, 88, 320, 290)
+        self.side_announcement1.setGeometry(630, 10, 320, 290)
         self.sa1_picture = QLabel(self.side_announcement1)
-        self.sa1_picture.setGeometry(10, 15, 300, 200)
+        self.sa1_picture.setGeometry(10, 15, 300, 200) # 10, 20, 250, 150
         self.sa1_picture.setPixmap(QPixmap(announcements[0][6]))
         self.sa1_picture.setScaledContents(True)
         self.sa1_title = QtWidgets.QLabel(self.side_announcement1)
         self.sa1_title.setWordWrap(True)
-        self.sa1_title.setGeometry(10, 220, 300, 50)
+        self.sa1_title.setGeometry(10, 220, 300, 50) # 10, 220, 300, 50
         self.sa1_title.setText(announcements[0][1] + announcements[0][2])
 
         self.side_announcement2 = QtWidgets.QGroupBox(self.dashboard_tab)
-        self.side_announcement2.setGeometry(880, 388, 320, 290)
+        self.side_announcement2.setGeometry(630, 300, 320, 290) # 880, 388, 320, 290
         self.sa2_picture = QLabel(self.side_announcement2)
-        self.sa2_picture.setGeometry(10, 15, 300, 200)
+        self.sa2_picture.setGeometry(10, 15, 300, 200) # 10, 15, 300, 200
         self.sa2_picture.setPixmap(QPixmap(announcements[1][6]))
         self.sa2_picture.setScaledContents(True)
         self.sa2_title = QtWidgets.QLabel(self.side_announcement2)
         self.sa2_title.setWordWrap(True)
-        self.sa2_title.setGeometry(10, 220, 300, 50)
+        self.sa2_title.setGeometry(10, 210, 300, 50) # 10, 220, 300, 50
         self.sa2_title.setText(announcements[1][1] + announcements[1][2])
 
         # Upcoming Events Tab
